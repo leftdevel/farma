@@ -3,8 +3,10 @@ security:
         Farma\UserBundle\Entity\User: sha512
 
     role_hierarchy:
-        ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN]
+        ROLE_SALES:       [ROLE_USER]
+        ROLE_INVENTORY:   [ROLE_USER]
+        ROLE_ADMIN:       [ROLE_SALES, ROLE_INVENTORY]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN]
 
     providers:
         farma_provider:

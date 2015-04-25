@@ -10,7 +10,8 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface,
     Symfony\Component\DependencyInjection\ContainerInterface,
     Symfony\Component\Security\Core\User\UserInterface;
 
-use Farma\UserBundle\Entity\User;
+use Farma\UserBundle\Entity\User,
+    Farma\UserBundle\Model\UserRole;
 
 class LoadData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
@@ -30,11 +31,17 @@ class LoadData extends AbstractFixture implements OrderedFixtureInterface, Conta
 
     private function createUsers()
     {
-        $admin = $this->createUser('admin', array('ROLE_ADMIN'));
+        $admin = $this->createUser('superadmin', array(UserRole::SUPER_ADMIN));
         $this->entityManager->persist($admin);
 
-        $seller = $this->createUser('seller');
+        $admin = $this->createUser('admin', array(UserRole::ADMIN));
+        $this->entityManager->persist($admin);
+
+        $seller = $this->createUser('vendedor', array(UserRole::SALES));
         $this->entityManager->persist($seller);
+
+        $grocer = $this->createUser('bodeguero', array(UserRole::INVENTORY));
+        $this->entityManager->persist($grocer);
 
         $this->entityManager->flush();
     }
@@ -44,7 +51,7 @@ class LoadData extends AbstractFixture implements OrderedFixtureInterface, Conta
         $user = new User();
         $user->setRoles($roles);
         $user->setEmail($username.'@farma.com');
-        $user->setFullName(ucfirst($username).' Flightfox');
+        $user->setFullName(ucfirst($username).' Farma');
 
         $plainPassword = 'farma';
         $user->setPassword($this->encodePassword($user, $plainPassword));

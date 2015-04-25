@@ -13,4 +13,11 @@ class UserRepository extends EntityRepository
 
         return $object;
     }
+
+    public function findWithColumns(array $columns)
+    {
+        $query = "SELECT ".implode(', ', $columns)." FROM member";
+        $conn = $this->getEntityManager()->getConnection();
+        return $conn->fetchAll($query);
+    }
 }

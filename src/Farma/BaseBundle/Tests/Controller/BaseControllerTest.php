@@ -2,14 +2,13 @@
 
 namespace Farma\BaseBundle\Tests\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-
 use Farma\UserBundle\DataFixtures\ORM\LoadData as UserFixtures,
     Farma\BaseBundle\Tests\Utils\FunctionalTestUtil;
 
 class BaseControllerTest extends FunctionalTestUtil
 {
     private $client;
+    private $container;
     private $router;
 
     protected function setUp()
@@ -19,6 +18,11 @@ class BaseControllerTest extends FunctionalTestUtil
         $this->loadFixtures(array(new UserFixtures()));
         $this->container = $this->client->getContainer();
         $this->router = $this->container->get('router');
+    }
+
+    protected function tearDown()
+    {
+        $this->destroy($this->client);
     }
 
     public function testIndexAction()

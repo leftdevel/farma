@@ -55,7 +55,7 @@ class User implements UserInterface, \Serializable
         $this->isActive = true;
         $createdDateTime = new \DateTime('now');
         $this->created = $createdDateTime->getTimestamp();
-        $this->addRole(UserRole::ROLE_USER);
+        $this->addRole(UserRole::USER);
     }
 
     public function getId()

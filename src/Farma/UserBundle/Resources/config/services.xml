@@ -5,9 +5,13 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <services>
-        <service id="base.repository.user" class="Farma\UserBundle\Repository\UserRepository">
+        <service id="user.repository" class="Farma\UserBundle\Repository\UserRepository">
             <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
             <argument>Farma\UserBundle\Entity\User</argument>
+        </service>
+
+        <service id="user.manager.api" class="Farma\UserBundle\Manager\UserApiManager">
+            <argument type="service" id="user.repository" />
         </service>
     </services>
 

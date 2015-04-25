@@ -3,7 +3,8 @@
 namespace Farma\BaseBundle\Tests\Utils;
 
 use Doctrine\ORM\EntityManager;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\HttpKernelInterface,
+    Symfony\Component\Security\Core\User\UserInterface;
 
 use Symfony\Bundle\FrameworkBundle\Client,
     Symfony\Component\BrowserKit\Cookie,
@@ -118,6 +119,32 @@ abstract class FunctionalTestUtil extends WebTestCase
         unset($connection);
         unset($client);
         self::$kernel == null;
+    }
+
+    public function findUser($email)
+    {
+        $repository = self::$kernel->getContainer()->get('user.repository');
+        return $repository->findOneBy(array('email' => $email));
+    }
+
+    public function findSuperAdmin()
+    {
+        return $this->findUser('superadmin@farma.com');
+    }
+
+    public function findAdmin()
+    {
+        return $this->findUser('admin@farma.com');
+    }
+
+    public function findSeller()
+    {
+        return $this->findUser('vendedor@farma.com');
+    }
+
+    public function findGrocer()
+    {
+        return $this->findUser('bodeguero@farma.com');
     }
 
     public function renderController($client, $controller, $path, $query = array())
