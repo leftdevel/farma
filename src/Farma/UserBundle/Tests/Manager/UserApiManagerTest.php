@@ -35,5 +35,6 @@ class UserApiManagerTest extends FunctionalTestUtil
 
         $this->assertEquals(count($expectedColumns), count($actualColumns));
         $this->assertEquals(0, count(array_diff_key($expectedColumns, $actualColumns)));
+        $this->assertEquals('Superadmin Farma', $records[0]['full_name']);
     }
 }

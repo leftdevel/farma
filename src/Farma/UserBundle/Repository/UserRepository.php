@@ -16,7 +16,7 @@ class UserRepository extends EntityRepository
 
     public function findWithColumns(array $columns)
     {
-        $query = "SELECT ".implode(', ', $columns)." FROM member";
+        $query = "SELECT ".implode(', ', $columns)." FROM member ORDER BY id ASC";
         $conn = $this->getEntityManager()->getConnection();
         return $conn->fetchAll($query);
     }

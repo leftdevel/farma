@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method,
 class UserController extends Controller
 {
     /**
-     * @Route("/", name="user_list")
+     * @Route("/", name="user_list", defaults={"_format" = "json"})
      * @Method({"GET"})
      */
     public function listAction()
