@@ -10,7 +10,7 @@ security:
         farma_provider:
             entity:
                 class: FarmaBaseBundle:User
-                property: username
+                property: email
 
     firewalls:
         farma_firewall:

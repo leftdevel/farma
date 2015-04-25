@@ -44,14 +44,15 @@ class User implements UserInterface, \Serializable
     private $roles;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="integer")
      */
     private $created;
 
     public function __construct()
     {
         $this->isActive = true;
-        $this->created = new \DateTime('now');
+        $createdDateTime = new \DateTime('now');
+        $this->created = $createdDateTime->getTimestamp();
     }
 
     public function getId()
@@ -91,7 +92,7 @@ class User implements UserInterface, \Serializable
 
     public function getCreated()
     {
-        $this->created = $created;
+        return $this->created;
     }
 
     // USER INTERFACE
@@ -103,7 +104,7 @@ class User implements UserInterface, \Serializable
 
     public function getSalt()
     {
-        return $this->getCreated()->format('Y-m-d H:i:s');
+        return $this->getCreated();
     }
 
     public function setIsActive($isActive)
@@ -139,10 +140,8 @@ class User implements UserInterface, \Serializable
     {
         return serialize(array(
             $this->id,
-            $this->username,
-            $this->password,
-            // see section on salt below
-            // $this->salt,
+            $this->email,
+            $this->password
         ));
     }
 
@@ -150,10 +149,8 @@ class User implements UserInterface, \Serializable
     {
         list (
             $this->id,
-            $this->username,
-            $this->password,
-            // see section on salt below
-            // $this->salt
+            $this->email,
+            $this->password
         ) = unserialize($serialized);
     }
 }
