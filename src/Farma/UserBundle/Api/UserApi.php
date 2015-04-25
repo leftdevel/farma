@@ -60,5 +60,5 @@ class UserApi
         }
 
         $this->repository->save($user);
-     }
+    }
 }
