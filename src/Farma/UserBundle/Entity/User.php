@@ -5,6 +5,8 @@ namespace Farma\UserBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use Farma\UserBundle\Model\UserRole;
+
 /**
  * @ORM\Entity(repositoryClass="Farma\UserBundle\Repository\UserRepository")
  * @ORM\Table(name="member")
@@ -53,7 +55,7 @@ class User implements UserInterface, \Serializable
         $this->isActive = true;
         $createdDateTime = new \DateTime('now');
         $this->created = $createdDateTime->getTimestamp();
-        $this->addRole('ROLE_USER');
+        $this->addRole(UserRole::ROLE_USER);
     }
 
     public function getId()
@@ -120,19 +122,24 @@ class User implements UserInterface, \Serializable
 
     public function setRoles(array $roles)
     {
+        foreach ($roles as $role) {
+            if (!in_array($role, UserRole::getRoles())) {
+                throw new \Exception('Invalid role: '.$role);
+            }
+        }
+
         $this->roles = implode(',', array_unique($roles));
     }
 
     public function getRoles()
     {
-        return explode(',', $this->roles);
+        return !$this->roles ? array() : explode(',', $this->roles);
     }
 
     public function addRole($role)
     {
         $roles = $this->getRoles();
         $roles[] = $role;
-
         $this->setRoles($roles);
     }
 

@@ -22,6 +22,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function testRoles()
     {
         $user = new User();
+        $this->assertEquals(1, count($user->getRoles()));
         $this->assertTrue(in_array('ROLE_USER', $user->getRoles()));
         $this->assertFalse(in_array('ROLE_ADMIN', $user->getRoles()));
 
@@ -35,8 +36,8 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $user->addRole('ROLE_USER');
         $this->assertEquals(2, count($user->getRoles()), 'Duplicate not allowed');
 
-        $user->addRole('ROLE_SELLER');
+        $user->addRole('ROLE_SALES');
         $this->assertEquals(3, count($user->getRoles()));
-        $this->assertTrue(in_array('ROLE_SELLER', $user->getRoles()));
+        $this->assertTrue(in_array('ROLE_SALES', $user->getRoles()));
     }
 }
