@@ -21,7 +21,7 @@ class UserController extends Controller
      */
     public function listAction()
     {
-        $userApiManager = $this->get('user.manager.api');
+        $userApiManager = $this->get('user.api');
 
         return new JsonResponse($userApiManager->listAll());
     }

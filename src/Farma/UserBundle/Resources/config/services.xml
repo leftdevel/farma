@@ -10,8 +10,10 @@
             <argument>Farma\UserBundle\Entity\User</argument>
         </service>
 
-        <service id="user.manager.api" class="Farma\UserBundle\Manager\UserApiManager">
+        <service id="user.api" class="Farma\UserBundle\Api\UserApi">
             <argument type="service" id="user.repository" />
+            <argument type="service" id="security.password_encoder" />
+            <argument type="service" id="validator" />
         </service>
     </services>
 

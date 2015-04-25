@@ -3,7 +3,9 @@
 namespace Farma\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert,
+    Symfony\Component\Validator\Context\ExecutionContextInterface,
+    Symfony\Component\Security\Core\User\UserInterface;
 
 use Farma\UserBundle\Model\UserRole;
 
@@ -22,16 +24,19 @@ class User implements UserInterface, \Serializable
 
     /**
      * @ORM\Column(type="string", length=100)
+     * @Assert\NotBlank()
      */
     private $email;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $password;
 
     /**
      * @ORM\Column(name="full_name", type="string", length=100)
+     * @Assert\NotBlank()
      */
     private $fullName;
 
@@ -41,12 +46,14 @@ class User implements UserInterface, \Serializable
     private $isActive;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(name="flat_roles", type="string", length=255)
+     * @Assert\NotBlank()
      */
-    private $roles;
+    private $flatRoles;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $created;
 
@@ -98,6 +105,16 @@ class User implements UserInterface, \Serializable
         return $this->created;
     }
 
+    public function setFlatRoles($flatRoles)
+    {
+        $this->flatRoles = $flatRoles;
+    }
+
+    public function getFlatRoles()
+    {
+        return $this->flatRoles;
+    }
+
     // USER INTERFACE
 
     public function getUsername()
@@ -128,12 +145,12 @@ class User implements UserInterface, \Serializable
             }
         }
 
-        $this->roles = implode(',', array_unique($roles));
+        $this->flatRoles = implode(',', array_unique($roles));
     }
 
     public function getRoles()
     {
-        return !$this->roles ? array() : explode(',', $this->roles);
+        return !$this->flatRoles ? array() : explode(',', $this->flatRoles);
     }
 
     public function addRole($role)
@@ -165,5 +182,20 @@ class User implements UserInterface, \Serializable
             $this->email,
             $this->password
         ) = unserialize($serialized);
+    }
+
+    // VALIDATION
+
+    /**
+     * @Assert\Callback
+     */
+    public function validateRoles(ExecutionContextInterface $context)
+    {
+        if (count(array_diff($this->getRoles(), UserRole::getRoles())) > 0) {
+            $context->buildViolation('Invalid Roles')
+                ->atPath('flatRoles')
+                ->addViolation()
+            ;
+        }
     }
 }
