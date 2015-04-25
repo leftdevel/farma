@@ -42,14 +42,14 @@ class UserApiTest extends FunctionalTestUtil
 
     public function testCreate_fail_empty()
     {
-        $this->setExpectedException('Farma\UserBundle\Api\CreateUserException');
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $input = array();
         $this->userApi->create($input);
     }
 
     public function testCreate_fail_invalid_keys()
     {
-        $this->setExpectedException('Farma\UserBundle\Api\CreateUserException');
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $input = array(
             'full_name' => 'John Doe',
             'email' => 'jhon@farma.com',
@@ -60,7 +60,7 @@ class UserApiTest extends FunctionalTestUtil
 
     public function testCreate_fail_invalid_role()
     {
-        $this->setExpectedException('Farma\UserBundle\Api\CreateUserException');
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $input = array(
             'full_name' => 'John Doe',
             'email' => 'jhon@farma.com',
@@ -72,7 +72,7 @@ class UserApiTest extends FunctionalTestUtil
 
     public function testCreate_fail_prevent_super_admin_role()
     {
-        $this->setExpectedException('Farma\UserBundle\Api\CreateUserException');
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $input = array(
             'full_name' => 'John Doe',
             'email' => 'jhon@farma.com',
@@ -84,7 +84,7 @@ class UserApiTest extends FunctionalTestUtil
 
     public function testCreate_fail_user_exists_already()
     {
-        $this->setExpectedException('Farma\UserBundle\Api\CreateUserException');
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $input = array(
             'full_name' => 'John Doe',
             'email' => 'admin@farma.com',
@@ -96,7 +96,7 @@ class UserApiTest extends FunctionalTestUtil
 
     public function testCreate_fail_empty_value()
     {
-        $this->setExpectedException('Farma\UserBundle\Api\CreateUserException');
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $input = array(
             'full_name' => '',
             'email' => 'admin@farma.com',
