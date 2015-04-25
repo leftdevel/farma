@@ -1,12 +1,12 @@
 <?php
 
-namespace Farma\BaseBundle\Entity;
+namespace Farma\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @ORM\Entity(repositoryClass="Farma\BaseBundle\Repository\UserRepository")
+ * @ORM\Entity(repositoryClass="Farma\UserBundle\Repository\UserRepository")
  * @ORM\Table(name="member")
  */
 class User implements UserInterface, \Serializable

@@ -4,7 +4,7 @@ namespace Farma\BaseBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-use Farma\BaseBundle\DataFixtures\ORM\LoadData as UserFixtures,
+use Farma\UserBundle\DataFixtures\ORM\LoadData as UserFixtures,
     Farma\BaseBundle\Tests\Utils\FunctionalTestUtil;
 
 class BaseControllerTest extends FunctionalTestUtil

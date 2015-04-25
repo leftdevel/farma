@@ -1,6 +1,6 @@
 <?php
 
-namespace Farma\BaseBundle\Repository;
+namespace Farma\UserBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 

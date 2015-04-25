@@ -1,6 +1,6 @@
 <?php
 
-namespace Farma\ApiBundle\Tests\Controller;
+namespace Farma\UserBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

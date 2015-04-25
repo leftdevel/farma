@@ -1,5 +1,5 @@
-farma_api:
-    resource: "@FarmaApiBundle/Controller/"
+farma_user:
+    resource: "@FarmaUserBundle/Controller/"
     type:     annotation
     prefix:   /
 

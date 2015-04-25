@@ -1,6 +1,6 @@
 <?php
 
-namespace Farma\BaseBundle\DataFixtures\ORM;
+namespace Farma\UserBundle\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture,
     Doctrine\Common\DataFixtures\OrderedFixtureInterface,
@@ -10,7 +10,7 @@ use Symfony\Component\DependencyInjection\ContainerAwareInterface,
     Symfony\Component\DependencyInjection\ContainerInterface,
     Symfony\Component\Security\Core\User\UserInterface;
 
-use Farma\BaseBundle\Entity\User;
+use Farma\UserBundle\Entity\User;
 
 class LoadData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
