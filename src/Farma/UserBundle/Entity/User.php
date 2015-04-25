@@ -53,6 +53,7 @@ class User implements UserInterface, \Serializable
         $this->isActive = true;
         $createdDateTime = new \DateTime('now');
         $this->created = $createdDateTime->getTimestamp();
+        $this->addRole('ROLE_USER');
     }
 
     public function getId()
@@ -119,15 +120,20 @@ class User implements UserInterface, \Serializable
 
     public function setRoles(array $roles)
     {
-        $this->roles = implode(',', $roles);
+        $this->roles = implode(',', array_unique($roles));
     }
 
     public function getRoles()
     {
-        $default = array('ROLE_USER');
-        $roles = explode(',', $this->roles);
+        return explode(',', $this->roles);
+    }
 
-        return array_merge($default, $roles);
+    public function addRole($role)
+    {
+        $roles = $this->getRoles();
+        $roles[] = $role;
+
+        $this->setRoles($roles);
     }
 
     public function eraseCredentials()
