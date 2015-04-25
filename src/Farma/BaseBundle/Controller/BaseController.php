@@ -12,7 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class BaseController extends Controller
 {
     /**
-     * @Route("/", name="base_homepage")
+     * @Route("/", name="base_index")
      * @Template()
      */
     public function indexAction()
@@ -27,7 +27,7 @@ class BaseController extends Controller
     public function loginAction(Request $request)
     {
         if ($this->get('security.context')->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirect($this->generateUrl('base_homepage'));
+            return $this->redirect($this->generateUrl('base_index'));
         }
 
         if ($request->attributes->has(SecurityContext::AUTHENTICATION_ERROR)) {

@@ -23,7 +23,7 @@ class LoginListener implements AuthenticationSuccessHandlerInterface
     public function onAuthenticationSuccess(Request $request, TokenInterface $token)
     {
         $user = $token->getUser();
-        $response = new RedirectResponse($this->router->generate('base_homepage'));
+        $response = new RedirectResponse($this->router->generate('base_index'));
 
         // $response->setTargetUrl($this->router->generate('user_dashboard'));
 

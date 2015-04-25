@@ -9,6 +9,11 @@
             <argument type="service" id="router" />
             <argument type="service" id="security.context" />
         </service>
-    </services>
 
+        <service id="base.repository.user" class="Farma\BaseBundle\Repository\UserRepository">
+            <factory service="doctrine.orm.default_entity_manager" method="getRepository" />
+            <argument>Farma\BaseBundle\Entity\User</argument>
+        </service>
+
+    </services>
 </container>

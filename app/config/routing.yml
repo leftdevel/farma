@@ -1,3 +1,8 @@
+farma_api:
+    resource: "@FarmaApiBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 farma_base:
     resource: "@FarmaBaseBundle/Controller/"
     type:     annotation

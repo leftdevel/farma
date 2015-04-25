@@ -13,7 +13,7 @@
     </head>
     <body>
         <nav class="teal lighten-1" role="navigation">
-            <div class="nav-wrapper container"><a id="logo-container" href="{{ path('base_homepage') }}" class="brand-logo">Farmacita</a>
+            <div class="nav-wrapper container"><a id="logo-container" href="{{ path('base_index') }}" class="brand-logo">Farmacita</a>
               <ul class="right hide-on-med-and-down">
                 {% if is_granted('ROLE_USER') %}
                     <li><a href="{{ path('_base_logout') }}">Salir</a></li>
@@ -27,7 +27,9 @@
             </div>
         </nav>
 
+        <div id="content">
         {% block body %}{% endblock %}
+        </div>
 
         <footer class="page-footer grey darken-4">
             <div class="footer-copyright">
