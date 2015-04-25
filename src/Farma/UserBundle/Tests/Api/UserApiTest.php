@@ -123,11 +123,23 @@ class UserApiTest extends FunctionalTestUtil
 
     public function testUpdate_fail_empty()
     {
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $seller = $this->findSeller();
     }
 
-    public function testUpdate_fail_invalid_input()
+    public function testUpdate_fail_new_email_is_already_taken()
     {
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $seller = $this->findSeller();
+    }
+
+    public function testUpdate_success_same_password()
+    {
+        $this->markTestPending();
+    }
+
+    public function testUpdate_success_new_password()
+    {
+        $this->fail();
     }
 }
