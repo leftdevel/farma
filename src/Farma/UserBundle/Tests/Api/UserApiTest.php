@@ -120,4 +120,14 @@ class UserApiTest extends FunctionalTestUtil
         $user = $this->findUser('jhon@farma.com');
         $this->assertTrue($user instanceof User);
     }
+
+    public function testUpdate_fail_empty()
+    {
+        $seller = $this->findSeller();
+    }
+
+    public function testUpdate_fail_invalid_input()
+    {
+        $seller = $this->findSeller();
+    }
 }

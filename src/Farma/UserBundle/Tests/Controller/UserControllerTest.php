@@ -60,7 +60,7 @@ class UserControllerTest extends FunctionalTestUtil
         $this->deauthenticateClient($this->client);
     }
 
-    public function testListAction_response()
+    public function testListAction_success()
     {
         $this->authenticateClientForUser($this->client, $this->findAdmin());
         $url = $this->router->generate('user_list');
@@ -75,5 +75,55 @@ class UserControllerTest extends FunctionalTestUtil
         $records = @json_decode($response->getContent(), true);
         $this->assertEquals(4, count($records));
         $this->assertEquals('Superadmin Farma', $records[0]['full_name']);
+    }
+
+    public function testCreateAction_security()
+    {
+        $url = $this->router->generate('user_create');
+
+        $input = json_encode(array(
+            'full_name' => 'John Doe',
+            'email' => 'john@farma.com',
+            'password' => 'farma',
+            'flat_roles' => 'ROLE_SELLER'
+        ));
+
+        $this->client->request('POST', $url, array(), array(), array(), $input);
+        $this->assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testCreateAction_fail_bad_request()
+    {
+        $url = $this->router->generate('user_create');
+        $this->authenticateClientForUser($this->client, $this->findAdmin());
+
+        // User already exists
+        $input = json_encode(array(
+            'full_name' => 'admin',
+            'email' => 'admin@farma.com',
+            'password' => 'farma',
+            'flat_roles' => 'ROLE_ADMIN'
+        ));
+
+        $this->client->request('POST', $url, array(), array(), array(), $input);
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testCreateAction_success()
+    {
+        $url = $this->router->generate('user_create');
+        $this->authenticateClientForUser($this->client, $this->findAdmin());
+
+        // User already exists
+        $input = json_encode(array(
+            'full_name' => 'John Doe',
+            'email' => 'john@farma.com',
+            'password' => 'farma',
+            'flat_roles' => 'ROLE_ADMIN'
+        ));
+
+        $this->client->request('POST', $url, array(), array(), array(), $input);
+        $this->assertEquals(array('success' => true), @json_decode($this->client->getResponse()->getContent(), true));
+        $this->assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
     }
 }

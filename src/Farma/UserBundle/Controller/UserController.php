@@ -3,7 +3,9 @@
 namespace Farma\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
-    Symfony\Component\HttpFoundation\JsonResponse;
+    Symfony\Component\HttpFoundation\JsonResponse,
+    Symfony\Component\HttpFoundation\Request,
+    Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
@@ -21,8 +23,30 @@ class UserController extends Controller
      */
     public function listAction()
     {
-        $userApiManager = $this->get('user.api');
+        $userApi = $this->get('user.api');
 
-        return new JsonResponse($userApiManager->listAll());
+        return new JsonResponse($userApi->listAll());
+    }
+
+    /**
+     * @Route("/", name="user_create", defaults={"_format" = "json"})
+     * @Method({"POST"})
+     */
+    public function createAction(Request $request)
+    {
+        $userApi = $this->get('user.api');
+        $input = @json_decode($request->getContent(), true);
+
+        if (!$input) {
+            throw new BadRequestHttpException();
+        }
+
+        try {
+            $userApi->create($input);
+            return new JsonResponse(array('success' => true), 201);
+
+        } catch (\Exception $e) {
+            throw new BadRequestHttpException();
+        }
     }
 }
