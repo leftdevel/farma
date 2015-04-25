@@ -1,6 +1,9 @@
 imports:
     - { resource: config.yml }
 
+parameters:
+    database_path: '%kernel.root_dir%/data/farma_dev.sqlite'
+
 framework:
     router:
         resource: "%kernel.root_dir%/config/routing_dev.yml"
