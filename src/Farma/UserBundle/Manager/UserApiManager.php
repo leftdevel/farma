@@ -15,7 +15,7 @@ class UserApiManager
 
     public function listAll()
     {
-        $columns = array('id', 'full_name', 'email', 'roles');
+        $columns = array('id', 'full_name', 'email', 'roles', 'created');
         return $this->repository->findWithColumns($columns);
     }
 }
