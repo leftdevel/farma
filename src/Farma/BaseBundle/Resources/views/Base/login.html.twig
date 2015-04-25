@@ -16,7 +16,11 @@
     <div class="section">
       <div class="row">
         <form class="col s12" method="post" action="{{ path('_base_security_check') }}">
-            {{ error ? error.message : '' }}
+
+          {% if error %}
+            <div class="card-panel red white-text">Por favor intente de nuevo</div>
+          {% endif %}
+
           <div class="row">
             <div class="input-field col s12">
               <input id="username" type="text" class="validate" name="_username" value="{{ last_username }}">
@@ -25,7 +29,7 @@
           </div>
           <div class="row">
             <div class="input-field col s12">
-              <input id="password" type="password" name="password" class="validate">
+              <input id="password" type="password" name="_password" class="validate">
               <label class="active" for="password">Conraseña</label>
             </div>
           </div>

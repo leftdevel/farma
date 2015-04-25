@@ -1,27 +1,26 @@
 security:
     encoders:
-        Symfony\Component\Security\Core\User\User: plaintext
+        Farma\BaseBundle\Entity\User: sha512
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_USER
-        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN]
 
     providers:
-        in_memory:
-            memory:
-                users:
-                    user:  { password: userpass, roles: [ 'ROLE_USER' ] }
-                    admin: { password: adminpass, roles: [ 'ROLE_ADMIN' ] }
+        farma_provider:
+            entity:
+                class: FarmaBaseBundle:User
+                property: username
 
     firewalls:
         farma_firewall:
             pattern: ^/
             anonymous: true
             form_login:
-                provider: in_memory
+                provider: farma_provider
                 login_path: _base_login
                 check_path: _base_security_check
-                #success_handler: user.listener.login
+                success_handler: base.listener.login
                 use_referer: true
             logout:
                 path: _base_logout
