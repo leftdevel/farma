@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+        <title>{% block title %}Farmacita{% endblock %}</title>
+
+        {% stylesheets "@app_css" output="css/app.css" %}
+            <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="screen,projection">
+        {% endstylesheets %}
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <nav class="teal lighten-1" role="navigation">
+            <div class="nav-wrapper container"><a id="logo-container" href="{{ path('base_homepage') }}" class="brand-logo">Farmacita</a>
+              <ul class="right hide-on-med-and-down">
+                {% if is_granted('ROLE_USER') %}
+                    <li><a href="{{ path('_base_logout') }}">Salir</a></li>
+                {% endif %}
+              </ul>
+
+              <ul id="nav-mobile" class="side-nav">
+                <li><a href="#">@TODO</a></li>
+              </ul>
+              <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+            </div>
+        </nav>
+
+        {% block body %}{% endblock %}
+
+        <footer class="page-footer grey darken-4">
+            <div class="footer-copyright">
+              <div class="container">
+                Hecho con cariño para usted, por <a class="white-text text-darken-3" href="http://materializecss.com">Los Chicos Tuanis</a>
+              </div>
+            </div>
+        </footer>
+
+        {#{% javascripts "@app_js" output="js/app.js" %}
+            <script src="{{ asset_url }}"></script>
+        {% endjavascripts %}#}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

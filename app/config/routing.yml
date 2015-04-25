@@ -1,0 +1,4 @@
+farma_base:
+    resource: "@FarmaBaseBundle/Controller/"
+    type:     annotation
+    prefix:   /

@@ -1,0 +1,47 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+  <div class="section no-pad-bot" id="index-banner">
+    <div class="container">
+      <br><br>
+      <h1 class="header center orange-text hide-on-med-and-down">La Guadalupana</h1>
+      <div class="row center">
+        <a href="{{ path('_base_login') }}" class="btn-large waves-effect waves-light orange">Comenzar</a>
+      </div>
+      <br><br>
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="section">
+      <!--   Icon Section   -->
+      <div class="row">
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center teal-text"><i class="mdi-image-flash-on"></i></h2>
+            <h5 class="center">Ágil</h5>
+
+            <p class="light">Desarrollado con herramientas moderanas. Invierta minutos y no horas en el manejo de su farmacia.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center teal-text"><i class="mdi-action-lock-open"></i></h2>
+            <h5 class="center">Seguro</h5>
+
+            <p class="light">Construido con estándares de seguridad internacionales. Sólo usted decide quién se conecta al sistema.</p>
+          </div>
+        </div>
+
+        <div class="col s12 m4">
+          <div class="icon-block">
+            <h2 class="center teal-text"><i class="mdi-action-settings"></i></h2>
+            <h5 class="center">Fácil</h5>
+
+            <p class="light">Hemos eliminado la complejidad que existe en la vasta mayoría de sistema y hemos elegido desarrollar únicamente las partes que son importantes para usted.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
