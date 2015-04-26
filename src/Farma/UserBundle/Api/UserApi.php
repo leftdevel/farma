@@ -38,8 +38,38 @@ class UserApi
         $user = new User();
         $this->bindAndValidateUser($user, $input);
 
-        if ($this->repository->findOneByEmail($user->getEmail()) !== null) {
-            throw new UserApiException('Email already exists');
+        if (in_array(UserRole::SUPER_ADMIN, $user->getRoles())) {
+            throw new UserApiException('Cannot create SUPER_ADMIN');
+        }
+
+        if ($this->repository->findOneIdByEmail($user->getEmail()) !== false) {
+            throw new UserApiException('Email is already in use');
+        }
+
+        $this->repository->save($user);
+    }
+
+    public function update(UserInterface $user, array $input)
+    {
+        $isSuperAdmin = in_array(UserRole::SUPER_ADMIN, $user->getRoles());
+
+        if (!$user->getId()) {
+            throw new UserApiException('User must exist');
+        }
+
+        $this->bindAndValidateUser($user, $input);
+        $id = $this->repository->findOneIdByEmail($user->getEmail());
+
+        if ($id && (intval($id) !== $user->getId())) {
+            throw new UserApiException('Email is already in use');
+        }
+
+        if ($isSuperAdmin && !in_array(UserRole::SUPER_ADMIN, $user->getRoles())) {
+            throw new UserApiException('Cannot downgrade from SUPER_ADMIN');
+        }
+
+        if (!$isSuperAdmin && in_array(UserRole::SUPER_ADMIN, $user->getRoles())) {
+            throw new UserApiException('Cannot promote to SUPER_ADMIN');
         }
 
         $this->repository->save($user);
@@ -53,19 +83,24 @@ class UserApi
             throw new UserApiException('Missing properties');
         }
 
-        $user->setFullName($input['full_name']);
-        $user->setEmail($input['email']);
-        $user->setFlatRoles($input['flat_roles']);
+        $user->setFullName(trim($input['full_name']));
+        $user->setEmail(trim($input['email']));
+        $user->setFlatRoles(trim($input['flat_roles']));
 
         if (isset($input['password'])) {
-            $rawPassword = $input['password'];
+            $rawPassword = trim($input['password']);
+
+            if (strlen($rawPassword) < 3) {
+                throw new UserApiException('Invalid Password');
+            }
+
             $encodedPassword = $this->passwordEncoder->encodePassword($user, $rawPassword);
             $user->setPassword($encodedPassword);
         }
 
         $errors = $this->validator->validate($user);
 
-        if (count($errors) > 0 || in_array(UserRole::SUPER_ADMIN, $user->getRoles())) {
+        if (count($errors) > 0) {
             throw new UserApiException('Invalid input');
         }
     }

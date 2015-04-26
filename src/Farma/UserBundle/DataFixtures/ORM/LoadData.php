@@ -31,8 +31,8 @@ class LoadData extends AbstractFixture implements OrderedFixtureInterface, Conta
 
     private function createUsers()
     {
-        $admin = $this->createUser('superadmin', array(UserRole::SUPER_ADMIN));
-        $this->entityManager->persist($admin);
+        $superAdmin = $this->createUser('superadmin', array(UserRole::SUPER_ADMIN));
+        $this->entityManager->persist($superAdmin);
 
         $admin = $this->createUser('admin', array(UserRole::ADMIN));
         $this->entityManager->persist($admin);

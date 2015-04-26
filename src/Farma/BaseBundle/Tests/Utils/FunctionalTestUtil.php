@@ -102,12 +102,13 @@ abstract class FunctionalTestUtil extends WebTestCase
     {
         $this->deauthenticateClient($client);
         $client->restart();
-        $this->databaseTeardown();
+        $this->databaseTeardown($client);
         $this->clientTearDown($client);
     }
 
-    private function databaseTeardown()
+    private function databaseTeardown(Client $client)
     {
+        $client->getContainer()->get('doctrine.orm.entity_manager')->clear();
         $this->databaseSetup->setupApplication(self::$kernel);
         $this->databaseSetup->tearDown();
     }

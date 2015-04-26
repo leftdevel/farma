@@ -10,8 +10,6 @@ class UserRepository extends EntityRepository
     {
         $this->getEntityManager()->persist($object);
         $this->getEntityManager()->flush();
-
-        return $object;
     }
 
     public function findWithColumns(array $columns)
@@ -19,5 +17,16 @@ class UserRepository extends EntityRepository
         $query = "SELECT ".implode(', ', $columns)." FROM member ORDER BY id ASC";
         $conn = $this->getEntityManager()->getConnection();
         return $conn->fetchAll($query);
+    }
+
+    public function findOneIdByEmail($email)
+    {
+        $query = "SELECT id FROM member WHERE email = ? LIMIT 1";
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare($query);
+        $stmt->bindValue(1, $email);
+        $stmt->execute();
+
+        return $stmt->fetchColumn();
     }
 }

@@ -51,9 +51,9 @@ class UserApiTest extends FunctionalTestUtil
     {
         $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $input = array(
-            'full_name' => 'John Doe',
+            'full_name' => 'John Doe 1',
             'email' => 'jhon@farma.com',
-            'password_mispelled' => '12345'
+            'password_mispelled' => 'farma'
         );
         $this->userApi->create($input);
     }
@@ -62,9 +62,9 @@ class UserApiTest extends FunctionalTestUtil
     {
         $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $input = array(
-            'full_name' => 'John Doe',
+            'full_name' => 'John Doe 2',
             'email' => 'jhon@farma.com',
-            'password' => '12345',
+            'password' => 'farma',
             'flat_roles' => 'ROLE_DOES_NOT_EXISTS'
         );
         $this->userApi->create($input);
@@ -74,9 +74,9 @@ class UserApiTest extends FunctionalTestUtil
     {
         $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $input = array(
-            'full_name' => 'John Doe',
+            'full_name' => 'John Doe 3',
             'email' => 'jhon@farma.com',
-            'password' => '12345',
+            'password' => 'farma',
             'flat_roles' => UserRole::SUPER_ADMIN,
         );
         $this->userApi->create($input);
@@ -86,22 +86,34 @@ class UserApiTest extends FunctionalTestUtil
     {
         $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $input = array(
-            'full_name' => 'John Doe',
+            'full_name' => 'John Doe 4',
             'email' => 'admin@farma.com',
-            'password' => '12345',
+            'password' => 'farma',
             'flat_roles' => UserRole::ADMIN,
         );
         $this->userApi->create($input);
     }
 
-    public function testCreate_fail_empty_value()
+    public function testCreate_fail_blank_full_name()
     {
         $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $input = array(
             'full_name' => '',
             'email' => 'admin@farma.com',
-            'password' => '12345',
+            'password' => 'farma',
             'flat_roles' => UserRole::ADMIN,
+        );
+        $this->userApi->create($input);
+    }
+
+    public function testCreate_fail_blank_password()
+    {
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
+        $input = array(
+            'full_name' => 'John Doe 5',
+            'email' => 'john@farma.com',
+            'password' => '',
+            'flat_roles' => UserRole::SALES,
         );
         $this->userApi->create($input);
     }
@@ -109,9 +121,9 @@ class UserApiTest extends FunctionalTestUtil
     public function testCreate_success()
     {
         $input = array(
-            'full_name' => 'John Doe',
+            'full_name' => 'John Doe 6',
             'email' => 'jhon@farma.com',
-            'password' => '12345',
+            'password' => 'farma',
             'flat_roles' => UserRole::ADMIN,
         );
 
@@ -125,21 +137,82 @@ class UserApiTest extends FunctionalTestUtil
     {
         $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $seller = $this->findSeller();
+        $input = array();
+        $this->userApi->update($seller, $input);
     }
 
     public function testUpdate_fail_new_email_is_already_taken()
     {
         $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
         $seller = $this->findSeller();
+
+        $input = array(
+            'full_name' => 'John Doe 77',
+            'email' => 'admin@farma.com',
+            'flat_roles' => UserRole::ADMIN,
+        );
+
+        $this->userApi->update($seller, $input);
+    }
+
+    public function testUpdate_fail_cannot_remove_superadmin_role()
+    {
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
+        $superAdmin = $this->findSuperAdmin();
+        $input = array(
+            'full_name' => $superAdmin->getFullName(),
+            'email' => $superAdmin->getEmail(),
+            'flat_roles' => UserRole::ADMIN,
+        );
+        $this->userApi->update($superAdmin, $input);
+    }
+
+    public function testUpdate_fail_cannot_add_superadmin_role()
+    {
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
+        $seller = $this->findSeller();
+        $input = array(
+            'full_name' => $seller->getFullName(),
+            'email' => $seller->getEmail(),
+            'flat_roles' => UserRole::SUPER_ADMIN,
+        );
+
+        $this->userApi->update($seller, $input);
+    }
+
+    public function testUpdate_success_superadmin_has_same_role()
+    {
+        $this->markTestPending();
+        $this->userApi->update($seller, $input);
+    }
+
+    public function testUpdate_success_seller_admin_role()
+    {
+        $this->markTestPending();
+        $this->userApi->update($seller, $input);
+    }
+
+    public function testUpdate_success_new_email()
+    {
+        $this->markTestPending();
+        $this->userApi->update($seller, $input);
+    }
+
+    public function testUpdate_success_new_fullname()
+    {
+        $this->markTestPending();
+        $this->userApi->update($seller, $input);
     }
 
     public function testUpdate_success_same_password()
     {
         $this->markTestPending();
+        $this->userApi->update($seller, $input);
     }
 
     public function testUpdate_success_new_password()
     {
-        $this->fail();
+        $this->markTestPending();
+        $this->userApi->update($seller, $input);
     }
 }
