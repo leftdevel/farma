@@ -29,4 +29,10 @@ class UserRepository extends EntityRepository
 
         return $stmt->fetchColumn();
     }
+
+    public function delete($object)
+    {
+        $this->getEntityManager()->remove($object);
+        $this->getEntityManager()->flush();
+    }
 }

@@ -104,4 +104,13 @@ class UserApi
             throw new UserApiException('Invalid input');
         }
     }
+
+    public function delete(UserInterface $user)
+    {
+        if (in_array(UserRole::SUPER_ADMIN, $user->getRoles())) {
+            throw new UserApiException('Cannot delete SUPER ADMIN');
+        }
+
+        $this->repository->delete($user);
+    }
 }

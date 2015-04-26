@@ -27,6 +27,8 @@ class UserApiTest extends FunctionalTestUtil
         $this->destroy($this->client);
     }
 
+    // LIST
+
     public function testListAll()
     {
         $records = $this->userApi->listAll();
@@ -39,6 +41,8 @@ class UserApiTest extends FunctionalTestUtil
         $this->assertEquals(0, count(array_diff($expectedColumns, $actualColumns)));
         $this->assertEquals('Superadmin Farma', $records[0]['full_name']);
     }
+
+    // CREATE
 
     public function testCreate_fail_empty()
     {
@@ -132,6 +136,8 @@ class UserApiTest extends FunctionalTestUtil
         $user = $this->findUser('jhon@farma.com');
         $this->assertTrue($user instanceof User);
     }
+
+    // UPDATE
 
     public function testUpdate_fail_empty()
     {
@@ -266,5 +272,29 @@ class UserApiTest extends FunctionalTestUtil
         $encodedPassword = $encoder->encodePassword($seller, $newRawPassword);
 
         $this->assertEquals($encodedPassword, $seller->getPassword());
+    }
+
+    // DELETE
+
+    public function testDelete_fail_cannot_delete_superadmin()
+    {
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
+        $superAdmin = $this->findSuperAdmin();
+        $this->userApi->delete($superAdmin);
+    }
+
+    public function testDelete_success()
+    {
+        $seller = $this->findSeller();
+        $admin = $this->findAdmin();
+
+        $this->userApi->delete($seller);
+        $this->userApi->delete($admin);
+
+        $seller = $this->findSeller();
+        $admin = $this->findAdmin();
+
+        $this->assertNull($seller);
+        $this->assertNull($admin);
     }
 }
