@@ -182,37 +182,89 @@ class UserApiTest extends FunctionalTestUtil
 
     public function testUpdate_success_superadmin_has_same_role()
     {
-        $this->markTestPending();
-        $this->userApi->update($seller, $input);
+        $superAdmin = $this->findSuperAdmin();
+        $input = array(
+            'full_name' => 'Super Admin Updated',
+            'email' => $superAdmin->getEmail(),
+            'flat_roles' => UserRole::SUPER_ADMIN,
+        );
+
+        $this->userApi->update($superAdmin, $input);
+        $this->assertEquals('Super Admin Updated', $superAdmin->getFullName());
     }
 
     public function testUpdate_success_seller_admin_role()
     {
-        $this->markTestPending();
+        $seller = $this->findSeller();
+        $input = array(
+            'full_name' => $seller->getFullName(),
+            'email' => $seller->getEmail(),
+            'flat_roles' => UserRole::ADMIN
+        );
         $this->userApi->update($seller, $input);
+        $this->assertTrue(in_array(UserRole::ADMIN, $seller->getRoles()));
     }
 
     public function testUpdate_success_new_email()
     {
-        $this->markTestPending();
+        $seller = $this->findSeller();
+        $input = array(
+            'full_name' => $seller->getFullName(),
+            'email' => 'newseller@farma.com',
+            'flat_roles' => $seller->getFlatRoles(),
+        );
+
         $this->userApi->update($seller, $input);
+        $this->assertEquals('newseller@farma.com', $seller->getEmail());
     }
 
     public function testUpdate_success_new_fullname()
     {
-        $this->markTestPending();
+        $seller = $this->findSeller();
+        $input = array(
+            'full_name' => 'New Seller',
+            'email' => $seller->getEmail(),
+            'flat_roles' => $seller->getFlatRoles(),
+        );
         $this->userApi->update($seller, $input);
+        $this->assertEquals('New Seller', $seller->getFullName());
     }
 
     public function testUpdate_success_same_password()
     {
-        $this->markTestPending();
+        $seller = $this->findSeller();
+        $currentPassword = $seller->getPassword();
+
+        $input = array(
+            'full_name' => $seller->getFullName(),
+            'email' => $seller->getEmail(),
+            'flat_roles' => $seller->getFlatRoles(),
+        );
         $this->userApi->update($seller, $input);
+
+        $this->assertEquals($currentPassword, $seller->getPassword());
     }
 
     public function testUpdate_success_new_password()
     {
-        $this->markTestPending();
+        $seller = $this->findSeller();
+        $currentPassword = $seller->getPassword();
+        $newRawPassword = '123';
+
+        $input = array(
+            'full_name' => $seller->getFullName(),
+            'email' => $seller->getEmail(),
+            'flat_roles' => $seller->getFlatRoles(),
+            'password' => $newRawPassword,
+        );
         $this->userApi->update($seller, $input);
+
+        $this->assertNotEquals($currentPassword, $seller->getPassword());
+        $this->assertNotEquals($newRawPassword, $seller->getPassword());
+
+        $encoder = $this->container->get('security.password_encoder');
+        $encodedPassword = $encoder->encodePassword($seller, $newRawPassword);
+
+        $this->assertEquals($encodedPassword, $seller->getPassword());
     }
 }
