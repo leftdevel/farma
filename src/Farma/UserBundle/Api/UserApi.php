@@ -8,7 +8,6 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface,
 
 use Farma\UserBundle\Api\UserApiException,
     Farma\UserBundle\Entity\User,
-    Farma\UserBundle\Model\UserRole,
     Farma\UserBundle\Repository\UserRepository;
 
 class UserApi
@@ -38,8 +37,8 @@ class UserApi
         $user = new User();
         $this->bindAndValidateUser($user, $input);
 
-        if (in_array(UserRole::SUPER_ADMIN, $user->getRoles())) {
-            throw new UserApiException('Cannot create SUPER_ADMIN');
+        if ($user->isSuperAdmin()) {
+            throw new UserApiException('Cannot create SUPER ADMIN');
         }
 
         if ($this->repository->findOneIdByEmail($user->getEmail()) !== false) {
@@ -51,7 +50,7 @@ class UserApi
 
     public function update(UserInterface $user, array $input)
     {
-        $isSuperAdmin = in_array(UserRole::SUPER_ADMIN, $user->getRoles());
+        $initialIsSuperAdmin = $user->isSuperAdmin();
 
         if (!$user->getId()) {
             throw new UserApiException('User must exist');
@@ -64,12 +63,12 @@ class UserApi
             throw new UserApiException('Email is already in use');
         }
 
-        if ($isSuperAdmin && !in_array(UserRole::SUPER_ADMIN, $user->getRoles())) {
-            throw new UserApiException('Cannot downgrade from SUPER_ADMIN');
+        if ($initialIsSuperAdmin && !$user->isSuperAdmin()) {
+            throw new UserApiException('Cannot downgrade from SUPER ADMIN');
         }
 
-        if (!$isSuperAdmin && in_array(UserRole::SUPER_ADMIN, $user->getRoles())) {
-            throw new UserApiException('Cannot promote to SUPER_ADMIN');
+        if (!$initialIsSuperAdmin && $user->isSuperAdmin()) {
+            throw new UserApiException('Cannot promote to SUPER ADMIN');
         }
 
         $this->repository->save($user);
@@ -107,7 +106,7 @@ class UserApi
 
     public function delete(UserInterface $user)
     {
-        if (in_array(UserRole::SUPER_ADMIN, $user->getRoles())) {
+        if ($user->isSuperAdmin()) {
             throw new UserApiException('Cannot delete SUPER ADMIN');
         }
 

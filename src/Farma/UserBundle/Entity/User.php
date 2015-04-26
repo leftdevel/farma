@@ -115,6 +115,11 @@ class User implements UserInterface, \Serializable
         return $this->flatRoles;
     }
 
+    public function isSuperAdmin()
+    {
+        return in_array(UserRole::SUPER_ADMIN, $this->getRoles());
+    }
+
     // USER INTERFACE
 
     public function getUsername()

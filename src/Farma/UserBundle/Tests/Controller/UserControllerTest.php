@@ -27,6 +27,8 @@ class UserControllerTest extends FunctionalTestUtil
         $this->destroy($this->client);
     }
 
+    // LIST
+
     public function testListAction_security()
     {
         $url = $this->router->generate('user_list');
@@ -77,6 +79,8 @@ class UserControllerTest extends FunctionalTestUtil
         $this->assertEquals('Superadmin Farma', $records[0]['full_name']);
     }
 
+    // CREATE
+
     public function testCreateAction_security()
     {
         $url = $this->router->generate('user_create');
@@ -126,4 +130,62 @@ class UserControllerTest extends FunctionalTestUtil
         $this->assertEquals(array('success' => true), @json_decode($this->client->getResponse()->getContent(), true));
         $this->assertEquals(Response::HTTP_CREATED, $this->client->getResponse()->getStatusCode());
     }
+
+    // UPDATE
+
+    public function testUpdateAction_security()
+    {
+        $seller = $this->findSeller();
+        $grocer = $this->findGrocer();
+        $admin = $this->findAdmin();
+        $superAdmin = $this->findSuperAdmin();
+
+        $url = $this->router->generate('user_update', array('id' => $seller->getId()));
+        $input = json_encode(array(
+            'full_name' => 'Some other name',
+            'email' => $seller->getEmail(),
+            'flat_roles' => $seller->getFlatRoles(),
+        ));
+
+        // ANON
+        $this->client->request('POST', $url, array(), array(), array(), $input);
+        $this->assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
+
+        // GROCER
+        $this->authenticateClientForUser($this->client, $grocer);
+        $this->client->request('POST', $url, array(), array(), array(), $input);
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
+        $this->deauthenticateClient($this->client);
+
+        // ADMIN
+        $this->authenticateClientForUser($this->client, $admin);
+        $this->client->request('POST', $url, array(), array(), array(), $input);
+        $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+        $seller = $this->findSeller();
+        $this->assertEquals('Some other name', $seller->getFullName());
+    }
+
+    public function testUpdateAction_only_superadmin_can_update_himself()
+    {
+        $admin = $this->findAdmin();
+        $superAdmin = $this->findSuperAdmin();
+
+        $url = $this->router->generate('user_update', array('id' => $superAdmin->getId()));
+        $input = json_encode(array(
+            'full_name' => 'Some other name',
+            'email' => $superAdmin->getEmail(),
+            'flat_roles' => $superAdmin->getFlatRoles(),
+        ));
+
+        $this->authenticateClientForUser($this->client, $admin);
+        $this->client->request('POST', $url, array(), array(), array(), $input);
+        $this->assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
+        $this->deauthenticateClient($this->client);
+
+        $this->authenticateClientForUser($this->client, $superAdmin);
+        $this->client->request('POST', $url, array(), array(), array(), $input);
+        $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
+    }
+
+    // DELETE
 }

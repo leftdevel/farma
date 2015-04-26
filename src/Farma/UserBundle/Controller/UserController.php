@@ -5,11 +5,17 @@ namespace Farma\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\JsonResponse,
     Symfony\Component\HttpFoundation\Request,
-    Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+    Symfony\Component\HttpKernel\Exception\BadRequestHttpException,
+    Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method,
+    Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+use Farma\UserBundle\Entity\User,
+    Farma\UserBundle\Model\UserRole,
+    Farma\UserBundle\Api\UserApiException;
 
 /**
  * @Route("/users")
@@ -45,7 +51,35 @@ class UserController extends Controller
             $userApi->create($input);
             return new JsonResponse(array('success' => true), 201);
 
-        } catch (\Exception $e) {
+        } catch (UserApiException $e) {
+            throw new BadRequestHttpException();
+        }
+    }
+
+    /**
+     * @Route("/{id}", name="user_update", defaults={"_format" = "json"})
+     * @Method({"POST"})
+     * @ParamConverter("user", class="FarmaUserBundle:User")
+     */
+    public function updateAction(User $user, Request $request)
+    {
+        $security = $this->get('security.context');
+        if ($user->isSuperAdmin() && !$security->isGranted(array(UserRole::SUPER_ADMIN))) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $userApi = $this->get('user.api');
+        $input = @json_decode($request->getContent(), true);
+
+        if (!$input) {
+            throw new BadRequestHttpException();
+        }
+
+        try {
+            $userApi->update($user, $input);
+            return new JsonResponse(array('success' => true));
+
+        } catch (UserApiException $e) {
             throw new BadRequestHttpException();
         }
     }
