@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
         <title>{% block title %}Farmacita{% endblock %}</title>
 
-        {% stylesheets "@app_css" output="css/app.css" %}
+        {% stylesheets "@base_css" output="css/base.css" %}
             <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="screen,projection">
         {% endstylesheets %}
         {% block stylesheets %}{% endblock %}
