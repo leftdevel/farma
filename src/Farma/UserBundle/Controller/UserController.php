@@ -29,9 +29,7 @@ class UserController extends Controller
      */
     public function listAction()
     {
-        $userApi = $this->get('user.api');
-
-        return new JsonResponse($userApi->listAll());
+        return new JsonResponse($this->get('user.api')->listAll());
     }
 
     /**
@@ -40,7 +38,6 @@ class UserController extends Controller
      */
     public function createAction(Request $request)
     {
-        $userApi = $this->get('user.api');
         $input = @json_decode($request->getContent(), true);
 
         if (!$input) {
@@ -48,7 +45,7 @@ class UserController extends Controller
         }
 
         try {
-            $userApi->create($input);
+            $this->get('user.api')->create($input);
             return new JsonResponse(array('success' => true), 201);
 
         } catch (UserApiException $e) {
@@ -58,7 +55,7 @@ class UserController extends Controller
 
     /**
      * @Route("/{id}", name="user_update", defaults={"_format" = "json"})
-     * @Method({"POST"})
+     * @Method({"PUT"})
      * @ParamConverter("user", class="FarmaUserBundle:User")
      */
     public function updateAction(User $user, Request $request)
@@ -68,7 +65,6 @@ class UserController extends Controller
             throw new AccessDeniedHttpException();
         }
 
-        $userApi = $this->get('user.api');
         $input = @json_decode($request->getContent(), true);
 
         if (!$input) {
@@ -76,7 +72,27 @@ class UserController extends Controller
         }
 
         try {
-            $userApi->update($user, $input);
+            $this->get('user.api')->update($user, $input);
+            return new JsonResponse(array('success' => true));
+
+        } catch (UserApiException $e) {
+            throw new BadRequestHttpException();
+        }
+    }
+
+    /**
+     * @Route("/{id}", name="user_delete", defaults={"_format" = "json"})
+     * @Method({"DELETE"})
+     * @ParamConverter("user", class="FarmaUserBundle:User")
+     */
+    public function deleteUserAction(User $user)
+    {
+        if ($user->isSuperAdmin()) {
+            throw new AccessDeniedHttpException();
+        }
+
+        try {
+            $this->get('user.api')->delete($user);
             return new JsonResponse(array('success' => true));
 
         } catch (UserApiException $e) {
