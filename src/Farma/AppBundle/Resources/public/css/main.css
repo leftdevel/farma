@@ -1,14 +1,31 @@
 .side-nav .logo {
-    text-align: center;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    border-bottom: 1px solid #ddd;
-  }
+  text-align: center;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ddd;
+}
 
-  li.logo:hover {
-    background-color: transparent;
-  }
+li.logo:hover {
+  background-color: transparent;
+}
 
-  #logo-container {
-    height: 54px;
-  }
+#logo-container {
+  height: 54px;
+}
+
+#nav-mobile {
+  left: 0px;
+}
+
+#nav-mobile.side-nav li {
+    padding: 0;
+}
+
+#nav-mobile.side-nav.fixed a {
+    padding: 0 30px;
+}
+
+
+#nav-mobile.side-nav.fixed a.active {
+    background-color: #ddd;
+}

@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>Farmacita</title>
+
+    {% stylesheets "@app_css" output="css/app.css" %}
+         <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="screen,projection">
+    {% endstylesheets %}
+    {% block stylesheets %}{% endblock %}
+  </head>
+  <body>
+
+    <header>
+      <nav class="top-nav teal">
+        <div class="container">
+          <div class="row">
+            <div class="nav-wrapper col offset-s1 s11"><a class="page-title">Title Here</a></div>
+          </div>
+        </div>
+      </nav>
+
+      <ul id="nav-mobile" class="side-nav fixed" style="left: 0px;">
+        <li class="logo">
+          <a id="logo-container" href="#" class="rand-logo">
+            <object height="30px" id="front-page-logo" type="image/svg+xml" data="/bundles/farmaapp/images/materialize.svg">Your browser does not support SVG</object>
+          </a>
+        </li>
+        <li class="bold"><a href="about.html" class="waves-effect waves-teal">About</a></li>
+        <li class="bold"><a href="getting-started.html" class="waves-effect waves-teal">Getting Started</a></li>
+      </ul>
+    </header>
+
+    <main>
+      <div class="section" id="index-banner">
+        <div class="container">
+          <div class="row">
+            <div class="col offset-s1 s11">
+
+              <h1 class="header center-on-small-only">Getting Started</h1>
+
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+      {% javascripts "@root_js" output="js/app.js" %}
+        <script type="text/javascript" src="{{ asset_url }}"></script>
+      {% endjavascripts %}#}
+  </body>
+</html>
