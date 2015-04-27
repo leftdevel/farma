@@ -2,7 +2,7 @@ var React = require('react');
 
 var Form = require('../core/form/form');
 var Text = require('../core/form/text');
-var Button = require('../core/form/button');
+var SubmitCancelButton = require('../core/form/submit-cancel-button');
 
 var Validator = require('../../lib/validator/validator');
 var MapValidator = require('../../lib/validator/map-validator');
@@ -33,7 +33,7 @@ module.exports = React.createClass({
             <form>
                 <Text id="full_name" label="Nombre" error={this.state.errors.full_name} />
                 <Text id="email" label="Correo" error={this.state.errors.email} />
-                <Button clickHandler={this._submit} label="Crear" />
+                <SubmitCancelButton clickHandler={this._submit} label="Crear" />
             </form>
         );
     },

@@ -2,7 +2,7 @@ var React = require('react');
 
 module.exports = React.createClass({
 
-    clear: function() {
+    clearAll: function() {
         // @TODO Clear all fields
     },
 
