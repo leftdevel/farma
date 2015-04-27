@@ -6,6 +6,7 @@ var Link = Router.Link;
 var RouteHandler = Router.RouteHandler;
 var Route = Router.Route;
 
+var Progress = require('./components/progress.js');
 var Users = require('./components/users.js');
 
 var App = React.createClass({
@@ -19,6 +20,7 @@ var App = React.createClass({
               <a id="logo-container" href="#" className="rand-logo">
                 <object height="30px" id="front-page-logo" type="image/svg+xml" data="/bundles/farmaapp/images/materialize.svg">Your browser does not support SVG</object>
               </a>
+              <Progress />
             </li>
             <li className="bold"><Link to="users" className="waves-effect waves-teal">Usuarios</Link></li>
           </ul>

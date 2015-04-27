@@ -29,3 +29,12 @@ li.logo:hover {
 #nav-mobile.side-nav.fixed a.active {
     background-color: #ddd;
 }
+
+#nav-mobile .logo {
+  position: relative;
+}
+
+#nav-mobile .progress {
+  position: absolute;
+  bottom: -15px;
+}

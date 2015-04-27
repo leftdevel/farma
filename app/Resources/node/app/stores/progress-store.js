@@ -5,11 +5,27 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-var _users = [];
+var _isWorking = false;
+var _queue = 0;
 
-var UserStore = assign({}, EventEmitter.prototype, {
-    getAll: function() {
-        return _users;
+function increaseQueue() {
+    _queue++;
+    _isWorking = true;
+}
+
+function reduceQueue() {
+    if (_queue > 0) {
+        _queue--;
+    }
+
+    if (_queue === 0) {
+        _isWorking = false;
+    }
+}
+
+var ProgressStore = assign({}, EventEmitter.prototype, {
+    isWorking: function() {
+        return _isWorking;
     },
 
     emitChange: function() {
@@ -26,12 +42,16 @@ var UserStore = assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function(action) {
-    var text;
-
     switch(action.actionType) {
+        case UserConstants.USERS_BOOT:
+            increaseQueue();
+            ProgressStore.emitChange();
+
+          break;
+
         case UserConstants.USERS_RECEIVE_ALL:
-            _users = action.users;
-            UserStore.emitChange();
+            reduceQueue();
+            ProgressStore.emitChange();
 
           break;
 
@@ -40,4 +60,4 @@ AppDispatcher.register(function(action) {
     }
 });
 
-module.exports = UserStore;
+module.exports = ProgressStore;
