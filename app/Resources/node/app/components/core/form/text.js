@@ -1,26 +1,24 @@
 var React = require('react');
-
-var FormFieldPropsMixing = {
-    propTypes: {
-        id: React.PropTypes.string.isRequired,
-        label: React.PropTypes.string.isRequired,
-        error: React.PropTypes.string,
-        value: React.PropTypes.string
-    }
-};
+var FormFieldMixing = require('./form-field-mixin');
 
 module.exports = React.createClass({
     mixins: [
-        FormFieldPropsMixing
+        FormFieldMixing
     ],
 
+    propTypes: {
+        inputType: React.PropTypes.oneOf(['text', 'password']),
+    },
+
     render: function() {
+        var inputType = this.props.inputType ? this.props.inputType : 'text';
+
         return (
             <div className="row">
                 <div className="input-field col s12">
                     <input
                         id={this.props.id}
-                        type="text"
+                        type={inputType}
                         className="validate"
                         value={this.props.value} />
                     <label

@@ -26,6 +26,8 @@ module.exports = React.createClass({
                 full_name: '',
                 email: '',
                 roles: '',
+                password: '',
+                repeat_password: '',
             }
         };
     },
@@ -49,6 +51,10 @@ module.exports = React.createClass({
                     <h3>Nuevo Usuario</h3>
                     <Text id="full_name" label="Nombre" error={this.state.errors.full_name} />
                     <Text id="email" label="Correo" error={this.state.errors.email} />
+
+                    <Text inputType="password" id="password" label="Contraseña" error={this.state.errors.password} />
+                    <Text inputType="password" id="repeat_password" label="Confirmar Contraseña" error={this.state.errors.repeat_password} />
+
                     <SubmitCancelButton cancelClickHandler={this._clearAndHideForm} submitClickHandler={this._submit} label="Crear" />
                 </form>
             </div>
