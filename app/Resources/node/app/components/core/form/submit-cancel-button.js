@@ -32,10 +32,10 @@ module.exports = React.createClass({
         return (
             <div className="row">
                 <div className="col s2">
-                    {cancelButton}
+                    {submitButton}
                 </div>
                 <div className="col s10">
-                    {submitButton}
+                    {cancelButton}
                 </div>
             </div>
         );

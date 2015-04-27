@@ -4,11 +4,13 @@ function MapValidator() {
     this.hasErrors = null;
 }
 
-MapValidator.prototype.add = function(propertyPath, validator) {
+MapValidator.prototype.addValidatorForPath = function(propertyPath, validator) {
     this.validationMaps.push({
         propertyPath: propertyPath,
         validator: validator
     });
+
+    return this;
 };
 
 MapValidator.prototype.validateAll = function() {
@@ -24,7 +26,7 @@ MapValidator.prototype.validateAll = function() {
       if (!validator.isValid) {
         this.hasErrors = true;
       }
-    });
+    }.bind(this));
 };
 
 module.exports = MapValidator;

@@ -1,7 +1,7 @@
 var React = require('react');
 var cx = require('class-set');
+var assign = require('object-assign');
 
-var Form = require('../core/form/form');
 var Text = require('../core/form/text');
 var SubmitCancelButton = require('../core/form/submit-cancel-button');
 
@@ -15,8 +15,6 @@ var roles = [
     {value: 'ROLE_SALES', label: 'vendedor'},
     {value: 'ROLE_GROCER', label: 'bodeguero'}
 ];
-
-
 
 module.exports = React.createClass({
     getInitialState: function() {
@@ -39,6 +37,12 @@ module.exports = React.createClass({
             'hide': this.state.isFormVisible
         });
 
+        var formClassNames = cx({
+            'col': true,
+            's12': true,
+            'hide': !this.state.isFormVisible
+        });
+
         return (
             <div>
                 <div className={createUserLinkClassNames}>
@@ -47,13 +51,13 @@ module.exports = React.createClass({
                         <i className="mdi-content-add"></i>
                     </a>
                 </div>
-                <form className={this.state.isFormVisible ? '' : 'hide'}>
+                <form className={formClassNames}>
                     <h3>Nuevo Usuario</h3>
-                    <Text id="full_name" label="Nombre" error={this.state.errors.full_name} />
-                    <Text id="email" label="Correo" error={this.state.errors.email} />
+                    <Text ref="FullName" id="full_name" label="Nombre" error={this.state.errors.full_name} />
+                    <Text ref="Email" id="email" label="Correo" error={this.state.errors.email} />
 
-                    <Text inputType="password" id="password" label="Contraseña" error={this.state.errors.password} />
-                    <Text inputType="password" id="repeat_password" label="Confirmar Contraseña" error={this.state.errors.repeat_password} />
+                    <Text ref="Password" inputType="password" id="password" label="Contraseña" error={this.state.errors.password} />
+                    <Text ref="RepeatPassword" inputType="password" id="repeat_password" label="Confirmar Contraseña" error={this.state.errors.repeat_password} />
 
                     <SubmitCancelButton cancelClickHandler={this._clearAndHideForm} submitClickHandler={this._submit} label="Crear" />
                 </form>
@@ -67,12 +71,77 @@ module.exports = React.createClass({
     },
 
     _clearAndHideForm: function(event) {
-        event.preventDefault();
-        this.setState({isFormVisible: false});
+        event && event.preventDefault();
+
+        this.refs.FullName.clearValue();
+        this.refs.Email.clearValue();
+        this.refs.Password.clearValue();
+        this.refs.RepeatPassword.clearValue();
+
+
+
+        this.setState({
+            isFormVisible: false,
+            errors: {
+                full_name: '',
+                email: '',
+                roles: '',
+                password: '',
+                repeat_password: '',
+            }
+        });
     },
 
     _submit: function(event) {
         event.preventDefault();
-        console.log('Submitting');
+
+        var form = {
+            full_name: this.refs.FullName.getValue(),
+            email: this.refs.Email.getValue(),
+            password: this.refs.Password.getValue(),
+            repeat_password: this.refs.RepeatPassword.getValue()
+        };
+
+        if (!this._isValid(form)) {
+
+            return;
+        }
+
+        this._clearAndHideForm();
+
+        // TODO show success message
+        // Action create new user
+    },
+
+    _isValid: function(form) {
+        var mapValidator = new MapValidator();
+
+        mapValidator
+            .addValidatorForPath('full_name', new Validator(form.full_name, [
+                Constraints.NotBlank('Llene este campo')
+            ]))
+            .addValidatorForPath('email', new Validator(form.email, [
+                Constraints.NotBlank('Llene este campo')
+            ]))
+            .addValidatorForPath('password', new Validator(form.password, [
+                Constraints.NotBlank('Llene este campo')
+            ]))
+            .addValidatorForPath('repeat_password', new Validator(form.repeat_password, [
+                Constraints.NotBlank('Llene este campo'),
+                Constraints.Match(form.password, 'Constraseñas deben coincidir')
+
+            ]))
+            .validateAll()
+        ;
+
+        if (mapValidator.hasErrors) {
+            var errors = this.state.errors;
+            errors = assign({}, errors, mapValidator.errors);
+            this.setState({errors: errors});
+
+            return false;
+        }
+
+        return true;
     }
 });
