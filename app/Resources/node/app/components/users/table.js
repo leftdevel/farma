@@ -7,7 +7,7 @@ module.exports = React.createClass({
                 <tr key={user.id}>
                     <td>{user.full_name}</td>
                     <td>{user.email}</td>
-                    <td>{user.roles}</td>
+                    <td>{user.flat_roles}</td>
                 </tr>
             );
         });

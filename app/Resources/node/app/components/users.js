@@ -1,13 +1,28 @@
 var React = require('react');
-
+var UserStore = require('../stores/user-store.js');
 var Table = require('./users/table.js');
+
+function getState() {
+    return {
+        users: UserStore.getAll()
+    };
+}
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {users: [
-            {id: 1, full_name: 'Ricardo Lopez', email: 'richard@gmail.com', roles: 'admin'},
-            {id: 2, full_name: 'Oscar Balladares', email: 'matachivos@gmail.com', roles: 'admin'}
-        ]};
+        return getState();
+    },
+
+    componentDidMount: function() {
+        UserStore.addChangeListener(this._onChange);
+    },
+
+    componentWillUnmount: function() {
+        UserStore.removeChangeListener();
+    },
+
+    _onChange: function() {
+        this.setState(getState());
     },
 
     render: function() {

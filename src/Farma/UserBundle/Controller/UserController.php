@@ -24,7 +24,7 @@ use Farma\UserBundle\Entity\User,
 class UserController extends Controller
 {
     /**
-     * @Route("/", name="user_list", defaults={"_format" = "json"})
+     * @Route("/", name="user_list", defaults={"_format" = "json"}, options={"expose" = true})
      * @Method({"GET"})
      */
     public function listAction()
@@ -33,7 +33,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/", name="user_create", defaults={"_format" = "json"})
+     * @Route("/", name="user_create", defaults={"_format" = "json"}, options={"expose" = true})
      * @Method({"POST"})
      */
     public function createAction(Request $request)
@@ -54,7 +54,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="user_update", defaults={"_format" = "json"})
+     * @Route("/{id}", name="user_update", defaults={"_format" = "json"}, options={"expose" = true})
      * @Method({"PUT"})
      * @ParamConverter("user", class="FarmaUserBundle:User")
      */
@@ -81,7 +81,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/{id}", name="user_delete", defaults={"_format" = "json"})
+     * @Route("/{id}", name="user_delete", defaults={"_format" = "json"}, options={"expose" = true})
      * @Method({"DELETE"})
      * @ParamConverter("user", class="FarmaUserBundle:User")
      */
