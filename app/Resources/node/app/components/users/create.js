@@ -16,18 +16,22 @@ var roles = [
     {value: 'ROLE_GROCER', label: 'bodeguero'}
 ];
 
+function getDefaultState() {
+    return {
+        isFormVisible: false,
+        errors: {
+            full_name: '',
+            email: '',
+            roles: '',
+            password: '',
+            repeat_password: '',
+        }
+    };
+}
+
 module.exports = React.createClass({
     getInitialState: function() {
-        return {
-            isFormVisible: false,
-            errors: {
-                full_name: '',
-                email: '',
-                roles: '',
-                password: '',
-                repeat_password: '',
-            }
-        };
+        return getDefaultState();
     },
 
     render: function() {
@@ -52,7 +56,7 @@ module.exports = React.createClass({
                     </a>
                 </div>
                 <form className={formClassNames}>
-                    <h3>Nuevo Usuario</h3>
+                    <h5>Nuevo Usuario</h5>
                     <Text ref="FullName" id="full_name" label="Nombre" error={this.state.errors.full_name} />
                     <Text ref="Email" id="email" label="Correo" error={this.state.errors.email} />
 
@@ -78,18 +82,7 @@ module.exports = React.createClass({
         this.refs.Password.clearValue();
         this.refs.RepeatPassword.clearValue();
 
-
-
-        this.setState({
-            isFormVisible: false,
-            errors: {
-                full_name: '',
-                email: '',
-                roles: '',
-                password: '',
-                repeat_password: '',
-            }
-        });
+        this.setState(getDefaultState);
     },
 
     _submit: function(event) {

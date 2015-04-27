@@ -5,11 +5,11 @@ module.exports = React.createClass({
         label: React.PropTypes.string.isRequired,
         submitClickHandler: React.PropTypes.func.isRequired,
         cancelClickHandler: React.PropTypes.func.isRequired,
-        iconClassName: React.PropTypes.string
+        submitIconClassName: React.PropTypes.string
     },
 
-    _getIconClassNames: function() {
-        var classNames = this.props.iconClassName ? this.props.iconClassName : 'mdi-content-send';
+    _getsubmitIconClassNames: function() {
+        var classNames = this.props.submitIconClassName ? this.props.submitIconClassName : 'mdi-content-send';
 
         return classNames + ' right';
     },
@@ -25,16 +25,14 @@ module.exports = React.createClass({
         var submitButton = (
             <button onClick={this.props.submitClickHandler} className="btn waves-effect waves-light">
                 {this.props.label}
-                <i className={this._getIconClassNames()}></i>
+                <i className={this._getsubmitIconClassNames()}></i>
             </button>
         );
 
         return (
             <div className="row">
-                <div className="col s2">
-                    {submitButton}
-                </div>
-                <div className="col s10">
+                <div className="col s12">
+                    {submitButton} &nbsp;&nbsp;
                     {cancelButton}
                 </div>
             </div>
