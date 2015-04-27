@@ -1,0 +1,38 @@
+{
+  "name": "farma",
+  "version": "0.0.1",
+  "description": "Farma management.",
+  "repository": "https://github.com/leftdevel/farma",
+  "main": "app/app.js",
+  "dependencies": {
+    "flux": "^2.0.3",
+    "keymirror": "^0.1.1",
+    "object-assign": "^2.0.0",
+    "react": "^0.13.2",
+    "react-addons": "^0.9.1-deprecated",
+    "react-router": "^0.13.2"
+  },
+  "devDependencies": {
+    "browserify": "^9.0.8",
+    "envify": "^3.4.0",
+    "jest-cli": "~0.1.17",
+    "reactify": "^1.1.0",
+    "uglify-js": "~2.4.15",
+    "watchify": "^3.2.0"
+  },
+  "scripts": {
+    "start": "watchify -o public/bundle_dev.js -v -d app/app.js",
+    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > public/bundle_prod.js",
+    "test": "jest"
+  },
+  "author": "Bill Fisher",
+  "browserify": {
+    "transform": [
+      "reactify",
+      "envify"
+    ]
+  },
+  "jest": {
+    "rootDir": "./app"
+  }
+}

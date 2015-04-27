@@ -56,11 +56,9 @@ assetic:
             filters:
                 - "?yui_css"
 
-        # app_js:
-        #     inputs:
-        #         - %kernel.root_dir%/Resources/public/js/materialize.min.js
-        #     filters:
-        #         - "?yui_js"
+        root_js:
+            inputs:
+                - %kernel.root_dir%/Resources/node/public/bundle_%kernel.environment%.js
 
 
 # Doctrine Configuration
