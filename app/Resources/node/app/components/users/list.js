@@ -8,16 +8,25 @@ module.exports = React.createClass({
                     <td>{user.full_name}</td>
                     <td>{user.email}</td>
                     <td>{user.flat_roles}</td>
+                    <td>
+                        <a
+                            onClick={this._enterEditMode.bind(null, user.id)}
+                            className="waves-effect waves-light"
+                        >
+                            <i className="mdi-editor-mode-edit right"></i>
+                            Editar
+                        </a>
+                    </td>
                 </tr>
             );
-        });
+        }.bind(this));
 
         return (
             <table className="hoverable responsive-table">
                 <thead>
                     <tr>
                         <th data-field="id">Nombre</th>
-                        <th data-field="email">Correo Electrónico</th>
+                        <th data-field="email">Correo</th>
                         <th data-field="roles">Permisos</th>
                     </tr>
                 </thead>
@@ -26,5 +35,9 @@ module.exports = React.createClass({
                 </tbody>
             </table>
         );
+    },
+
+    _enterEditMode: function(id) {
+        console.log('Entering edit mode for ' + id);
     }
 });

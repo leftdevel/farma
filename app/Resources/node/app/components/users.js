@@ -1,6 +1,7 @@
 var React = require('react');
 var UserStore = require('../stores/user-store.js');
-var Table = require('./users/table.js');
+var List = require('./users/list.js');
+var Create = require('./users/create.js');
 
 function getState() {
     return {
@@ -29,7 +30,8 @@ module.exports = React.createClass({
         return (
             <div>
                 <h2>Usuarios del Sistema</h2>
-                <Table users={this.state.users} />
+                <Create />
+                <List users={this.state.users} />
             </div>
         );
     }

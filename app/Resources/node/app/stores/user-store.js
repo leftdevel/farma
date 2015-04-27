@@ -12,6 +12,7 @@ var UserStore = assign({}, EventEmitter.prototype, {
         return _users;
     },
 
+    // LIST
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },
