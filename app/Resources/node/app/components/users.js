@@ -1,5 +1,6 @@
 var React = require('react');
 var UserStore = require('../stores/user-store.js');
+var Wrapper = require('./wrapper');
 var List = require('./users/list.js');
 var Create = require('./users/create.js');
 
@@ -28,11 +29,10 @@ module.exports = React.createClass({
 
     render: function() {
         return (
-            <div>
-                <h2>Usuarios del Sistema</h2>
+            <Wrapper title="Usuarios del Sistema">
                 <Create />
                 <List users={this.state.users} />
-            </div>
+            </Wrapper>
         );
     }
 });

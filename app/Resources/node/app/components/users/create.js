@@ -1,4 +1,5 @@
 var React = require('react');
+var cx = require('class-set');
 
 var Form = require('../core/form/form');
 var Text = require('../core/form/text');
@@ -20,6 +21,7 @@ var roles = [
 module.exports = React.createClass({
     getInitialState: function() {
         return {
+            isFormVisible: false,
             errors: {
                 full_name: '',
                 email: '',
@@ -29,13 +31,38 @@ module.exports = React.createClass({
     },
 
     render: function() {
+        var createUserLinkClassNames = cx({
+            'float': true,
+            'right': true,
+            'hide': this.state.isFormVisible
+        });
+
         return (
-            <form>
-                <Text id="full_name" label="Nombre" error={this.state.errors.full_name} />
-                <Text id="email" label="Correo" error={this.state.errors.email} />
-                <SubmitCancelButton clickHandler={this._submit} label="Crear" />
-            </form>
+            <div>
+                <div className={createUserLinkClassNames}>
+                    <a href="#" onClick={this._showForm} className="waves-effect waves-light">Crear Nuevo Usuario</a>&nbsp;
+                    <a href="#" onClick={this._showForm} className="btn-floating btn-large waves-effect waves-light red">
+                        <i className="mdi-content-add"></i>
+                    </a>
+                </div>
+                <form className={this.state.isFormVisible ? '' : 'hide'}>
+                    <h3>Nuevo Usuario</h3>
+                    <Text id="full_name" label="Nombre" error={this.state.errors.full_name} />
+                    <Text id="email" label="Correo" error={this.state.errors.email} />
+                    <SubmitCancelButton cancelClickHandler={this._clearAndHideForm} submitClickHandler={this._submit} label="Crear" />
+                </form>
+            </div>
         );
+    },
+
+    _showForm: function(event) {
+        event.preventDefault();
+        this.setState({isFormVisible: true});
+    },
+
+    _clearAndHideForm: function(event) {
+        event.preventDefault();
+        this.setState({isFormVisible: false});
     },
 
     _submit: function(event) {

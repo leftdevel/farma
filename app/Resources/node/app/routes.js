@@ -14,14 +14,6 @@ var App = React.createClass({
       <div>
 
         <header>
-          <nav className="top-nav teal">
-            <div className="container">
-              <div className="row">
-                <div className="nav-wrapper col offset-s1 s11"><a className="page-title">Mi Farmacita</a></div>
-              </div>
-            </div>
-          </nav>
-
           <ul id="nav-mobile" className="side-nav fixed">
             <li className="logo">
               <a id="logo-container" href="#" className="rand-logo">
@@ -33,15 +25,7 @@ var App = React.createClass({
         </header>
 
         <main>
-          <div className="section" id="index-banner">
-            <div className="container">
-              <div className="row">
-                <div className="col offset-s1 s11">
-                  <RouteHandler/>
-                </div>
-              </div>
-            </div>
-          </div>
+          <RouteHandler />
         </main>
 
       </div>
