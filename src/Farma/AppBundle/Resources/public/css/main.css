@@ -1,0 +1,14 @@
+.side-nav .logo {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  li.logo:hover {
+    background-color: transparent;
+  }
+
+  #logo-container {
+    height: 54px;
+  }
