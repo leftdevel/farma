@@ -19,7 +19,6 @@ var availableRoles = UserUtils.roles.filter(function(role) {
 
 function getDefaultState() {
     return {
-        isFormVisible: false,
         errors: {
             full_name: '',
             email: '',
@@ -31,50 +30,37 @@ function getDefaultState() {
 }
 
 module.exports = React.createClass({
+    propTypes: {
+        finishHandler: React.PropTypes.func.isRequired,
+        isVisible: React.PropTypes.bool.isRequired
+    },
+
     getInitialState: function() {
         return getDefaultState();
     },
 
     render: function() {
-        var createUserLinkClassNames = cx({
-            'float': true,
-            'right': true,
-            'hide': this.state.isFormVisible
-        });
 
         var formClassNames = cx({
             'col': true,
             's12': true,
-            'hide': !this.state.isFormVisible
+            'hide': !this.props.isVisible
         });
 
         return (
-            <div>
-                <div className={createUserLinkClassNames}>
-                    <a href="#" onClick={this._showForm} className="waves-effect waves-light">Crear Nuevo Usuario</a>&nbsp;
-                    <a href="#" onClick={this._showForm} className="btn-floating btn-large waves-effect waves-light red">
-                        <i className="mdi-content-add"></i>
-                    </a>
-                </div>
-                <form className={formClassNames}>
-                    <h5>Nuevo Usuario</h5>
-                    <Text ref="FullName" id="full_name" label="Nombre" error={this.state.errors.full_name} />
-                    <Text ref="Email" id="email" label="Correo" error={this.state.errors.email} />
+            <form className={formClassNames}>
+                <h5>Nuevo Usuario</h5>
+                <Text ref="FullName" id="full_name" label="Nombre" error={this.state.errors.full_name} />
+                <Text ref="Email" id="email" label="Correo" error={this.state.errors.email} />
 
-                    <Text ref="Password" inputType="password" id="password" label="Contraseña" error={this.state.errors.password} />
-                    <Text ref="RepeatPassword" inputType="password" id="repeat_password" label="Confirmar Contraseña" error={this.state.errors.repeat_password} />
+                <Text ref="Password" inputType="password" id="password" label="Contraseña" error={this.state.errors.password} />
+                <Text ref="RepeatPassword" inputType="password" id="repeat_password" label="Confirmar Contraseña" error={this.state.errors.repeat_password} />
 
-                    <Select ref="Role" id="role" label="Permisos" error={this.state.errors.roles} options={availableRoles} />
+                <Select ref="Role" id="role" label="Permisos" error={this.state.errors.roles} options={availableRoles} />
 
-                    <SubmitCancelButton cancelClickHandler={this._clearAndHideForm} submitClickHandler={this._submit} label="Crear" />
-                </form>
-            </div>
+                <SubmitCancelButton cancelClickHandler={this._clearAndHideForm} submitClickHandler={this._submit} label="Crear" />
+            </form>
         );
-    },
-
-    _showForm: function(event) {
-        event.preventDefault();
-        this.setState({isFormVisible: true});
     },
 
     _clearAndHideForm: function(event) {
@@ -86,6 +72,7 @@ module.exports = React.createClass({
         this.refs.RepeatPassword.clearValue();
 
         this.setState(getDefaultState);
+        this.props.finishHandler();
     },
 
     _submit: function(event) {

@@ -12,6 +12,18 @@ var UserStore = assign({}, EventEmitter.prototype, {
         return _users;
     },
 
+    findOne: function(id) {
+        for (var i in _users) {
+            var user = _users[i];
+
+            if (user.id === id) {
+                return user;
+            }
+        }
+
+        return null;
+    },
+
     emitChange: function() {
         this.emit(CHANGE_EVENT);
     },

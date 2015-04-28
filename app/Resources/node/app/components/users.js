@@ -3,16 +3,14 @@ var UserStore = require('../stores/user-store.js');
 var Wrapper = require('./wrapper');
 var List = require('./users/list.js');
 var Create = require('./users/create.js');
-
-function getState() {
-    return {
-        users: UserStore.getAll()
-    };
-}
+var CreateLink = require('./users/create-link');
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return getState();
+        return {
+            users: UserStore.getAll(),
+            view: 'list'
+        };
     },
 
     componentDidMount: function() {
@@ -24,15 +22,20 @@ module.exports = React.createClass({
     },
 
     _onChange: function() {
-        this.setState(getState());
+        this.setState({users: UserStore.getAll()});
     },
 
     render: function() {
         return (
             <Wrapper title="Usuarios del Sistema">
-                <Create />
-                <List users={this.state.users} />
+                <CreateLink isVisible={this.state.view === 'list'} clickHandler={this._switch.bind(null, 'create')} />
+                <Create isVisible={this.state.view === 'create'} finishHandler={this._switch.bind(null, 'list')} />
+                <List isVisible={this.state.view === 'list'} users={this.state.users} />
             </Wrapper>
         );
+    },
+
+    _switch: function(view) {
+        this.setState({view: view});
     }
 });

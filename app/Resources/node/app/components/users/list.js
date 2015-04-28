@@ -1,5 +1,7 @@
 var React = require('react');
 var UserUtils = require('../../utils/user-utils');
+var cx = require('class-set');
+
 var roles = UserUtils.roles;
 
 function getRoleLabel(value) {
@@ -13,6 +15,10 @@ function getRoleLabel(value) {
 }
 
 module.exports = React.createClass({
+    propTypes: {
+        isVisible: React.PropTypes.bool.isRequired
+    },
+
     render: function() {
         var records = this.props.users.map(function(user) {
             return (
@@ -33,8 +39,13 @@ module.exports = React.createClass({
             );
         }.bind(this));
 
+        var classNames = cx({
+            'hoverable': true,
+            'hide': !this.props.isVisible
+        });
+
         return (
-            <table className="hoverable responsive-table">
+            <table className={classNames}>
                 <thead>
                     <tr>
                         <th data-field="id">Nombre</th>
