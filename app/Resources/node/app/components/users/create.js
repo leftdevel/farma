@@ -63,9 +63,7 @@ module.exports = React.createClass({
         );
     },
 
-    _clearAndHideForm: function(event) {
-        event && event.preventDefault();
-
+    _clearAndHideForm: function() {
         this.refs.FullName.clearValue();
         this.refs.Email.clearValue();
         this.refs.Password.clearValue();
@@ -75,9 +73,7 @@ module.exports = React.createClass({
         this.props.finishHandler();
     },
 
-    _submit: function(event) {
-        event.preventDefault();
-
+    _submit: function() {
         var form = {
             full_name: this.refs.FullName.getValue(),
             email: this.refs.Email.getValue(),
@@ -92,9 +88,6 @@ module.exports = React.createClass({
 
         UserActions.create(form);
         this._clearAndHideForm();
-
-        // TODO show success message
-        // Action create new user
     },
 
     _isValid: function(form) {
