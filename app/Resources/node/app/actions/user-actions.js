@@ -3,19 +3,38 @@ var UserConstants = require('../constants/user-constants');
 var UserApi = require('../webapi/user-api.js');
 
 var UserActions = {
-    boot: function() {
+    getAll: function(isBackground) {
         AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_BOOT,
+            actionType: UserConstants.USERS_GET_ALL,
+            isBackground: isBackground,
         });
 
-        UserApi.getUsers(this.receiveUsers);
+        UserApi.getAll(UserActions.receiveUsers.bind(null, isBackground));
     },
 
-    receiveUsers: function(users) {
+    receiveUsers: function(isBackground, users) {
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_RECEIVE_ALL,
-            users: JSON.parse(users)
+            users: users,
+            isBackground: isBackground,
         });
+    },
+
+    create: function(data) {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_CREATE,
+        });
+
+        UserApi.create(data, UserActions.createSuccess);
+    },
+
+    createSuccess: function() {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_CREATE_SUCCESS
+        });
+
+        // @TODO Move this to a socket aware util
+        UserActions.getAll();
     }
 };
 

@@ -8,11 +8,10 @@ module.exports = React.createClass({
     ],
 
     propTypes: {
-        inputType: React.PropTypes.oneOf(['text', 'password']),
+        options: React.PropTypes.array.isRequired
     },
 
     render: function() {
-        var inputType = this.props.inputType ? this.props.inputType : 'text';
         var labelClassNames = cx({
             'active': true,
             'red-text': !!this.props.error
@@ -23,17 +22,23 @@ module.exports = React.createClass({
         return (
             <div className="row">
                 <div className="input-field col s12">
-                    <input ref="Input"
-                        id={this.props.id}
-                        type={inputType}
-                        className="validate"
-                        defaultValue={this.props.defaultValue} />
                     <label className={labelClassNames} htmlFor={this.props.id}>
                         {label}
-                    </label>
+                    </label><br/>
+                    <select ref="Input" className="browser-default" id={this.props.id} defaultValue={this.props.defaultValue}>
+                        {this._getOptions()}
+                    </select>
                 </div>
             </div>
         );
+    },
+
+    _getOptions: function() {
+        return this.props.options.map(function(optionInLoop, index) {
+            return (
+                <option key={optionInLoop.value} value={optionInLoop.value}>{optionInLoop.label}</option>
+            );
+        });
     },
 
     getValue: function() {

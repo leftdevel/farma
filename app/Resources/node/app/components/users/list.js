@@ -1,4 +1,16 @@
 var React = require('react');
+var UserUtils = require('../../utils/user-utils');
+var roles = UserUtils.roles;
+
+function getRoleLabel(value) {
+    for (var i in roles) {
+        var role = roles[i];
+
+        if (role.value === value) {
+            return role.label;
+        }
+    }
+}
 
 module.exports = React.createClass({
     render: function() {
@@ -7,7 +19,7 @@ module.exports = React.createClass({
                 <tr key={user.id}>
                     <td>{user.full_name}</td>
                     <td>{user.email}</td>
-                    <td>{user.flat_roles}</td>
+                    <td>{getRoleLabel(user.flat_roles)}</td>
                     <td>
                         <a
                             onClick={this._enterEditMode.bind(null, user.id)}

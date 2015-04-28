@@ -1,3 +1,7 @@
+
+
+// Should also listen to global error store and decrease _queue;
+
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var UserConstants = require('../constants/user-constants');
@@ -42,14 +46,35 @@ var ProgressStore = assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function(action) {
+    if (action.isBackground) {
+        return;
+    }
+
     switch(action.actionType) {
-        case UserConstants.USERS_BOOT:
+
+        // FETCH USERS
+
+        case UserConstants.USERS_GET_ALL:
             increaseQueue();
             ProgressStore.emitChange();
 
           break;
 
         case UserConstants.USERS_RECEIVE_ALL:
+            reduceQueue();
+            ProgressStore.emitChange();
+
+          break;
+
+        // CREATE USER
+
+        case UserConstants.USERS_CREATE:
+            increaseQueue();
+            ProgressStore.emitChange();
+
+          break;
+
+        case UserConstants.USERS_CREATE_SUCCESS:
             reduceQueue();
             ProgressStore.emitChange();
 

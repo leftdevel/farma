@@ -2,19 +2,20 @@ var React = require('react');
 var cx = require('class-set');
 var assign = require('object-assign');
 
+var UserActions = require('../../actions/user-actions');
+
 var Text = require('../core/form/text');
+var Select = require('../core/form/select');
 var SubmitCancelButton = require('../core/form/submit-cancel-button');
 
 var Validator = require('../../lib/validator/validator');
 var MapValidator = require('../../lib/validator/map-validator');
 var Constraints = require('../../lib/validator/constraints/core');
 
-var roles = [
-    {value: 'ROLE_SUPER_ADMIN', label: 'dueño'},
-    {value: 'ROLE_ADMIN', label: 'administrador'},
-    {value: 'ROLE_SALES', label: 'vendedor'},
-    {value: 'ROLE_GROCER', label: 'bodeguero'}
-];
+var UserUtils = require('../../utils/user-utils');
+var availableRoles = UserUtils.roles.filter(function(role) {
+    return role.value !== 'ROLE_SUPER_ADMIN';
+});
 
 function getDefaultState() {
     return {
@@ -63,6 +64,8 @@ module.exports = React.createClass({
                     <Text ref="Password" inputType="password" id="password" label="Contraseña" error={this.state.errors.password} />
                     <Text ref="RepeatPassword" inputType="password" id="repeat_password" label="Confirmar Contraseña" error={this.state.errors.repeat_password} />
 
+                    <Select ref="Role" id="role" label="Permisos" error={this.state.errors.roles} options={availableRoles} />
+
                     <SubmitCancelButton cancelClickHandler={this._clearAndHideForm} submitClickHandler={this._submit} label="Crear" />
                 </form>
             </div>
@@ -81,6 +84,7 @@ module.exports = React.createClass({
         this.refs.Email.clearValue();
         this.refs.Password.clearValue();
         this.refs.RepeatPassword.clearValue();
+        this.refs.Role.clearValue();
 
         this.setState(getDefaultState);
     },
@@ -92,14 +96,15 @@ module.exports = React.createClass({
             full_name: this.refs.FullName.getValue(),
             email: this.refs.Email.getValue(),
             password: this.refs.Password.getValue(),
-            repeat_password: this.refs.RepeatPassword.getValue()
+            repeat_password: this.refs.RepeatPassword.getValue(),
+            flat_roles: this.refs.Role.getValue()
         };
 
         if (!this._isValid(form)) {
-
             return;
         }
 
+        UserActions.create(form);
         this._clearAndHideForm();
 
         // TODO show success message

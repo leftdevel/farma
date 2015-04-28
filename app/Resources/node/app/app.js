@@ -8,4 +8,4 @@ Router.run(routes, function (Handler) {
 
 // boot
 var UserActions = require('./actions/user-actions');
-UserActions.boot();
+UserActions.getAll();
