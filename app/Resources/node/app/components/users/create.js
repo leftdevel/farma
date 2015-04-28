@@ -84,7 +84,6 @@ module.exports = React.createClass({
         this.refs.Email.clearValue();
         this.refs.Password.clearValue();
         this.refs.RepeatPassword.clearValue();
-        this.refs.Role.clearValue();
 
         this.setState(getDefaultState);
     },

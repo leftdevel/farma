@@ -12,3 +12,4 @@
 /web/bundles/
 *node_modules*
 *build*
+*bundle_dev.js*
