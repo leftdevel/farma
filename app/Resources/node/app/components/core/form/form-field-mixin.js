@@ -7,6 +7,7 @@ module.exports = {
         error: React.PropTypes.string,
         display: React.PropTypes.oneOf(['block', 'inline']),
         placeholder: React.PropTypes.string,
-        defaultValue: React.PropTypes.node // string, number, or array of values
+        changeHandler: React.PropTypes.func.isRequired,
+        value: React.PropTypes.node // string, number, or array of values
     }
 };

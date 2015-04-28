@@ -3,8 +3,8 @@ var React = require('react');
 module.exports = React.createClass({
     propTypes: {
         label: React.PropTypes.string.isRequired,
-        submitClickHandler: React.PropTypes.func.isRequired,
-        cancelClickHandler: React.PropTypes.func.isRequired,
+        submitHandler: React.PropTypes.func.isRequired,
+        cancelHandler: React.PropTypes.func.isRequired,
         submitIconClassName: React.PropTypes.string
     },
 
@@ -41,11 +41,11 @@ module.exports = React.createClass({
 
     _cancel: function(event) {
         event.preventDefault();
-        this.props.cancelClickHandler();
+        this.props.cancelHandler();
     },
 
     _submit: function(event) {
         event.preventDefault();
-        this.props.submitClickHandler();
+        this.props.submitHandler();
     }
 });

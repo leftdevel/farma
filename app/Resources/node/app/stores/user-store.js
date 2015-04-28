@@ -9,7 +9,7 @@ var allowedViews = ['list', 'create', 'edit'];
 
 var _data = {
     users: [],
-    view: allowedViews[0]
+    view: allowedViews[0],
 };
 
 function setUsers(users) {

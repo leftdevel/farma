@@ -1,11 +1,10 @@
 var React = require('react');
 var UserStore = require('../stores/user-store.js');
 var UserActions = require('../actions/user-actions');
-var UserConstants = require('../constants/user-constants');
 
 var Wrapper = require('./wrapper');
 var List = require('./users/list.js');
-var CreateEdit = require('./users/create-edit.js');
+var Create = require('./users/create.js');
 var CreateLink = require('./core/create-link');
 
 function getState() {
@@ -34,22 +33,22 @@ module.exports = React.createClass({
 
     render: function() {
         var isCreateLinkVisible = this.state.view === 'list';
-        var isCreateEditVisible = this.state.view === 'create' || this.state.view === 'edit';
+        var isCreateVisible = this.state.view === 'create' || this.state.view === 'edit';
         var isListVisible = this.state.view === 'list';
 
         return (
             <Wrapper title="Usuarios del Sistema">
-                <CreateLink
-                    title='Crear nuevo usuarios'
-                    isVisible={isCreateLinkVisible}
-                    clickHandler={this._switch.bind(null, 'create')} />
-                <CreateEdit
-                    mode={this.state.view === 'edit' ? 'edit' : 'create'}
-                    isVisible={isCreateEditVisible}
-                    finishHandler={this._switch.bind(null, 'list')} />
-                <List
-                    isVisible={isListVisible}
-                    users={this.state.users} />
+
+                <div className={isCreateLinkVisible ? '' : 'hide'}>
+                    <CreateLink title='Crear nuevo usuarios' clickHandler={this._switch.bind(null, 'create')} />
+                </div>
+                <div className={isCreateVisible ? '' : 'hide'}>
+                    <Create mode={this.state.view === 'edit' ? 'edit' : 'create'} />
+                </div>
+                <div className={isListVisible ? '' : 'hide'}>
+                    <List users={this.state.users} />
+                </div>
+
             </Wrapper>
         );
     },

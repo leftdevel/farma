@@ -1,6 +1,5 @@
 var React = require('react');
 var UserUtils = require('../../utils/user-utils');
-var cx = require('class-set');
 
 var roles = UserUtils.roles;
 
@@ -15,10 +14,6 @@ function getRoleLabel(value) {
 }
 
 module.exports = React.createClass({
-    propTypes: {
-        isVisible: React.PropTypes.bool.isRequired
-    },
-
     render: function() {
         var records = this.props.users.map(function(user) {
             return (
@@ -39,13 +34,8 @@ module.exports = React.createClass({
             );
         }.bind(this));
 
-        var classNames = cx({
-            'hoverable': true,
-            'hide': !this.props.isVisible
-        });
-
         return (
-            <table className={classNames}>
+            <table className="hoverable">
                 <thead>
                     <tr>
                         <th data-field="id">Nombre</th>
@@ -61,6 +51,7 @@ module.exports = React.createClass({
     },
 
     _enterEditMode: function(id) {
+        // Call an action
         console.log('Entering edit mode for ' + id);
     }
 });

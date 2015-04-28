@@ -30,11 +30,16 @@ module.exports = React.createClass({
                         id={this.props.id}
                         type={inputType}
                         placeholder={this.props.placeholder}
-                        defaultValue={this.props.defaultValue} />
+                        value={this.props.value}
+                        onChange={this._onChange} />
                     {this._getLabel()}
                 </div>
             </div>
         );
+    },
+
+    _onChange: function(event) {
+        this.changeHandler(this.props.id, event.target.value);
     },
 
     _getLabel: function() {
