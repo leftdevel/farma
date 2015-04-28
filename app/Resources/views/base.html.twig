@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
-        <title>{% block title %}Farmacita{% endblock %}</title>
+        <title>{% block title %}Mi Farmacita{% endblock %}</title>
 
         {% stylesheets "@base_css" output="css/base.css" %}
             <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="screen,projection">
@@ -13,7 +13,8 @@
     </head>
     <body>
         <nav class="teal lighten-1" role="navigation">
-            <div class="nav-wrapper container"><a id="logo-container" href="{{ path('base_index') }}" class="brand-logo">Farmacita</a>
+            <div class="nav-wrapper container">
+            <a id="logo-container" href="{{ path('base_index') }}" class="brand-logo">Mi Farmacita</a>
               <ul class="right hide-on-med-and-down">
                 {% if is_granted('ROLE_USER') %}
                     <li><a href="{{ path('_base_logout') }}">Salir</a></li>
