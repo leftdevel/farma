@@ -5,16 +5,36 @@ var assign = require('object-assign');
 
 var CHANGE_EVENT = 'change';
 
-var _users = [];
+var allowedViews = ['list', 'create', 'edit'];
+
+var _data = {
+    users: [],
+    view: allowedViews[0]
+};
+
+function setUsers(users) {
+    _data.users = users;
+}
+
+function changeView(view) {
+    if (allowedViews.indexOf(view) === -1) {
+        alert('Invliad view');
+        throw "Invalid view";
+    }
+
+    _data.view = view;
+}
 
 var UserStore = assign({}, EventEmitter.prototype, {
-    getAll: function() {
-        return _users;
+    getUsers: function() {
+        return _data.users;
     },
 
     findOne: function(id) {
-        for (var i in _users) {
-            var user = _users[i];
+        var users = _data.users;
+
+        for (var i in users) {
+            var user = users[i];
 
             if (user.id === id) {
                 return user;
@@ -22,6 +42,10 @@ var UserStore = assign({}, EventEmitter.prototype, {
         }
 
         return null;
+    },
+
+    getView: function() {
+        return _data.view;
     },
 
     emitChange: function() {
@@ -34,7 +58,7 @@ var UserStore = assign({}, EventEmitter.prototype, {
 
     removeChangeListener: function(callback) {
         this.removeListener(CHANGE_EVENT, callback);
-    }
+    },
 });
 
 AppDispatcher.register(function(action) {
@@ -42,9 +66,14 @@ AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
         case UserConstants.USERS_RECEIVE_ALL:
-            _users = action.users;
+            setUsers(action.users);
             UserStore.emitChange();
 
+          break;
+
+        case UserConstants.USERS_UI_CHANGE_VIEW:
+            changeView(action.view);
+            UserStore.emitChange();
           break;
 
         default:

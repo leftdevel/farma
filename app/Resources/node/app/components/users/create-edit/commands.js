@@ -32,7 +32,7 @@ module.exports = {
             return false;
         }
 
-        UserActions.create(form);
+        UserActions.createUser(form);
         this.clearAndFinish(context);
     }
 };

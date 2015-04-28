@@ -2,9 +2,9 @@ var React = require('react');
 var cx = require('class-set');
 var Commands = require('./create-edit/commands');
 
-var Text = require('../form/text');
-var Select = require('../form/select');
-var SubmitCancelButton = require('../form/submit-cancel-button');
+var Text = require('../core/form/text');
+var Select = require('../core/form/select');
+var SubmitCancelButton = require('../core/form/submit-cancel-button');
 
 var UserUtils = require('../../utils/user-utils');
 var availableRoles = UserUtils.roles.filter(function(role) {

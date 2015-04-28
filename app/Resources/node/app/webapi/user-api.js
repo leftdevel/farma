@@ -11,7 +11,7 @@ function handleResponse(err, res, successCallback) {
 }
 
 module.exports = {
-    getAll: function(successCallback) {
+    fetchUsers: function(successCallback) {
         var url = Routing.generate('user_list');
 
         request
@@ -23,7 +23,7 @@ module.exports = {
         ;
     },
 
-    create: function(data, successCallback) {
+    createUser: function(data, successCallback) {
         var url = Routing.generate('user_create');
 
         request

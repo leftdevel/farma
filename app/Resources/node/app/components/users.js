@@ -1,16 +1,23 @@
 var React = require('react');
 var UserStore = require('../stores/user-store.js');
+var UserActions = require('../actions/user-actions');
+var UserConstants = require('../constants/user-constants');
+
 var Wrapper = require('./wrapper');
 var List = require('./users/list.js');
 var CreateEdit = require('./users/create-edit.js');
-var CreateLink = require('./users/create-link');
+var CreateLink = require('./core/create-link');
+
+function getState() {
+    return {
+        users: UserStore.getUsers(),
+        view: UserStore.getView(),
+    };
+}
 
 module.exports = React.createClass({
     getInitialState: function() {
-        return {
-            users: UserStore.getAll(),
-            view: 'list'
-        };
+        return getState();
     },
 
     componentDidMount: function() {
@@ -22,23 +29,32 @@ module.exports = React.createClass({
     },
 
     _onChange: function() {
-        this.setState({users: UserStore.getAll()});
+        this.setState(getState());
     },
 
     render: function() {
+        var isCreateLinkVisible = this.state.view === 'list';
+        var isCreateEditVisible = this.state.view === 'create' || this.state.view === 'edit';
+        var isListVisible = this.state.view === 'list';
+
         return (
             <Wrapper title="Usuarios del Sistema">
-                <CreateLink isVisible={this.state.view === 'list'} clickHandler={this._switch.bind(null, 'create')} />
+                <CreateLink
+                    title='Crear nuevo usuarios'
+                    isVisible={isCreateLinkVisible}
+                    clickHandler={this._switch.bind(null, 'create')} />
                 <CreateEdit
                     mode={this.state.view === 'edit' ? 'edit' : 'create'}
-                    isVisible={this.state.view === 'create' || this.state.view === 'edit'}
+                    isVisible={isCreateEditVisible}
                     finishHandler={this._switch.bind(null, 'list')} />
-                <List isVisible={this.state.view === 'list'} users={this.state.users} />
+                <List
+                    isVisible={isListVisible}
+                    users={this.state.users} />
             </Wrapper>
         );
     },
 
     _switch: function(view) {
-        this.setState({view: view});
+        UserActions.changeView(view);
     }
 });

@@ -3,13 +3,13 @@ var UserConstants = require('../constants/user-constants');
 var UserApi = require('../webapi/user-api.js');
 
 var UserActions = {
-    getAll: function(isBackground) {
+    fetchUsers: function(isBackground) {
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_GET_ALL,
             isBackground: isBackground,
         });
 
-        UserApi.getAll(UserActions.receiveUsers.bind(null, isBackground));
+        UserApi.fetchUsers(UserActions.receiveUsers.bind(null, isBackground));
     },
 
     receiveUsers: function(isBackground, users) {
@@ -20,12 +20,12 @@ var UserActions = {
         });
     },
 
-    create: function(data) {
+    createUser: function(data) {
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_CREATE,
         });
 
-        UserApi.create(data, UserActions.createSuccess);
+        UserApi.createUser(data, UserActions.createSuccess);
     },
 
     createSuccess: function() {
@@ -34,7 +34,15 @@ var UserActions = {
         });
 
         // @TODO Move this to a socket aware util
-        UserActions.getAll();
+        UserActions.fetchUsers();
+    },
+
+    // UI
+    changeView: function(view) {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_UI_CHANGE_VIEW,
+            view: view
+        });
     }
 };
 
