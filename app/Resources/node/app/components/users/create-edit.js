@@ -13,6 +13,7 @@ var availableRoles = UserUtils.roles.filter(function(role) {
 
 function getDefaultState() {
     return {
+        showPasswordsInEditMode: false,
         errors: {
             full_name: '',
             email: '',
@@ -26,7 +27,8 @@ function getDefaultState() {
 module.exports = React.createClass({
     propTypes: {
         finishHandler: React.PropTypes.func.isRequired,
-        isVisible: React.PropTypes.bool.isRequired
+        isVisible: React.PropTypes.bool.isRequired,
+        mode: React.PropTypes.oneOf(['create', 'edit']).isRequired
     },
 
     getInitialState: function() {
@@ -46,15 +48,59 @@ module.exports = React.createClass({
                 <h5>Nuevo Usuario</h5>
                 <Text ref="FullName" id="full_name" label="Nombre" error={this.state.errors.full_name} />
                 <Text ref="Email" id="email" label="Correo" error={this.state.errors.email} />
-
-                <Text ref="Password" inputType="password" id="password" label="Contraseña" error={this.state.errors.password} />
-                <Text ref="RepeatPassword" inputType="password" id="repeat_password" label="Confirmar Contraseña" error={this.state.errors.repeat_password} />
-
                 <Select ref="Role" id="role" label="Permisos" error={this.state.errors.roles} options={availableRoles} />
-
+                {this._getPasswordsForCurrentMode()}
                 <SubmitCancelButton cancelClickHandler={this._onCancelClick} submitClickHandler={this._onSubmitClick} label="Crear" />
             </form>
         );
+    },
+
+    _getPasswordsForCurrentMode: function() {
+        var passwordToggler = '';
+        if (this.props.mode === 'edit') {
+
+            passwordToggler = (
+                <a href="#" onClick={this._toggleShowPasswordsInEditMode}>
+                    {this.state.showPasswordsInEditMode ? 'No actualizar contraseña' : 'Acutualizar constraseña'}
+                </a>
+            );
+        }
+
+        var passwordLabel = this.props.mode === 'create' ? 'Contraseña' : 'Nueva Contraseña';
+        var repeatPasswordLabel = this.props.mode === 'create' ? 'Confirmar contraseña' : 'Confirmar nueva ontraseña';
+
+        var wrapperClassNames = cx({
+            'hide': this.props.mode === 'edit' && !this.state.showPasswordsInEditMode
+        });
+
+        return (
+            <div>
+                <div className="row">
+                    <div className="col s12">
+                        {passwordToggler}
+                    </div>
+                </div>
+                <div className={wrapperClassNames}>
+                    <Text
+                        ref="Password"
+                        inputType="password"
+                        id="password"
+                        label={passwordLabel}
+                        error={this.state.errors.password} />
+                    <Text
+                        ref="RepeatPassword"
+                        inputType="password"
+                        id="repeat_password"
+                        label={repeatPasswordLabel}
+                        error={this.state.errors.repeat_password} />
+                </div>
+            </div>
+        );
+    },
+
+    _toggleShowPasswordsInEditMode: function(event) {
+        event.preventDefault();
+        this.setState({showPasswordsInEditMode: !this.state.showPasswordsInEditMode});
     },
 
     _onCancelClick: function() {

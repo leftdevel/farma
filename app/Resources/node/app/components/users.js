@@ -30,6 +30,7 @@ module.exports = React.createClass({
             <Wrapper title="Usuarios del Sistema">
                 <CreateLink isVisible={this.state.view === 'list'} clickHandler={this._switch.bind(null, 'create')} />
                 <CreateEdit
+                    mode="edit"
                     isVisible={this.state.view === 'create' || this.state.view === 'edit'}
                     finishHandler={this._switch.bind(null, 'list')} />
                 <List isVisible={this.state.view === 'list'} users={this.state.users} />
