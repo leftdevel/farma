@@ -3,6 +3,9 @@ var UserConstants = require('../constants/user-constants');
 var UserApi = require('../webapi/user-api.js');
 
 var UserActions = {
+
+    // LIST
+
     fetchUsers: function(isBackground) {
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_GET_ALL,
@@ -38,10 +41,21 @@ var UserActions = {
     },
 
     // UI
+
     changeView: function(view) {
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_UI_CHANGE_VIEW,
             view: view
+        });
+    },
+
+    // FORM
+
+    updateForm: function(property, value) {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_FORM_UPDATE,
+            property: property,
+            value: value
         });
     }
 };

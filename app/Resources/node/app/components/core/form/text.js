@@ -39,7 +39,7 @@ module.exports = React.createClass({
     },
 
     _onChange: function(event) {
-        this.changeHandler(this.props.id, event.target.value);
+        this.props.changeHandler(this.props.id, event.target.value);
     },
 
     _getLabel: function() {

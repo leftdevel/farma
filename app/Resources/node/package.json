@@ -8,6 +8,7 @@
     "flux": "^2.0.3",
     "keymirror": "^0.1.1",
     "object-assign": "^2.0.0",
+    "object-assign-deep": "0.0.4",
     "react": "^0.13.2",
     "react-addons": "^0.9.1-deprecated",
     "react-router": "^0.13.2",

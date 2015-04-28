@@ -6,16 +6,13 @@ var UserActions = require('../../actions/user-actions');
 var CommonForm = require('./common/form');
 var Text = require('../core/form/text');
 
-// UTILS
-var Common = require('./common/common');
-
 module.exports = React.createClass({
-    getInitialState: function() {
-        return Common.getDefaultState();
+    propTypes: {
+        fields: React.PropTypes.object.isRequired
     },
 
     render: function() {
-        var fields = this.state.fields;
+        var fields = this.props.fields;
 
         return (
             <CommonForm
@@ -48,12 +45,6 @@ module.exports = React.createClass({
     },
 
     _changeHandler: function(property, value) {
-        var state = this.state;
-        state.fields[property].value = value;
-        this.setState(state);
-    },
-
-    _onSubmit: function() {
-
+        UserActions.updateForm(property, value);
     }
 });

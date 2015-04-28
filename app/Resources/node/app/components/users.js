@@ -11,6 +11,8 @@ function getState() {
     return {
         users: UserStore.getUsers(),
         view: UserStore.getView(),
+        createFields: UserStore.getCreateFields(),
+        editFields: UserStore.getEditFields(),
     };
 }
 
@@ -43,7 +45,7 @@ module.exports = React.createClass({
                     <CreateLink title='Crear nuevo usuarios' clickHandler={this._switch.bind(null, 'create')} />
                 </div>
                 <div className={isCreateVisible ? '' : 'hide'}>
-                    <Create mode={this.state.view === 'edit' ? 'edit' : 'create'} />
+                    <Create fields={this.state.createFields} mode={this.state.view === 'edit' ? 'edit' : 'create'} />
                 </div>
                 <div className={isListVisible ? '' : 'hide'}>
                     <List users={this.state.users} />

@@ -13,7 +13,6 @@ module.exports = React.createClass({
         title: React.PropTypes.string.isRequired,
         changeHandler: React.PropTypes.func.isRequired,
         submitLabel: React.PropTypes.string.isRequired,
-        submitHandler: React.PropTypes.func.isRequired
     },
 
     render: function() {
@@ -52,14 +51,17 @@ module.exports = React.createClass({
 
                 <SubmitCancelButton
                     label={this.props.submitLabel}
-                    cancelHandler={this.props._onCancel}
-                    submitHandler={this.props.submitHandler} />
+                    cancelHandler={this._onCancel}
+                    submitHandler={this._onSubmit} />
             </form>
         );
     },
 
     _onCancel: function() {
-        this.setState(Common.getDefaultState());
         UserActions.changeView('list');
     },
+
+    _onSubmit: function() {
+        console.log('submitting');
+    }
 });
