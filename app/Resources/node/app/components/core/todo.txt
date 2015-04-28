@@ -1,2 +1,0 @@
-### Move Materializer outside core elements to make them reusable.
-Create a Materializer Form components that wraps core elements.

@@ -12,7 +12,32 @@ module.exports = React.createClass({
     },
 
     render: function() {
+        if (!this.props.display || this.props.display === 'block') {
+            return this._renderBlock();
+        } else {
+            return this._renderInline();
+        }
+    },
+
+    _renderBlock: function() {
         var inputType = this.props.inputType ? this.props.inputType : 'text';
+
+        return (
+            <div className="row">
+                <div className="input-field col s12">
+                    <input
+                        ref="Input"
+                        id={this.props.id}
+                        type={inputType}
+                        placeholder={this.props.placeholder}
+                        defaultValue={this.props.defaultValue} />
+                    {this._getLabel()}
+                </div>
+            </div>
+        );
+    },
+
+    _getLabel: function() {
         var labelClassNames = cx({
             'active': true,
             'red-text': !!this.props.error
@@ -34,16 +59,20 @@ module.exports = React.createClass({
             );
         }
 
+        return label;
+    },
+
+    _renderInline: function() {
+        var inputType = this.props.inputType ? this.props.inputType : 'text';
+
         return (
-            <div className="row">
-                <div className="input-field col s12">
-                    <input ref="Input"
-                        id={this.props.id}
-                        type={inputType}
-                        defaultValue={this.props.defaultValue} />
-                    {label}
-                </div>
-            </div>
+            <input
+                ref="Input"
+                className={this.props.error ? 'invalid' : ''}
+                id={this.props.id}
+                type={inputType}
+                placeholder={this.props.placeholder}
+                defaultValue={this.props.defaultValue} />
         );
     },
 

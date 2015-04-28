@@ -4,9 +4,9 @@ var assign = require('object-assign');
 
 var UserActions = require('../../actions/user-actions');
 
-var Text = require('../core/form/text');
-var Select = require('../core/form/select');
-var SubmitCancelButton = require('../core/form/submit-cancel-button');
+var Text = require('../form/text');
+var Select = require('../form/select');
+var SubmitCancelButton = require('../form/submit-cancel-button');
 
 var Validator = require('../../lib/validator/validator');
 var MapValidator = require('../../lib/validator/map-validator');
