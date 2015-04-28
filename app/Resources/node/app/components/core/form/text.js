@@ -18,7 +18,21 @@ module.exports = React.createClass({
             'red-text': !!this.props.error
         });
 
-        var label = this.props.error ? this.props.label + ' \u00b7 ' + this.props.error : this.props.label;
+        var label = this.props.label;
+
+        if (this.props.error) {
+            label = (
+                <label className="active" htmlFor={this.props.id}>
+                    {this.props.label} &middot; <span className="red-text">{this.props.error}</span>
+                </label>
+            );
+        } else {
+            label = (
+                <label className="active" htmlFor={this.props.id}>
+                    {this.props.label}
+                </label>
+            );
+        }
 
         return (
             <div className="row">
@@ -26,11 +40,8 @@ module.exports = React.createClass({
                     <input ref="Input"
                         id={this.props.id}
                         type={inputType}
-                        className="validate"
                         defaultValue={this.props.defaultValue} />
-                    <label className={labelClassNames} htmlFor={this.props.id}>
-                        {label}
-                    </label>
+                    {label}
                 </div>
             </div>
         );
