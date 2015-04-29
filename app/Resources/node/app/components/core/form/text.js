@@ -7,26 +7,17 @@ module.exports = React.createClass({
         FormFieldMixing
     ],
 
-    propTypes: {
+   propTypes: {
         inputType: React.PropTypes.oneOf(['text', 'password']),
     },
 
     render: function() {
-        if (!this.props.display || this.props.display === 'block') {
-            return this._renderBlock();
-        } else {
-            return this._renderInline();
-        }
-    },
-
-    _renderBlock: function() {
         var inputType = this.props.inputType ? this.props.inputType : 'text';
 
-        return (
+       return (
             <div className="row">
                 <div className="input-field col s12">
                     <input
-                        ref="Input"
                         id={this.props.id}
                         type={inputType}
                         placeholder={this.props.placeholder}
@@ -65,27 +56,5 @@ module.exports = React.createClass({
         }
 
         return label;
-    },
-
-    _renderInline: function() {
-        var inputType = this.props.inputType ? this.props.inputType : 'text';
-
-        return (
-            <input
-                ref="Input"
-                className={this.props.error ? 'invalid' : ''}
-                id={this.props.id}
-                type={inputType}
-                placeholder={this.props.placeholder}
-                defaultValue={this.props.defaultValue} />
-        );
-    },
-
-    getValue: function() {
-        return React.findDOMNode(this.refs.Input).value;
-    },
-
-    clearValue: function() {
-        React.findDOMNode(this.refs.Input).value = '';
     }
 });

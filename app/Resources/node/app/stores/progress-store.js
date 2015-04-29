@@ -60,7 +60,7 @@ AppDispatcher.register(function(action) {
 
           break;
 
-        case UserConstants.USERS_RECEIVE_ALL:
+        case UserConstants.USERS_SET_ALL:
             reduceQueue();
             ProgressStore.emitChange();
 

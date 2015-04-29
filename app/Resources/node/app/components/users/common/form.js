@@ -1,11 +1,11 @@
 var React = require('react');
 
-var UserUtils = require('../../../utils/user-utils');
 var Text = require('../../core/form/text');
 var Select = require('../../core/form/select');
 var SubmitCancelButton = require('../../core/form/submit-cancel-button');
 
-UserActions = require('../../../actions/user-actions');
+var UserUtils = require('../../../utils/user-utils');
+var UserActions = require('../../../actions/user-actions');
 
 module.exports = React.createClass({
     propTypes: {
@@ -13,6 +13,7 @@ module.exports = React.createClass({
         title: React.PropTypes.string.isRequired,
         changeHandler: React.PropTypes.func.isRequired,
         submitLabel: React.PropTypes.string.isRequired,
+        submitHandler: React.PropTypes.func.isRequired
     },
 
     render: function() {
@@ -23,7 +24,6 @@ module.exports = React.createClass({
             <form className="col s12">
                 <h5>{this.props.title}</h5>
                 <Text
-                    ref="FullName"
                     id="full_name"
                     label="Nombre"
                     value={fields.full_name.value}
@@ -31,7 +31,6 @@ module.exports = React.createClass({
                     error={fields.full_name.error} />
 
                 <Text
-                    ref="Email"
                     id="email"
                     label="Correo"
                     value={fields.email.value}
@@ -39,12 +38,11 @@ module.exports = React.createClass({
                     error={fields.email.error} />
 
                 <Select
-                    ref="Role"
-                    id="role"
+                    id="flat_roles"
                     label="Permisos"
-                    value={fields.role.value}
+                    value={fields.flat_roles.value}
                     changeHandler={this.props.changeHandler}
-                    error={fields.role.error}
+                    error={fields.flat_roles.error}
                     options={UserUtils.getRoleFormOptions()} />
 
                 {this.props.children}
@@ -52,16 +50,12 @@ module.exports = React.createClass({
                 <SubmitCancelButton
                     label={this.props.submitLabel}
                     cancelHandler={this._onCancel}
-                    submitHandler={this._onSubmit} />
+                    submitHandler={this.props.submitHandler} />
             </form>
         );
     },
 
     _onCancel: function() {
         UserActions.changeView('list');
-    },
-
-    _onSubmit: function() {
-        console.log('submitting');
     }
 });

@@ -5,7 +5,7 @@ var UserConstants = keyMirror({
     // LIST
 
     USERS_GET_ALL: null,
-    USERS_RECEIVE_ALL: null,
+    USERS_SET_ALL: null,
     USERS_CREATE: null,
     USERS_CREATE_SUCCESS: null,
 
@@ -15,7 +15,8 @@ var UserConstants = keyMirror({
 
     // FORM
 
-    USERS_FORM_UPDATE: null
+    USERS_FORM_UPDATE_VALUE: null,
+    USERS_FORM_SET_ERRORS: null
 });
 
 module.exports = UserConstants;

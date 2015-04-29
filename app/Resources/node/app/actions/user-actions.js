@@ -12,12 +12,12 @@ var UserActions = {
             isBackground: isBackground,
         });
 
-        UserApi.fetchUsers(UserActions.receiveUsers.bind(null, isBackground));
+        UserApi.fetchUsers(UserActions.setUsers.bind(null, isBackground));
     },
 
-    receiveUsers: function(isBackground, users) {
+    setUsers: function(isBackground, users) {
         AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_RECEIVE_ALL,
+            actionType: UserConstants.USERS_SET_ALL,
             users: users,
             isBackground: isBackground,
         });
@@ -28,10 +28,10 @@ var UserActions = {
             actionType: UserConstants.USERS_CREATE,
         });
 
-        UserApi.createUser(data, UserActions.createSuccess);
+        UserApi.createUser(data, UserActions.createUserSuccess);
     },
 
-    createSuccess: function() {
+    createUserSuccess: function() {
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_CREATE_SUCCESS
         });
@@ -51,11 +51,18 @@ var UserActions = {
 
     // FORM
 
-    updateForm: function(property, value) {
+    updateFormValue: function(propertyPath, value) {
         AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_FORM_UPDATE,
-            property: property,
+            actionType: UserConstants.USERS_FORM_UPDATE_VALUE,
+            propertyPath: propertyPath,
             value: value
+        });
+    },
+
+    setFormErrors: function(errors) {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_FORM_SET_ERRORS,
+            errors: errors
         });
     }
 };

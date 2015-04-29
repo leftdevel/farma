@@ -1,11 +1,9 @@
 var React = require('react');
-var FormFieldMixing = require('./form-field-mixin');
+var FormFieldMixin = require('./form-field-mixin');
 var cx = require('class-set');
 
 module.exports = React.createClass({
-    mixins: [
-        FormFieldMixing
-    ],
+    mixins: [FormFieldMixin],
 
     propTypes: {
         options: React.PropTypes.array.isRequired
@@ -25,7 +23,11 @@ module.exports = React.createClass({
                     <label className={labelClassNames} htmlFor={this.props.id}>
                         {label}
                     </label><br/>
-                    <select ref="Input" className="browser-default" id={this.props.id} defaultValue={this.props.defaultValue}>
+                    <select
+                        className="browser-default"
+                        id={this.props.id}
+                        value={this.props.value}
+                        onChange={this._onChange}>
                         {this._getOptions()}
                     </select>
                 </div>
@@ -41,11 +43,7 @@ module.exports = React.createClass({
         });
     },
 
-    getValue: function() {
-        return React.findDOMNode(this.refs.Input).value;
-    },
-
-    clearValue: function() {
-        React.findDOMNode(this.refs.Input).value = '';
+    _onChange: function(event) {
+        this.props.changeHandler(this.props.id, event.target.value);
     }
 });
