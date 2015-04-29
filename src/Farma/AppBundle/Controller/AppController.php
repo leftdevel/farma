@@ -17,6 +17,7 @@ class AppController extends Controller
      */
     public function indexAction()
     {
+        // @TODO return right role
         return array('role' => 'ROLE_ADMIN');
     }
 }

@@ -45,7 +45,7 @@ module.exports = React.createClass({
             <Wrapper title="Usuarios del Sistema">
 
                 <div className={isCreateLinkVisible ? '' : 'hide'}>
-                    <CreateLink title='Crear nuevo usuarios' clickHandler={UserActions.toggleCreateView} />
+                    <CreateLink title='Crear nuevo usuario' clickHandler={UserActions.toggleCreateView} />
                 </div>
                 <div className={isCreateVisible ? '' : 'hide'}>
                     <Create fields={this.state.createFields} />

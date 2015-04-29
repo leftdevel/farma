@@ -10,5 +10,7 @@
             <argument type="service" id="security.context" />
         </service>
 
+        <service id="base.event.processor" class="Farma\BaseBundle\Event\EventProcessor" />
+
     </services>
 </container>

@@ -14,7 +14,13 @@
             <argument type="service" id="user.repository" />
             <argument type="service" id="security.password_encoder" />
             <argument type="service" id="validator" />
+            <argument type="service" id="base.event.processor" />
         </service>
+
+        <service id="user.event.roles_updated_listener" class="Farma\UserBundle\Event\RolesUpdatedListener">
+            <tag name="base.event.listener" />
+        </service>
+
     </services>
 
 </container>

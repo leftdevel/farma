@@ -6,24 +6,31 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface,
     Symfony\Component\Security\Core\User\UserInterface,
     Symfony\Component\Validator\Validator\LegacyValidator;
 
-use Farma\UserBundle\Api\UserApiException,
+use Farma\BaseBundle\Event\Event,
+    Farma\BaseBundle\Event\EventProcessor,
+    Farma\UserBundle\Api\UserApiException,
     Farma\UserBundle\Entity\User,
     Farma\UserBundle\Repository\UserRepository;
 
 class UserApi
 {
+    const USER_UPDATED = 'USER_UPDATED';
+
     private $repository;
     private $passwordEncoder;
     private $validator;
+    private $eventPocessor;
 
     public function __construct(
         UserRepository $repository,
         UserPasswordEncoderInterface $passwordEncoder,
-        LegacyValidator $validator
+        LegacyValidator $validator,
+        EventProcessor $eventProcessor
     ){
         $this->repository = $repository;
         $this->passwordEncoder = $passwordEncoder;
         $this->validator = $validator;
+        $this->eventProcessor = $eventProcessor;
     }
 
     public function listAll()
@@ -50,6 +57,7 @@ class UserApi
 
     public function update(UserInterface $user, array $input)
     {
+        $originalUser = clone($user);
         $initialIsSuperAdmin = $user->isSuperAdmin();
 
         if (!$user->getId()) {
@@ -72,6 +80,10 @@ class UserApi
         }
 
         $this->repository->save($user);
+
+        $data = array('updated_user' => $user, 'original_user' => $originalUser);
+        $event = new Event(self::USER_UPDATED, $data);
+        $this->eventProcessor->process($event);
     }
 
     private function bindAndValidateUser(UserInterface $user, array $input)
