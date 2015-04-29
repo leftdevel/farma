@@ -42,7 +42,7 @@ var UserActions = {
 
     updateUser: function(data) {
         AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_CREATE,
+            actionType: UserConstants.USERS_UPDATE,
         });
 
         UserApi.updateUser(data, UserActions.updateUserSuccess);
@@ -50,7 +50,7 @@ var UserActions = {
 
     updateUserSuccess: function() {
         AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_CREATE_SUCCESS
+            actionType: UserConstants.USERS_UPDATE_SUCCESS
         });
 
         // @TODO Move this to a socket aware util

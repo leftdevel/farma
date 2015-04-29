@@ -2,12 +2,14 @@ var keyMirror = require('keymirror');
 
 var UserConstants = keyMirror({
 
-    // LIST
+    // CRUD
 
     USERS_GET_ALL: null,
     USERS_SET_ALL: null,
     USERS_CREATE: null,
     USERS_CREATE_SUCCESS: null,
+    USERS_UPDATE: null,
+    USERS_UPDATE_SUCCESS: null,
 
     // UI
 

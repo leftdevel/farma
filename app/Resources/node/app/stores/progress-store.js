@@ -12,6 +12,18 @@ var CHANGE_EVENT = 'change';
 var _isWorking = false;
 var _queue = 0;
 
+var _increasers = [
+    UserConstants.USERS_GET_ALL,
+    UserConstants.USERS_CREATE,
+    UserConstants.USERS_UPDATE,
+];
+
+var _reducers = [
+    UserConstants.USERS_SET_ALL,
+    UserConstants.USERS_CREATE_SUCCESS,
+    UserConstants.USERS_UPDATE_SUCCESS
+];
+
 function increaseQueue() {
     _queue++;
     _isWorking = true;
@@ -50,38 +62,13 @@ AppDispatcher.register(function(action) {
         return;
     }
 
-    switch(action.actionType) {
+    if (_increasers.indexOf(action.actionType) !== -1) {
+        increaseQueue();
+        ProgressStore.emitChange();
 
-        // FETCH USERS
-
-        case UserConstants.USERS_GET_ALL:
-            increaseQueue();
-            ProgressStore.emitChange();
-
-          break;
-
-        case UserConstants.USERS_SET_ALL:
-            reduceQueue();
-            ProgressStore.emitChange();
-
-          break;
-
-        // CREATE USER
-
-        case UserConstants.USERS_CREATE:
-            increaseQueue();
-            ProgressStore.emitChange();
-
-          break;
-
-        case UserConstants.USERS_CREATE_SUCCESS:
-            reduceQueue();
-            ProgressStore.emitChange();
-
-          break;
-
-        default:
-        // no op
+    } else if (_reducers.indexOf(action.actionType) !== -1) {
+        reduceQueue();
+        ProgressStore.emitChange();
     }
 });
 

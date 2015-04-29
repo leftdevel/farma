@@ -205,12 +205,16 @@ AppDispatcher.register(function(action) {
             UserStore.emitChange();
             break;
 
+        case UserConstants.USERS_UPDATE_SUCCESS:
+            changeView('list');
+            UserStore.emitChange();
+            break;
+
 
         // UI
 
         case UserConstants.USERS_UI_TOGGLE_LIST:
             changeView('list');
-            clearFields();
             UserStore.emitChange();
             break;
 
