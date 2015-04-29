@@ -1,11 +1,11 @@
 var React = require('react');
 var UserUtils = require('../../utils/user-utils');
 
-var roles = UserUtils.roles;
+var rolesMap = UserUtils.getRolesMap();
 
 function getRoleLabel(value) {
-    for (var i in roles) {
-        var role = roles[i];
+    for (var i in rolesMap) {
+        var role = rolesMap[i];
 
         if (role.value === value) {
             return role.label;
