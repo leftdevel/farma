@@ -56,6 +56,6 @@ module.exports = React.createClass({
     },
 
     _onCancel: function() {
-        UserActions.changeView('list');
+        UserActions.toggleListView();
     }
 });

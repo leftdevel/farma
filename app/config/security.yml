@@ -26,7 +26,7 @@ security:
                 use_referer: true
             logout:
                 path: _base_logout
-                target: base_homepage
+                target: base_index
 
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }

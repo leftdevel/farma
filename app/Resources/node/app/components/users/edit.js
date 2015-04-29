@@ -1,117 +1,105 @@
 var React = require('react');
-var cx = require('class-set');
-var Commands = require('./create-edit/commands');
 
+var MapValidator = require('../../lib/validator/map-validator');
+var UserActions = require('../../actions/user-actions');
+var Form = require('./common/form');
+var ValidationSchema = require('./common/validation-schema');
 var Text = require('../core/form/text');
-var Select = require('../core/form/select');
-var SubmitCancelButton = require('../core/form/submit-cancel-button');
-
-var UserUtils = require('../../utils/user-utils');
-var availableRoles = UserUtils.roles.filter(function(role) {
-    return role.value !== 'ROLE_SUPER_ADMIN';
-});
-
-function getDefaultState() {
-    return {
-        showPasswordsInEditMode: false,
-        errors: {
-            full_name: '',
-            email: '',
-            roles: '',
-            password: '',
-            repeat_password: '',
-        }
-    };
-}
+var UserStore = require('../../stores/user-store');
 
 module.exports = React.createClass({
     propTypes: {
-        finishHandler: React.PropTypes.func.isRequired,
-        isVisible: React.PropTypes.bool.isRequired,
-        mode: React.PropTypes.oneOf(['create', 'edit']).isRequired
-    },
-
-    getInitialState: function() {
-        return getDefaultState();
+        fields: React.PropTypes.object.isRequired,
+        isUpdatePassword: React.PropTypes.bool.isRequired,
     },
 
     render: function() {
-
-        var formClassNames = cx({
-            'col': true,
-            's12': true,
-            'hide': !this.props.isVisible
-        });
+        var fields = this.props.fields;
 
         return (
-            <form className={formClassNames}>
-                <h5>Nuevo Usuario</h5>
-                <Text ref="FullName" id="full_name" label="Nombre" error={this.state.errors.full_name} />
-                <Text ref="Email" id="email" label="Correo" error={this.state.errors.email} />
-                <Select ref="Role" id="role" label="Permisos" error={this.state.errors.roles} options={availableRoles} />
-                {this._getPasswordsForCurrentMode()}
-                <SubmitCancelButton cancelClickHandler={this._onCancelClick} submitClickHandler={this._onSubmitClick} label="Crear" />
-            </form>
+            <Form
+                fields={fields}
+                changeHandler={this._changeHandler}
+                title="Actualizar Usuario"
+                submitLabel="Actualizar"
+                submitHandler={this._onSubmit}>
+
+                {this._getPasswordToggler()}
+
+                <div className={this.props.isUpdatePassword ? '' : 'hide'}>
+                    <Text
+                        inputType="password"
+                        id="password"
+                        label="Nueva Contraseña"
+                        value={fields.password.value}
+                        changeHandler={this._changeHandler}
+                        error={fields.password.error} />
+
+                    <Text
+                        inputType="password"
+                        id="repeat_password"
+                        label="Confirmar Nueva Contraseña"
+                        value={fields.repeat_password.value}
+                        changeHandler={this._changeHandler}
+                        error={fields.repeat_password.error} />
+                </div>
+
+            </Form>
         );
     },
 
-    _getPasswordsForCurrentMode: function() {
-        var passwordToggler = '';
-        if (this.props.mode === 'edit') {
-
-            passwordToggler = (
-                <a href="#" onClick={this._toggleShowPasswordsInEditMode}>
-                    {this.state.showPasswordsInEditMode ? 'No actualizar contraseña' : 'Acutualizar constraseña'}
-                </a>
-            );
-        }
-
-        var passwordLabel = this.props.mode === 'create' ? 'Contraseña' : 'Nueva Contraseña';
-        var repeatPasswordLabel = this.props.mode === 'create' ? 'Confirmar contraseña' : 'Confirmar nueva ontraseña';
-
-        var wrapperClassNames = cx({
-            'hide': this.props.mode === 'edit' && !this.state.showPasswordsInEditMode
-        });
-
+    _getPasswordToggler: function() {
         return (
-            <div>
-                <div className="row">
-                    <div className="col s12">
-                        {passwordToggler}
-                    </div>
-                </div>
-                <div className={wrapperClassNames}>
-                    <Text
-                        ref="Password"
-                        inputType="password"
-                        id="password"
-                        label={passwordLabel}
-                        error={this.state.errors.password} />
-                    <Text
-                        ref="RepeatPassword"
-                        inputType="password"
-                        id="repeat_password"
-                        label={repeatPasswordLabel}
-                        error={this.state.errors.repeat_password} />
+            <div className="row">
+                <div className="col s12">
+                    <a href="#" onClick={this._onPasswordTogglerClick}>
+                        {this.props.isUpdatePassword ? 'No actualizar contraseña' : 'Acutualizar constraseña'}
+                    </a>
                 </div>
             </div>
         );
     },
 
-    _toggleShowPasswordsInEditMode: function(event) {
+    _onPasswordTogglerClick: function(event) {
         event.preventDefault();
-        this.setState({showPasswordsInEditMode: !this.state.showPasswordsInEditMode});
+        UserActions.toggleUpdatePassword();
     },
 
-    _onCancelClick: function() {
-        Commands.clearAndFinish(this);
+    _changeHandler: function(propertyPath, value) {
+        UserActions.updateFormValue(propertyPath, value);
     },
 
-    _onSubmitClick: function() {
-        Commands.submit(this);
+    _onSubmit: function() {
+        var mapValidator = this._validate();
+
+        if (mapValidator.hasErrors) {
+            UserActions.setFormErrors(mapValidator.errors);
+            return;
+        }
+
+        var entity = UserStore.getFormEntity();
+        UserActions.updateUser(entity);
     },
 
-    setDefaultState: function() {
-        this.setState(getDefaultState());
-    }
+    _validate: function() {
+        var mapValidator = new MapValidator();
+        var fields = this.props.fields;
+
+        mapValidator
+            .addValidatorForPath('full_name', ValidationSchema.getFullNameValidator(fields.full_name.value))
+            .addValidatorForPath('email', ValidationSchema.getEmailValidator(fields.email.value))
+        ;
+
+        if (this.props.isUpdatePassword) {
+            mapValidator
+                .addValidatorForPath('password', ValidationSchema.getPasswordValidator(fields.password.value))
+                .addValidatorForPath('repeat_password',
+                    ValidationSchema.getRepeatPasswordValidator(fields.repeat_password.value, fields.password.value))
+            ;
+        }
+
+        mapValidator.validateAll();
+
+        return mapValidator;
+    },
 });

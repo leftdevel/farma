@@ -23,12 +23,25 @@ module.exports = {
         ;
     },
 
-    createUser: function(data, successCallback) {
+    createUser: function(entity, successCallback) {
         var url = Routing.generate('user_create');
 
         request
             .post(url)
-            .send(data)
+            .send(entity)
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                handleResponse(err, res, successCallback);
+            })
+        ;
+    },
+
+    updateUser: function(entity, successCallback) {
+        var url = Routing.generate('user_update', {id: entity.id});
+
+        request
+            .put(url)
+            .send(entity)
             .set('Accept', 'application/json')
             .end(function(err, res) {
                 handleResponse(err, res, successCallback);

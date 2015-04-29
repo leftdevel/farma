@@ -11,7 +11,10 @@ var UserConstants = keyMirror({
 
     // UI
 
-    USERS_UI_CHANGE_VIEW: null,
+    USERS_UI_TOGGLE_LIST: null,
+    USERS_UI_TOGGLE_CREATE: null,
+    USERS_UI_TOGGLE_EDIT: null,
+    USERS_UI_TOGGLE_UPDATE_PASSWORD: null,
 
     // FORM
 

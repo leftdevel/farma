@@ -5,6 +5,7 @@ var UserActions = require('../actions/user-actions');
 var Wrapper = require('./wrapper');
 var List = require('./users/list.js');
 var Create = require('./users/create.js');
+var Edit = require('./users/edit.js');
 var CreateLink = require('./core/create-link');
 
 function getState() {
@@ -13,6 +14,7 @@ function getState() {
         view: UserStore.getView(),
         createFields: UserStore.getCreateFields(),
         editFields: UserStore.getEditFields(),
+        isUpdatePassword: UserStore.isUpdatePassword(),
     };
 }
 
@@ -35,17 +37,21 @@ module.exports = React.createClass({
 
     render: function() {
         var isCreateLinkVisible = this.state.view === 'list';
-        var isCreateVisible = this.state.view === 'create' || this.state.view === 'edit';
+        var isCreateVisible = this.state.view === 'create';
+        var isEditVisible = this.state.view === 'edit';
         var isListVisible = this.state.view === 'list';
 
         return (
             <Wrapper title="Usuarios del Sistema">
 
                 <div className={isCreateLinkVisible ? '' : 'hide'}>
-                    <CreateLink title='Crear nuevo usuarios' clickHandler={this._switch.bind(null, 'create')} />
+                    <CreateLink title='Crear nuevo usuarios' clickHandler={UserActions.toggleCreateView} />
                 </div>
                 <div className={isCreateVisible ? '' : 'hide'}>
-                    <Create fields={this.state.createFields} mode={this.state.view === 'edit' ? 'edit' : 'create'} />
+                    <Create fields={this.state.createFields} />
+                </div>
+                <div className={isEditVisible ? '' : 'hide'}>
+                    <Edit fields={this.state.editFields} isUpdatePassword={this.state.isUpdatePassword} />
                 </div>
                 <div className={isListVisible ? '' : 'hide'}>
                     <List users={this.state.users} />
@@ -53,9 +59,5 @@ module.exports = React.createClass({
 
             </Wrapper>
         );
-    },
-
-    _switch: function(view) {
-        UserActions.changeView(view);
     }
 });

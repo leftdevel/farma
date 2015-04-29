@@ -1,6 +1,6 @@
 var React = require('react');
+var UserActions = require('../../actions/user-actions');
 var UserUtils = require('../../utils/user-utils');
-
 var rolesMap = UserUtils.getRolesMap();
 
 function getRoleLabel(value) {
@@ -23,7 +23,7 @@ module.exports = React.createClass({
                     <td>{getRoleLabel(user.flat_roles)}</td>
                     <td>
                         <a
-                            onClick={this._enterEditMode.bind(null, user.id)}
+                            onClick={this._onEditClick.bind(null, user.id)}
                             className="waves-effect waves-light"
                         >
                             <i className="mdi-editor-mode-edit right"></i>
@@ -50,8 +50,8 @@ module.exports = React.createClass({
         );
     },
 
-    _enterEditMode: function(id) {
-        // Call an action
-        console.log('Entering edit mode for ' + id);
+    _onEditClick: function(userId, event) {
+        event.preventDefault();
+        UserActions.toggleEditView(userId)
     }
 });

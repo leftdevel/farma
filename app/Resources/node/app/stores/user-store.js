@@ -55,6 +55,10 @@ function changeView(view) {
     _data.view = view;
 }
 
+function toggleUpdatePassword() {
+    _data.form.edit.update_password = !_data.form.edit.update_password;
+}
+
 // FORM
 
 function updateFormValue(propertyPath, value) {
@@ -94,25 +98,42 @@ function setFormErrors(errors) {
     }
 }
 
-// STORE
 
-var UserStore = assign({}, EventEmitter.prototype, {
-    getUsers: function() {
-        return _data.users;
-    },
+function prefillEditForm(userId) {
+    var user = findOneUserById(userId);
 
-    findOne: function(id) {
-        var users = _data.users;
+    if (!user) {
+        var errorMessage = 'User not found!';
+        alert(errorMessage);
+        throw errorMessage;
+    }
+
+    _data.form.edit.userId = userId;
+    var fields = getFieldsForCurrentView();
+    fields.full_name.value = user.full_name;
+    fields.email.value = user.email;
+    fields.flat_roles.value = user.flat_roles;
+}
+
+function findOneUserById(userId) {
+    var users = _data.users;
 
         for (var i in users) {
             var user = users[i];
 
-            if (user.id === id) {
+            if (user.id === userId) {
                 return user;
             }
         }
 
         return null;
+}
+
+// STORE
+
+var UserStore = assign({}, EventEmitter.prototype, {
+    getUsers: function() {
+        return _data.users;
     },
 
     getView: function() {
@@ -127,6 +148,10 @@ var UserStore = assign({}, EventEmitter.prototype, {
         return _data.form.edit.fields;
     },
 
+    isUpdatePassword: function() {
+        return _data.form.edit.update_password;
+    },
+
     getFormEntity: function() {
         var fields = getFieldsForCurrentView();
         var entity = {};
@@ -136,7 +161,7 @@ var UserStore = assign({}, EventEmitter.prototype, {
         entity.flat_roles = fields.flat_roles.value;
 
         if (_data.view === 'edit') {
-            entity.userId = _data.form.edit.userId;
+            entity.id = _data.form.edit.userId;
 
             if (_data.form.edit.update_password) {
                 entity.password = fields.password.value;
@@ -167,6 +192,9 @@ AppDispatcher.register(function(action) {
     var text;
 
     switch(action.actionType) {
+
+        // CRUD
+
         case UserConstants.USERS_SET_ALL:
             setUsers(action.users);
             UserStore.emitChange();
@@ -177,11 +205,34 @@ AppDispatcher.register(function(action) {
             UserStore.emitChange();
             break;
 
-        case UserConstants.USERS_UI_CHANGE_VIEW:
-            changeView(action.view);
+
+        // UI
+
+        case UserConstants.USERS_UI_TOGGLE_LIST:
+            changeView('list');
             clearFields();
             UserStore.emitChange();
             break;
+
+        case UserConstants.USERS_UI_TOGGLE_CREATE:
+            changeView('create');
+            clearFields();
+            UserStore.emitChange();
+            break;
+
+        case UserConstants.USERS_UI_TOGGLE_EDIT:
+            changeView('edit');
+            clearFields();
+            prefillEditForm(action.userId);
+            UserStore.emitChange();
+            break;
+
+        case UserConstants.USERS_UI_TOGGLE_UPDATE_PASSWORD:
+            toggleUpdatePassword();
+            UserStore.emitChange();
+            break;
+
+        // FORM
 
         case UserConstants.USERS_FORM_UPDATE_VALUE:
             updateFormValue(action.propertyPath, action.value);

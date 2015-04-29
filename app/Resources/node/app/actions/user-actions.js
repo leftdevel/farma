@@ -40,12 +40,47 @@ var UserActions = {
         UserActions.fetchUsers();
     },
 
+    updateUser: function(data) {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_CREATE,
+        });
+
+        UserApi.updateUser(data, UserActions.updateUserSuccess);
+    },
+
+    updateUserSuccess: function() {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_CREATE_SUCCESS
+        });
+
+        // @TODO Move this to a socket aware util
+        UserActions.fetchUsers();
+    },
+
     // UI
 
-    changeView: function(view) {
+    toggleListView: function() {
         AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_UI_CHANGE_VIEW,
-            view: view
+            actionType: UserConstants.USERS_UI_TOGGLE_LIST,
+        });
+    },
+
+    toggleCreateView: function() {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_UI_TOGGLE_CREATE,
+        });
+    },
+
+    toggleEditView: function(userId) {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_UI_TOGGLE_EDIT,
+            userId: userId
+        });
+    },
+
+    toggleUpdatePassword: function() {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_UI_TOGGLE_UPDATE_PASSWORD
         });
     },
 
