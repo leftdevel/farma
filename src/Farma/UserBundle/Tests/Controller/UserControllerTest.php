@@ -89,7 +89,7 @@ class UserControllerTest extends FunctionalTestUtil
             'full_name' => 'John Doe',
             'email' => 'john@farma.com',
             'password' => 'farma',
-            'flat_roles' => 'ROLE_SELLER'
+            'roles' => array('ROLE_SELLER')
         ));
 
         $this->client->request('POST', $url, array(), array(), array(), $input);
@@ -106,7 +106,7 @@ class UserControllerTest extends FunctionalTestUtil
             'full_name' => 'admin',
             'email' => 'admin@farma.com',
             'password' => 'farma',
-            'flat_roles' => 'ROLE_ADMIN'
+            'roles' => array('ROLE_ADMIN')
         ));
 
         $this->client->request('POST', $url, array(), array(), array(), $input);
@@ -123,7 +123,7 @@ class UserControllerTest extends FunctionalTestUtil
             'full_name' => 'John Doe',
             'email' => 'john@farma.com',
             'password' => 'farma',
-            'flat_roles' => 'ROLE_ADMIN'
+            'roles' => array('ROLE_ADMIN')
         ));
 
         $this->client->request('POST', $url, array(), array(), array(), $input);
@@ -144,7 +144,7 @@ class UserControllerTest extends FunctionalTestUtil
         $input = json_encode(array(
             'full_name' => 'Some other name',
             'email' => $seller->getEmail(),
-            'flat_roles' => $seller->getFlatRoles(),
+            'roles' => $seller->getRoles(),
         ));
 
         // ANON
@@ -174,7 +174,7 @@ class UserControllerTest extends FunctionalTestUtil
         $input = json_encode(array(
             'full_name' => 'Some other name',
             'email' => $superAdmin->getEmail(),
-            'flat_roles' => $superAdmin->getFlatRoles(),
+            'roles' => $superAdmin->getRoles(),
         ));
 
         $this->authenticateClientForUser($this->client, $admin);

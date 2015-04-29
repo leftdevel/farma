@@ -105,11 +105,6 @@ class User implements UserInterface, \Serializable
         return $this->created;
     }
 
-    public function setFlatRoles($flatRoles)
-    {
-        $this->flatRoles = $flatRoles;
-    }
-
     public function getFlatRoles()
     {
         return $this->flatRoles;
@@ -146,7 +141,7 @@ class User implements UserInterface, \Serializable
     {
         foreach ($roles as $role) {
             if (!in_array($role, UserRole::getRoles())) {
-                throw new \Exception('Invalid role: '.$role);
+                throw new UserException('Invalid role: '.$role);
             }
         }
 
@@ -155,7 +150,12 @@ class User implements UserInterface, \Serializable
 
     public function getRoles()
     {
-        return !$this->flatRoles ? array() : explode(',', $this->flatRoles);
+        return self::transformFlatRolesToArray($this->flatRoles);
+    }
+
+    public static function transformFlatRolesToArray($flatRoles = '')
+    {
+        return !$flatRoles ? array() : explode(',', $flatRoles);
     }
 
     public function addRole($role)
@@ -187,6 +187,16 @@ class User implements UserInterface, \Serializable
             $this->email,
             $this->password
         ) = unserialize($serialized);
+    }
+
+    public function toArray()
+    {
+        return array(
+            'id' => $this->getId(),
+            'full_name' => $this->getFullName(),
+            'email' => $this->getEmail(),
+            'roles' => $this->getRoles(),
+        );
     }
 
     // VALIDATION

@@ -10,7 +10,6 @@ use Farma\BaseBundle\Event\Event,
     Farma\UserBundle\Entity\User,
     Farma\UserBundle\Model\UserRole;
 
-
 // @TODO move this class to a socket notification bundle
 class RolesUpdatedListener extends BaseEventListener
 {

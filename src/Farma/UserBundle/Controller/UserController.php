@@ -14,6 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use Farma\UserBundle\Entity\User,
+    Farma\UserBundle\Entity\UserException,
     Farma\UserBundle\Model\UserRole,
     Farma\UserBundle\Api\UserApiException;
 
@@ -48,6 +49,9 @@ class UserController extends Controller
             $this->get('user.api')->create($input);
             return new JsonResponse(array('success' => true), 201);
 
+        } catch (UserException $e) {
+            throw new BadRequestHttpException();
+
         } catch (UserApiException $e) {
             throw new BadRequestHttpException();
         }
@@ -74,6 +78,9 @@ class UserController extends Controller
         try {
             $this->get('user.api')->update($user, $input);
             return new JsonResponse(array('success' => true));
+
+        } catch (UserException $e) {
+            throw new BadRequestHttpException();
 
         } catch (UserApiException $e) {
             throw new BadRequestHttpException();

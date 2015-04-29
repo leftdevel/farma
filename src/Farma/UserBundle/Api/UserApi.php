@@ -21,6 +21,8 @@ class UserApi
     private $validator;
     private $eventPocessor;
 
+    private $safeSelectColumns;
+
     public function __construct(
         UserRepository $repository,
         UserPasswordEncoderInterface $passwordEncoder,
@@ -31,12 +33,39 @@ class UserApi
         $this->passwordEncoder = $passwordEncoder;
         $this->validator = $validator;
         $this->eventProcessor = $eventProcessor;
+
+        $this->safeSelectColumns = array('id', 'full_name', 'email', 'flat_roles', 'created');
     }
 
     public function listAll()
     {
-        $columns = array('id', 'full_name', 'email', 'flat_roles', 'created');
-        return $this->repository->findWithColumns($columns);
+        $users = $this->repository->findWithColumns($this->safeSelectColumns);
+        $normalizedUsers = array();
+
+        foreach ($users as $user) {
+            $normalizedUsers[] = $this->normalizeUser($user);
+        }
+
+        return $normalizedUsers;
+    }
+
+    public function findOneById($id)
+    {
+        $user = $this->repository->findOneByIdWithColumns($id, $this->safeSelectColumns);
+
+        if (!$user) {
+            return null;
+        }
+
+        return $this->normalizeUser($user);
+    }
+
+    private function normalizeUser(array $user)
+    {
+        $user['roles'] = User::transformFlatRolesToArray($user['flat_roles']);
+        unset($user['flat_roles']);
+
+        return $user;
     }
 
     public function create(array $input)
@@ -88,7 +117,7 @@ class UserApi
 
     private function bindAndValidateUser(UserInterface $user, array $input)
     {
-        $allowedColumns = array('full_name', 'email', 'flat_roles');
+        $allowedColumns = array('full_name', 'email', 'roles');
 
         if (count(array_diff($allowedColumns, array_keys($input))) !== 0) {
             throw new UserApiException('Missing properties');
@@ -96,7 +125,7 @@ class UserApi
 
         $user->setFullName(trim($input['full_name']));
         $user->setEmail(trim($input['email']));
-        $user->setFlatRoles(trim($input['flat_roles']));
+        $user->setRoles($input['roles']);
 
         if (isset($input['password'])) {
             $rawPassword = trim($input['password']);

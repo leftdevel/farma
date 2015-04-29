@@ -16,7 +16,19 @@ class UserRepository extends EntityRepository
     {
         $query = "SELECT ".implode(', ', $columns)." FROM member ORDER BY id ASC";
         $conn = $this->getEntityManager()->getConnection();
+
         return $conn->fetchAll($query);
+    }
+
+    public function findOneByIdWithColumns($id, array $columns)
+    {
+        $query = "SELECT ".implode(', ', $columns)." FROM member WHERE id = ? LIMIT 1";
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare($query);
+        $stmt->bindValue(1, intval($id));
+        $stmt->execute();
+
+        return $stmt->fetch();
     }
 
     public function findOneIdByEmail($email)

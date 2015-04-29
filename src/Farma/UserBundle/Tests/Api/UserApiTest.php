@@ -34,12 +34,33 @@ class UserApiTest extends FunctionalTestUtil
         $records = $this->userApi->listAll();
         $this->assertEquals(4, count($records));
 
-        $expectedColumns = array('id', 'full_name', 'email', 'flat_roles', 'created');
+        $expectedColumns = array('id', 'full_name', 'email', 'roles', 'created');
         $actualColumns = array_keys($records[0]);
 
         $this->assertEquals(count($expectedColumns), count($actualColumns));
         $this->assertEquals(0, count(array_diff($expectedColumns, $actualColumns)));
         $this->assertEquals('Superadmin Farma', $records[0]['full_name']);
+        $this->assertTrue(is_array($records[0]['roles']));
+    }
+
+    // FIND
+
+    public function testFindOneById()
+    {
+        $unexistingId = 10000;
+        $result = $this->userApi->findOneById($unexistingId);
+        $this->assertNull($result);
+
+        $existingId = 1;
+        $result = $this->userApi->findOneById($existingId);
+        $this->assertNotNull($result);
+        $this->assertTrue(isset($result['id']));
+        $this->assertTrue(isset($result['full_name']));
+        $this->assertTrue(isset($result['email']));
+        $this->assertTrue(isset($result['roles']));
+        $this->assertTrue(is_array($result['roles']));
+
+        $this->assertFalse(isset($result['password']));
     }
 
     // CREATE
@@ -64,12 +85,12 @@ class UserApiTest extends FunctionalTestUtil
 
     public function testCreate_fail_invalid_role()
     {
-        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
+        $this->setExpectedException('Farma\UserBundle\Entity\UserException');
         $input = array(
             'full_name' => 'John Doe 2',
             'email' => 'jhon@farma.com',
             'password' => 'farma',
-            'flat_roles' => 'ROLE_DOES_NOT_EXISTS'
+            'roles' => array('ROLE_DOES_NOT_EXISTS')
         );
         $this->userApi->create($input);
     }
@@ -81,7 +102,7 @@ class UserApiTest extends FunctionalTestUtil
             'full_name' => 'John Doe 3',
             'email' => 'jhon@farma.com',
             'password' => 'farma',
-            'flat_roles' => UserRole::SUPER_ADMIN,
+            'roles' => array(UserRole::SUPER_ADMIN),
         );
         $this->userApi->create($input);
     }
@@ -93,7 +114,7 @@ class UserApiTest extends FunctionalTestUtil
             'full_name' => 'John Doe 4',
             'email' => 'admin@farma.com',
             'password' => 'farma',
-            'flat_roles' => UserRole::ADMIN,
+            'roles' => array(UserRole::ADMIN),
         );
         $this->userApi->create($input);
     }
@@ -105,7 +126,7 @@ class UserApiTest extends FunctionalTestUtil
             'full_name' => '',
             'email' => 'admin@farma.com',
             'password' => 'farma',
-            'flat_roles' => UserRole::ADMIN,
+            'roles' => array(UserRole::ADMIN),
         );
         $this->userApi->create($input);
     }
@@ -117,7 +138,7 @@ class UserApiTest extends FunctionalTestUtil
             'full_name' => 'John Doe 5',
             'email' => 'john@farma.com',
             'password' => '',
-            'flat_roles' => UserRole::SALES,
+            'roles' => array(UserRole::SALES),
         );
         $this->userApi->create($input);
     }
@@ -128,7 +149,7 @@ class UserApiTest extends FunctionalTestUtil
             'full_name' => 'John Doe 6',
             'email' => 'jhon@farma.com',
             'password' => 'farma',
-            'flat_roles' => UserRole::ADMIN,
+            'roles' => array(UserRole::ADMIN),
         );
 
         $this->userApi->create($input);
@@ -155,7 +176,7 @@ class UserApiTest extends FunctionalTestUtil
         $input = array(
             'full_name' => 'John Doe 77',
             'email' => 'admin@farma.com',
-            'flat_roles' => UserRole::ADMIN,
+            'roles' => array(UserRole::ADMIN),
         );
 
         $this->userApi->update($seller, $input);
@@ -168,7 +189,7 @@ class UserApiTest extends FunctionalTestUtil
         $input = array(
             'full_name' => $superAdmin->getFullName(),
             'email' => $superAdmin->getEmail(),
-            'flat_roles' => UserRole::ADMIN,
+            'roles' => array(UserRole::ADMIN),
         );
         $this->userApi->update($superAdmin, $input);
     }
@@ -180,7 +201,7 @@ class UserApiTest extends FunctionalTestUtil
         $input = array(
             'full_name' => $seller->getFullName(),
             'email' => $seller->getEmail(),
-            'flat_roles' => UserRole::SUPER_ADMIN,
+            'roles' => array(UserRole::SUPER_ADMIN),
         );
 
         $this->userApi->update($seller, $input);
@@ -192,7 +213,7 @@ class UserApiTest extends FunctionalTestUtil
         $input = array(
             'full_name' => 'Super Admin Updated',
             'email' => $superAdmin->getEmail(),
-            'flat_roles' => UserRole::SUPER_ADMIN,
+            'roles' => array(UserRole::SUPER_ADMIN),
         );
 
         $this->userApi->update($superAdmin, $input);
@@ -205,7 +226,7 @@ class UserApiTest extends FunctionalTestUtil
         $input = array(
             'full_name' => $seller->getFullName(),
             'email' => $seller->getEmail(),
-            'flat_roles' => UserRole::ADMIN
+            'roles' => array(UserRole::ADMIN)
         );
         $this->userApi->update($seller, $input);
         $this->assertTrue(in_array(UserRole::ADMIN, $seller->getRoles()));
@@ -217,7 +238,7 @@ class UserApiTest extends FunctionalTestUtil
         $input = array(
             'full_name' => $seller->getFullName(),
             'email' => 'newseller@farma.com',
-            'flat_roles' => $seller->getFlatRoles(),
+            'roles' => $seller->getRoles(),
         );
 
         $this->userApi->update($seller, $input);
@@ -230,7 +251,7 @@ class UserApiTest extends FunctionalTestUtil
         $input = array(
             'full_name' => 'New Seller',
             'email' => $seller->getEmail(),
-            'flat_roles' => $seller->getFlatRoles(),
+            'roles' => $seller->getRoles(),
         );
         $this->userApi->update($seller, $input);
         $this->assertEquals('New Seller', $seller->getFullName());
@@ -244,7 +265,7 @@ class UserApiTest extends FunctionalTestUtil
         $input = array(
             'full_name' => $seller->getFullName(),
             'email' => $seller->getEmail(),
-            'flat_roles' => $seller->getFlatRoles(),
+            'roles' => $seller->getRoles(),
         );
         $this->userApi->update($seller, $input);
 
@@ -260,7 +281,7 @@ class UserApiTest extends FunctionalTestUtil
         $input = array(
             'full_name' => $seller->getFullName(),
             'email' => $seller->getEmail(),
-            'flat_roles' => $seller->getFlatRoles(),
+            'roles' => $seller->getRoles(),
             'password' => $newRawPassword,
         );
         $this->userApi->update($seller, $input);
