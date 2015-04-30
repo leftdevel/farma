@@ -6,8 +6,7 @@ var EventEmitter = require('events').EventEmitter;
 var SettingsUtil = require('../utils/settings-utils');
 var UserConstants = require('../constants/user-constants');
 var UserUtils = require('../utils/user-utils');
-var roles = UserUtils.getRoles();
-
+var _roles = UserUtils.getRoles();
 
 var CHANGE_EVENT = 'change';
 var allowedViews = ['list', 'create', 'edit'];
@@ -15,7 +14,7 @@ var allowedViews = ['list', 'create', 'edit'];
 var defaultFields = {
     full_name: {value: '', error: ''},
     email: {value: '', error: ''},
-    roles: {value: roles.ROLE_ADMIN, error: ''}, // One role at a time for current version.
+    roles: {value: _roles.ROLE_ADMIN, error: ''}, // One role at a time for current version.
     password: {value: '', error: ''},
     repeat_password: {value: '', error: ''}
 };
@@ -41,7 +40,13 @@ var _data = {
 // lIST
 
 function setUsers(users) {
-    _data.users = users;
+    if (SettingsUtil.isSuperAdmin()) {
+        _data.users = users;
+    } else {
+        _data.users = users.filter(function(user) {
+            return user.roles.indexOf(_roles.ROLE_SUPER_ADMIN) === -1;
+        });
+    }
 }
 
 // UI
