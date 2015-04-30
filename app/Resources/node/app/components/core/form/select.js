@@ -27,6 +27,7 @@ module.exports = React.createClass({
                         className="browser-default"
                         id={this.props.id}
                         value={this.props.value}
+                        disabled={this.props.disabled}
                         onChange={this._onChange}>
                         {this._getOptions()}
                     </select>

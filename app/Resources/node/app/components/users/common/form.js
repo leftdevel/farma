@@ -5,6 +5,7 @@ var Select = require('../../core/form/select');
 var SubmitCancelButton = require('../../core/form/submit-cancel-button');
 
 var UserUtils = require('../../../utils/user-utils');
+var _roles = UserUtils.getRoles();
 var UserActions = require('../../../actions/user-actions');
 
 module.exports = React.createClass({
@@ -14,6 +15,7 @@ module.exports = React.createClass({
         changeHandler: React.PropTypes.func.isRequired,
         submitLabel: React.PropTypes.string.isRequired,
         submitHandler: React.PropTypes.func.isRequired
+
     },
 
     render: function() {
@@ -38,12 +40,13 @@ module.exports = React.createClass({
                     error={fields.email.error} />
 
                 <Select
-                    id="roles"
-                    label="Permisos"
-                    value={fields.roles.value}
+                    id="role"
+                    value={fields.role.value}
+                    label={this._getSelectRoleLabel()}
+                    disabled={this._isSelectRoleDisabled()}
+                    options={this._getSelectRoleOptions()}
                     changeHandler={this.props.changeHandler}
-                    error={fields.roles.error}
-                    options={UserUtils.getRoleFormOptions()} />
+                    error={fields.role.error} />
 
                 {this.props.children}
 
@@ -53,6 +56,22 @@ module.exports = React.createClass({
                     submitHandler={this.props.submitHandler} />
             </form>
         );
+    },
+
+    _isSuperAdmin: function() {
+        return this.props.fields.role.value === _roles.ROLE_SUPER_ADMIN;
+    },
+
+    _getSelectRoleLabel: function() {
+        return this._isSuperAdmin() ? 'Permiso \u00b7 NO MODIFICABLE PARA ESTE USUARIO' : 'Permisos';
+    },
+
+    _isSelectRoleDisabled: function() {
+        return this._isSuperAdmin();
+    },
+
+    _getSelectRoleOptions: function() {
+        return this._isSuperAdmin() ? UserUtils.getRoleFormOptionsForSuperAdmin() : UserUtils.getRoleFormOptions();
     },
 
     _onCancel: function() {

@@ -29,6 +29,10 @@ module.exports = {
         });
     },
 
+    getRoleFormOptionsForSuperAdmin: function() {
+        return [{value: _roles.ROLE_SUPER_ADMIN, label: 'dueño'}];
+    },
+
     getLabelForRoles: function(roles) {
         var labels = [];
 
