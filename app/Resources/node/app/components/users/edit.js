@@ -7,9 +7,12 @@ var ValidationSchema = require('./common/validation-schema');
 var Text = require('../core/form/text');
 var UserStore = require('../../stores/user-store');
 
-module.exports = React.createClass({
+var FormMixin = require('./common/form-mixin');
+
+var Edit = React.createClass({
+    mixins: [FormMixin],
+
     propTypes: {
-        fields: React.PropTypes.object.isRequired,
         isUpdatePassword: React.PropTypes.bool.isRequired
     },
 
@@ -19,10 +22,10 @@ module.exports = React.createClass({
         return (
             <Form
                 fields={fields}
-                changeHandler={this._changeHandler}
+                changeHandler={this.props.changeHandler}
                 title="Actualizar Usuario"
                 submitLabel="Actualizar"
-                submitHandler={this._onSubmit}>
+                submitHandler={this.props.submitHandler}>
 
                 {this._getPasswordToggler()}
 
@@ -32,7 +35,7 @@ module.exports = React.createClass({
                         id="password"
                         label="Nueva Contraseña"
                         value={fields.password.value}
-                        changeHandler={this._changeHandler}
+                        changeHandler={this.props.changeHandler}
                         error={fields.password.error} />
 
                     <Text
@@ -40,7 +43,7 @@ module.exports = React.createClass({
                         id="repeat_password"
                         label="Confirmar Nueva Contraseña"
                         value={fields.repeat_password.value}
-                        changeHandler={this._changeHandler}
+                        changeHandler={this.props.changeHandler}
                         error={fields.repeat_password.error} />
                 </div>
 
@@ -65,23 +68,7 @@ module.exports = React.createClass({
         UserActions.toggleUpdatePassword();
     },
 
-    _changeHandler: function(propertyPath, value) {
-        UserActions.updateFormValue(propertyPath, value);
-    },
-
-    _onSubmit: function() {
-        var mapValidator = this._validate();
-
-        if (mapValidator.hasErrors) {
-            UserActions.setFormErrors(mapValidator.errors);
-            return;
-        }
-
-        var entity = UserStore.getFormEntity();
-        UserActions.updateUser(entity);
-    },
-
-    _validate: function() {
+    getMapValidator: function() {
         var mapValidator = new MapValidator();
         var fields = this.props.fields;
 
@@ -98,8 +85,8 @@ module.exports = React.createClass({
             ;
         }
 
-        mapValidator.validateAll();
-
         return mapValidator;
     },
 });
+
+module.exports = Edit;

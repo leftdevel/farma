@@ -18,7 +18,7 @@ function getState() {
     };
 }
 
-module.exports = React.createClass({
+var Users = React.createClass({
     getInitialState: function() {
         return getState();
     },
@@ -49,11 +49,20 @@ module.exports = React.createClass({
                 </div>
 
                 <div className={isCreateVisible ? '' : 'hide'}>
-                    <Create fields={this.state.createFields} />
+                    <Create
+                        ref="Create"
+                        fields={this.state.createFields}
+                        changeHandler={this._formChangeHandler}
+                        submitHandler={this._formSubmitHandler.bind(null, 'create')}/>
                 </div>
 
                 <div className={isEditVisible ? '' : 'hide'}>
-                    <Edit fields={this.state.editFields} isUpdatePassword={this.state.isUpdatePassword}/>
+                    <Edit
+                        ref="Edit"
+                        fields={this.state.editFields}
+                        isUpdatePassword={this.state.isUpdatePassword}
+                        changeHandler={this._formChangeHandler}
+                        submitHandler={this._formSubmitHandler.bind(null, 'edit')}/>
                 </div>
 
                 <div className={isListVisible ? '' : 'hide'}>
@@ -62,5 +71,36 @@ module.exports = React.createClass({
 
             </Wrapper>
         );
-    }
+    },
+
+    _formChangeHandler: function(propertyPath, value) {
+        UserActions.updateFormValue(propertyPath, value);
+    },
+
+    _formSubmitHandler: function(action) {
+        var actions = ['edit', 'create'];
+        if (actions.indexOf(action) === -1) {
+            var errorMessage = 'invalid action ' + action;
+            alert(errorMessage);
+            throw errorMessage;
+        }
+
+        var mapValidator = action === 'create' ? this.refs.Create.getMapValidator() : this.refs.Edit.getMapValidator();
+        mapValidator.validateAll();
+
+        if (mapValidator.hasErrors) {
+            UserActions.setFormErrors(mapValidator.errors);
+            return;
+        }
+
+        var entity = UserStore.getFormEntity();
+
+        if (action === 'create') {
+            UserActions.createUser(entity);
+        } else {
+            UserActions.updateUser(entity);
+        }
+    },
 });
+
+module.exports = Users;

@@ -8,13 +8,14 @@ var UserUtils = require('../../../utils/user-utils');
 var _roles = UserUtils.getRoles();
 var UserActions = require('../../../actions/user-actions');
 
-module.exports = React.createClass({
+var FormMixin = require('./form-mixin');
+
+var Form = React.createClass({
+    mixins: [FormMixin],
+
     propTypes: {
-        fields: React.PropTypes.object.isRequired,
         title: React.PropTypes.string.isRequired,
-        changeHandler: React.PropTypes.func.isRequired,
-        submitLabel: React.PropTypes.string.isRequired,
-        submitHandler: React.PropTypes.func.isRequired,
+        submitLabel: React.PropTypes.string.isRequired
     },
 
     render: function() {
@@ -62,7 +63,7 @@ module.exports = React.createClass({
     },
 
     _getSelectRoleLabel: function() {
-        return this._isSuperAdmin() ? 'Permiso \u00b7 NO MODIFICABLE PARA ESTE USUARIO' : 'Permisos';
+        return this._isSuperAdmin() ? 'Permisos \u00b7 NO MODIFICABLE PARA ESTE USUARIO' : 'Permisos';
     },
 
     _isSelectRoleDisabled: function() {
@@ -77,3 +78,5 @@ module.exports = React.createClass({
         UserActions.toggleListView();
     }
 });
+
+module.exports = Form;
