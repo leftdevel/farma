@@ -34,7 +34,7 @@ class UserController extends Controller
     }
 
     /**
-     * @Route("/whoami", name="user_who_am_i")
+     * @Route("/whoami", name="user_who_am_i", defaults={"_format" = "json"}, options={"expose" = true})
      * @Security("has_role('ROLE_USER')")
      */
     public function whoAmIAction()
