@@ -3,16 +3,6 @@ var UserActions = require('../../actions/user-actions');
 var UserUtils = require('../../utils/user-utils');
 var rolesMap = UserUtils.getRolesMap();
 
-function getRoleLabel(value) {
-    for (var i in rolesMap) {
-        var role = rolesMap[i];
-
-        if (role.value === value) {
-            return role.label;
-        }
-    }
-}
-
 module.exports = React.createClass({
     render: function() {
         var records = this.props.users.map(function(user) {
@@ -20,7 +10,7 @@ module.exports = React.createClass({
                 <tr key={user.id}>
                     <td>{user.full_name}</td>
                     <td>{user.email}</td>
-                    <td>{getRoleLabel(user.flat_roles)}</td>
+                    <td>{UserUtils.getLabelForRoles(user.roles)}</td>
                     <td>
                         <a
                             onClick={this._onEditClick.bind(null, user.id)}

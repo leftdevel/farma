@@ -38,11 +38,11 @@ module.exports = React.createClass({
                     error={fields.email.error} />
 
                 <Select
-                    id="flat_roles"
+                    id="roles"
                     label="Permisos"
-                    value={fields.flat_roles.value}
+                    value={fields.roles.value}
                     changeHandler={this.props.changeHandler}
-                    error={fields.flat_roles.error}
+                    error={fields.roles.error}
                     options={UserUtils.getRoleFormOptions()} />
 
                 {this.props.children}

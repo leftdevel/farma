@@ -27,5 +27,35 @@ module.exports = {
         return this.getRolesMap().filter(function(role) {
             return role.value !== _roles.ROLE_SUPER_ADMIN;
         });
+    },
+
+    getLabelForRoles: function(roles) {
+        var labels = [];
+
+        for (var i in roles) {
+            var role = roles[i];
+            var label = this.getLabelForRole(role);
+
+            if (!label) {
+                var errorMessage = 'Invalid role ' + role;
+                alert(errorMessage);
+                throw errorMessage;
+            }
+
+            labels.push(label);
+        }
+
+        return labels.join(', ');
+    },
+
+    getLabelForRole: function(role) {
+        var map = this.getRolesMap();
+        for (var i in map) {
+            var roleInLoop = map[i];
+
+            if (roleInLoop.value == role) {
+                return roleInLoop.label;
+            }
+        }
     }
 };

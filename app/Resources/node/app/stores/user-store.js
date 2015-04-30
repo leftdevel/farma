@@ -14,7 +14,7 @@ var allowedViews = ['list', 'create', 'edit'];
 var defaultFields = {
     full_name: {value: '', error: ''},
     email: {value: '', error: ''},
-    flat_roles: {value: roles.ROLE_ADMIN, error: ''},
+    roles: {value: roles.ROLE_ADMIN, error: ''}, // One role at a time for current version.
     password: {value: '', error: ''},
     repeat_password: {value: '', error: ''}
 };
@@ -112,7 +112,11 @@ function prefillEditForm(userId) {
     var fields = getFieldsForCurrentView();
     fields.full_name.value = user.full_name;
     fields.email.value = user.email;
-    fields.flat_roles.value = user.flat_roles;
+
+    // Roles are fetched as array but we only support
+    // one role at a time in current frontend version
+    // for the form specifically.
+    fields.roles.value = user.roles[0];
 }
 
 function findOneUserById(userId) {
@@ -158,7 +162,7 @@ var UserStore = assign({}, EventEmitter.prototype, {
 
         entity.full_name = fields.full_name.value;
         entity.email = fields.email.value;
-        entity.flat_roles = fields.flat_roles.value;
+        entity.roles = [fields.roles.value]; // Backend API expects array
 
         if (_data.view === 'edit') {
             entity.id = _data.form.edit.userId;
