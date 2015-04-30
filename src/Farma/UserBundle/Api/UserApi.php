@@ -34,7 +34,7 @@ class UserApi
         $this->validator = $validator;
         $this->eventProcessor = $eventProcessor;
 
-        $this->safeSelectColumns = array('id', 'full_name', 'email', 'flat_roles', 'created');
+        $this->safeSelectColumns = array('id', 'full_name', 'email', 'flat_roles');
     }
 
     public function listAll()

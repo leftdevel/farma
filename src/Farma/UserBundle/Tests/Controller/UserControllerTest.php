@@ -79,29 +79,6 @@ class UserControllerTest extends FunctionalTestUtil
         $this->assertEquals('Superadmin Farma', $records[0]['full_name']);
     }
 
-    public function testWhoAmIAction_security()
-    {
-        $url = $this->router->generate('user_who_am_i');
-        $this->client->request('GET', $url);
-        $this->assertEquals(Response::HTTP_FOUND, $this->client->getResponse()->getStatusCode());
-
-        $grocer = $this->findGrocer();
-        $this->authenticateClientForUser($this->client, $grocer);
-        $this->client->request('GET', $url);
-        $this->assertEquals(Response::HTTP_OK, $this->client->getResponse()->getStatusCode());
-    }
-
-    public function testWhoAmIAction_response()
-    {
-        $url = $this->router->generate('user_who_am_i');
-        $grocer = $this->findGrocer();
-        $this->authenticateClientForUser($this->client, $grocer);
-        $this->client->request('GET', $url);
-        $user = @json_decode($this->client->getResponse()->getContent(), true);
-        $this->assertNotNull($user);
-        $this->assertEquals($grocer->getFullName(), $user['full_name']);
-    }
-
     // CREATE
 
     public function testCreateAction_security()

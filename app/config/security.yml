@@ -31,3 +31,4 @@ security:
     access_control:
         - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/app, roles: ROLE_USER }
+        - { path: ^/api/users, roles: ROLE_ADMIN }

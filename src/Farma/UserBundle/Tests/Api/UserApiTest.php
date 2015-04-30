@@ -34,7 +34,7 @@ class UserApiTest extends FunctionalTestUtil
         $records = $this->userApi->listAll();
         $this->assertEquals(4, count($records));
 
-        $expectedColumns = array('id', 'full_name', 'email', 'roles', 'created');
+        $expectedColumns = array('id', 'full_name', 'email', 'roles');
         $actualColumns = array_keys($records[0]);
 
         $this->assertEquals(count($expectedColumns), count($actualColumns));

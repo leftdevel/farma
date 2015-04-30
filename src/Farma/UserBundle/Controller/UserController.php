@@ -10,8 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller,
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method,
     Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter,
-    Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
-    Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+    Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 use Farma\UserBundle\Entity\User,
     Farma\UserBundle\Entity\UserException,
@@ -20,7 +19,6 @@ use Farma\UserBundle\Entity\User,
 
 /**
  * @Route("/users")
- * @Security("has_role('ROLE_ADMIN')")
  */
 class UserController extends Controller
 {
@@ -31,16 +29,6 @@ class UserController extends Controller
     public function listAction()
     {
         return new JsonResponse($this->get('user.api')->listAll());
-    }
-
-    /**
-     * @Route("/whoami", name="user_who_am_i", defaults={"_format" = "json"}, options={"expose" = true})
-     * @Security("has_role('ROLE_USER')")
-     */
-    public function whoAmIAction()
-    {
-        $user = $this->get('security.context')->getToken()->getUser();
-        return new JsonResponse($user->toArray());
     }
 
     /**

@@ -2,9 +2,11 @@
 
 namespace Farma\AppBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller,
+    Symfony\Component\HttpFoundation\JsonResponse;
+
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
+    Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * @Route("/app")
@@ -17,7 +19,21 @@ class AppController extends Controller
      */
     public function indexAction()
     {
-        // @TODO return right role
-        return array('role' => 'ROLE_ADMIN');
+        return array();
+    }
+
+    /**
+     * @Route("/settings", name="app_settings", defaults={"_format" = "json"})
+     */
+    public function settingsAction()
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+        $env = $this->get('kernel')->getEnvironment();
+        $settings = array(
+            'env' => $env,
+            'user' =>  $user->toArray()
+        );
+
+        return new JsonResponse($settings);
     }
 }
