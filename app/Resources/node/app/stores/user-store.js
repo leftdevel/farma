@@ -1,10 +1,9 @@
 var assign = require('object-assign');
 var deepAssign = require('object-assign-deep');
-
-var SettingsStore = require('./settings-store');
-
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var EventEmitter = require('events').EventEmitter;
+
+var SettingsUtil = require('../utils/settings-utils');
 var UserConstants = require('../constants/user-constants');
 var UserUtils = require('../utils/user-utils');
 var roles = UserUtils.getRoles();

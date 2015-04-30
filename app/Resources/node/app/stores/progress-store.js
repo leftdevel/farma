@@ -7,9 +7,6 @@ var EventEmitter = require('events').EventEmitter;
 var assign = require('object-assign');
 
 var UserConstants = require('../constants/user-constants');
-var SettingsConstants = require('../constants/settings-constants');
-
-
 
 var CHANGE_EVENT = 'change';
 
@@ -17,9 +14,6 @@ var _isWorking = false;
 var _queue = 0;
 
 var _increasers = [
-    // SETTINGS
-    SettingsConstants.SETTINGS_FETCH_ALL,
-
     // USERS
     UserConstants.USERS_FETCH_ALL,
     UserConstants.USERS_CREATE,
@@ -27,9 +21,6 @@ var _increasers = [
 ];
 
 var _reducers = [
-    // SETTINGS
-    SettingsConstants.SETTINGS_SET_ALL,
-
     // USERS
     UserConstants.USERS_SET_ALL,
     UserConstants.USERS_CREATE_SUCCESS,

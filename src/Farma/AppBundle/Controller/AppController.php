@@ -19,7 +19,7 @@ class AppController extends Controller
      */
     public function indexAction()
     {
-        return array();
+        return array('settings' => $this->getSettings());
     }
 
     /**
@@ -27,13 +27,17 @@ class AppController extends Controller
      */
     public function settingsAction()
     {
+        return new JsonResponse($this->getSettings());
+    }
+
+    private function getSettings()
+    {
         $user = $this->get('security.context')->getToken()->getUser();
         $env = $this->get('kernel')->getEnvironment();
-        $settings = array(
+
+        return array(
             'env' => $env,
             'user' =>  $user->toArray()
         );
-
-        return new JsonResponse($settings);
     }
 }
