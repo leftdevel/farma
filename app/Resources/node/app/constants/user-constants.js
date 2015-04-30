@@ -1,6 +1,6 @@
 var keyMirror = require('keymirror');
 
-var UserConstants = keyMirror({
+module.exports = keyMirror({
 
     // CRUD
 
@@ -25,5 +25,3 @@ var UserConstants = keyMirror({
     USERS_FORM_UPDATE_VALUE: null,
     USERS_FORM_SET_ERRORS: null
 });
-
-module.exports = UserConstants;
