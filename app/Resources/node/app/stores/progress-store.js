@@ -1,6 +1,6 @@
 
 
-// Should also listen to global error store and decrease _queue;
+// @TODO Should also listen to global error store and reset _queue;
 
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var EventEmitter = require('events').EventEmitter;

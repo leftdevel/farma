@@ -1,6 +1,8 @@
 var assign = require('object-assign');
 var deepAssign = require('object-assign-deep');
 
+var SettingsStore = require('./settings-store');
+
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var UserConstants = require('../constants/user-constants');
@@ -213,7 +215,6 @@ AppDispatcher.register(function(action) {
             changeView('list');
             UserStore.emitChange();
             break;
-
 
         // UI
 
