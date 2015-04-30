@@ -13,7 +13,7 @@ var _isWorking = false;
 var _queue = 0;
 
 var _increasers = [
-    UserConstants.USERS_GET_ALL,
+    UserConstants.USERS_FETCH_ALL,
     UserConstants.USERS_CREATE,
     UserConstants.USERS_UPDATE,
 ];

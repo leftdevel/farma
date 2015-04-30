@@ -4,10 +4,12 @@ var UserConstants = keyMirror({
 
     // CRUD
 
-    USERS_GET_ALL: null,
+    USERS_FETCH_ALL: null,
     USERS_SET_ALL: null,
+
     USERS_CREATE: null,
     USERS_CREATE_SUCCESS: null,
+
     USERS_UPDATE: null,
     USERS_UPDATE_SUCCESS: null,
 

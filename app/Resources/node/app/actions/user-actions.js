@@ -8,7 +8,7 @@ var UserActions = {
 
     fetchUsers: function(isBackground) {
         AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_GET_ALL,
+            actionType: UserConstants.USERS_FETCH_ALL,
             isBackground: isBackground,
         });
 
