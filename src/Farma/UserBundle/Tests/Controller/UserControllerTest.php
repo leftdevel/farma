@@ -89,21 +89,22 @@ class UserControllerTest extends FunctionalTestUtil
         $url = $this->router->generate('user_list', array('email' => $unexistingEmail));
         $this->client->request('GET', $url);
 
-        $users = @json_decode($this->client->getResponse()->getContent());
+        $users = @json_decode($this->client->getResponse()->getContent(), true);
         $this->assertTrue(is_array($users));
         $this->assertEquals(0, count($users));
 
         // 1 result
 
-        $existingEmail = 'grocer@farma.com';
+        $grocer = $this->findGrocer();
+        $existingEmail = $grocer->getEmail();
         $url = $this->router->generate('user_list', array('email' => $existingEmail));
         $this->client->request('GET', $url);
 
-        $users = @json_decode($this->client->getResponse()->getContent());
+        $users = @json_decode($this->client->getResponse()->getContent(), true);
         $this->assertTrue(is_array($users));
         $this->assertEquals(1, count($users));
         $user = $users[0];
-        $this->assertEquals('grocer@farma.com', $user['email']);
+        $this->assertEquals($grocer->getEmail(), $user['email']);
     }
 
     // CREATE

@@ -26,9 +26,10 @@ class UserController extends Controller
      * @Route("/", name="user_list", defaults={"_format" = "json"}, options={"expose" = true})
      * @Method({"GET"})
      */
-    public function listAction()
+    public function listAction(Request $request)
     {
-        return new JsonResponse($this->get('user.api')->listAll());
+        $filters = $request->query->all();
+        return new JsonResponse($this->get('user.api')->listAll($filters));
     }
 
     /**
