@@ -34,6 +34,16 @@ class UserController extends Controller
     }
 
     /**
+     * @Route("/whoami", name="user_who_am_i")
+     * @Security("has_role('ROLE_USER')")
+     */
+    public function whoAmIAction()
+    {
+        $user = $this->get('security.context')->getToken()->getUser();
+        return new JsonResponse($user->toArray());
+    }
+
+    /**
      * @Route("/", name="user_create", defaults={"_format" = "json"}, options={"expose" = true})
      * @Method({"POST"})
      */
