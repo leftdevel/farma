@@ -61,6 +61,8 @@ var ProgressStore = assign({}, EventEmitter.prototype, {
 });
 
 AppDispatcher.register(function(action) {
+    return; // @TODO Leaving for later. Better to focus in perceived performance.
+
     if (action.isBackground) {
         return;
     }

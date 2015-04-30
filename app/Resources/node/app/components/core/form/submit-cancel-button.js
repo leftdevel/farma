@@ -34,6 +34,7 @@ module.exports = React.createClass({
                 <div className="col s12">
                     {submitButton} &nbsp;&nbsp;
                     {cancelButton}
+
                 </div>
             </div>
         );
