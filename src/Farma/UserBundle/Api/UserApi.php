@@ -22,6 +22,7 @@ class UserApi
     private $eventPocessor;
 
     private $safeSelectColumns;
+    private $safeSelectFilters;
 
     public function __construct(
         UserRepository $repository,
@@ -35,11 +36,16 @@ class UserApi
         $this->eventProcessor = $eventProcessor;
 
         $this->safeSelectColumns = array('id', 'full_name', 'email', 'flat_roles');
+        $this->safeSelectFilters = array('email');
     }
 
-    public function listAll()
+    public function listAll(array $filters = array())
     {
-        $users = $this->repository->findWithColumns($this->safeSelectColumns);
+        if (count($filters) > 0 && count(array_diff(array_keys($filters), $this->safeSelectFilters)) !== 0) {
+            throw new UserApiException('Invalid filter');
+        }
+
+        $users = $this->repository->findWithColumns($this->safeSelectColumns, $filters);
         $normalizedUsers = array();
 
         foreach ($users as $user) {

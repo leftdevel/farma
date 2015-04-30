@@ -79,6 +79,33 @@ class UserControllerTest extends FunctionalTestUtil
         $this->assertEquals('Superadmin Farma', $records[0]['full_name']);
     }
 
+    public function testListAction_filter_email()
+    {
+        $this->authenticateClientForUser($this->client, $this->findAdmin());
+
+        // 0 results.
+
+        $unexistingEmail = 'nonexisting@none.com';
+        $url = $this->router->generate('user_list', array('email' => $unexistingEmail));
+        $this->client->request('GET', $url);
+
+        $users = @json_decode($this->client->getResponse()->getContent());
+        $this->assertTrue(is_array($users));
+        $this->assertEquals(0, count($users));
+
+        // 1 result
+
+        $existingEmail = 'grocer@farma.com';
+        $url = $this->router->generate('user_list', array('email' => $existingEmail));
+        $this->client->request('GET', $url);
+
+        $users = @json_decode($this->client->getResponse()->getContent());
+        $this->assertTrue(is_array($users));
+        $this->assertEquals(1, count($users));
+        $user = $users[0];
+        $this->assertEquals('grocer@farma.com', $user['email']);
+    }
+
     // CREATE
 
     public function testCreateAction_security()

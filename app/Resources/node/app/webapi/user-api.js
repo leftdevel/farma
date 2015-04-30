@@ -38,5 +38,16 @@ module.exports = {
                 ApiResponseHandler.handle(err, res, successCallback);
             })
         ;
+    },
+
+    findOneByEmail: function(email, successCallback) {
+        var url = Routing.generate('user_find', {email: email});
+
+        request
+            .get(url)
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                ApiResponseHandler.handle(err, res, successCallback);
+            });
     }
 };

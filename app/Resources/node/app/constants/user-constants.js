@@ -13,9 +13,6 @@ module.exports = keyMirror({
     USERS_UPDATE: null,
     USERS_UPDATE_SUCCESS: null,
 
-    USERS_VALIDATE_EMAIL: null,
-    USERS_VALIDATE_EMAIL_SUCCESS: null,
-
     // UI
 
     USERS_UI_TOGGLE_LIST: null,
@@ -26,5 +23,7 @@ module.exports = keyMirror({
     // FORM
 
     USERS_FORM_UPDATE_VALUE: null,
-    USERS_FORM_SET_ERRORS: null
+    USERS_FORM_SET_ERRORS: null,
+    USERS_FORM_VALIDATE_EMAIL: null,
+    USERS_FORM_VALIDATE_EMAIL_SUCCESS: null,
 });

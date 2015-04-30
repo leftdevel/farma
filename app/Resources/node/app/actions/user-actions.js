@@ -25,6 +25,8 @@ var UserActions = {
         });
     },
 
+    // CREATE
+
     createUser: function(data) {
         if (isSubmitting) return;
         isSubmitting = true;
@@ -46,6 +48,8 @@ var UserActions = {
         // @TODO Move this to a socket aware util
         UserActions.fetchUsers();
     },
+
+    // UPDATE
 
     updateUser: function(data) {
         if (isSubmitting) return;
@@ -110,6 +114,21 @@ var UserActions = {
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_FORM_SET_ERRORS,
             errors: errors
+        });
+    },
+
+    validateFormEmail: function(email) {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_FORM_VALIDATE_EMAIL
+        });
+
+        UserApi.findOneByEmail(email, UserActions.validateFormEmailSuccess);
+    },
+
+    validateFormEmailSuccess: function(user) {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_FORM_VALIDATE_EMAIL_SUCCESS,
+            user: user
         });
     }
 };

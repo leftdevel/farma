@@ -43,6 +43,38 @@ class UserApiTest extends FunctionalTestUtil
         $this->assertTrue(is_array($records[0]['roles']));
     }
 
+    public function testListAll_filter_fail()
+    {
+        $this->setExpectedException('Farma\UserBundle\Api\UserApiException');
+
+        $filters = array(
+            'password' => 'anything'
+        );
+
+        $this->userApi->ListAll($filters);
+    }
+
+    public function testListAll_filter_email()
+    {
+        $filters = array(
+            'email' => 'unexisting@farma.com'
+        );
+
+        $records = $this->userApi->listAll($filters);
+        $this->assertEquals(0, count($records));
+
+        $grocer = $this->findGrocer();
+
+        $filters = array(
+            'email' => $grocer->getEmail(),
+        );
+
+        $records = $this->userApi->listAll($filters);
+        $this->assertEquals(1, count($records));
+        $user = $records[0];
+        $this->assertEquals($grocer->getEmail(), $user['email']);
+    }
+
     // FIND
 
     public function testFindOneById()
