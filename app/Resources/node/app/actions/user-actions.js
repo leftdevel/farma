@@ -2,6 +2,8 @@ var AppDispatcher = require('../dispatcher/app-dispatcher');
 var UserConstants = require('../constants/user-constants');
 var UserApi = require('../webapi/user-api.js');
 
+var isSubmitting = false; // Prevent re-submit
+
 var UserActions = {
 
     // LIST
@@ -24,6 +26,9 @@ var UserActions = {
     },
 
     createUser: function(data) {
+        if (isSubmitting) return;
+        isSubmitting = true;
+
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_CREATE,
         });
@@ -32,6 +37,8 @@ var UserActions = {
     },
 
     createUserSuccess: function() {
+        isSubmitting = false;
+
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_CREATE_SUCCESS
         });
@@ -41,6 +48,9 @@ var UserActions = {
     },
 
     updateUser: function(data) {
+        if (isSubmitting) return;
+        isSubmitting = true;
+
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_UPDATE,
         });
@@ -49,6 +59,8 @@ var UserActions = {
     },
 
     updateUserSuccess: function() {
+        isSubmitting = false;
+
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_UPDATE_SUCCESS
         });

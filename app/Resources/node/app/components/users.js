@@ -14,7 +14,7 @@ function getState() {
         view: UserStore.getView(),
         createFields: UserStore.getCreateFields(),
         editFields: UserStore.getEditFields(),
-        isUpdatePassword: UserStore.isUpdatePassword(),
+        isUpdatePassword: UserStore.isUpdatePassword()
     };
 }
 
@@ -47,12 +47,15 @@ module.exports = React.createClass({
                 <div className={isCreateLinkVisible ? '' : 'hide'}>
                     <CreateLink title='Crear nuevo usuario' clickHandler={UserActions.toggleCreateView} />
                 </div>
+
                 <div className={isCreateVisible ? '' : 'hide'}>
                     <Create fields={this.state.createFields} />
                 </div>
+
                 <div className={isEditVisible ? '' : 'hide'}>
-                    <Edit fields={this.state.editFields} isUpdatePassword={this.state.isUpdatePassword} />
+                    <Edit fields={this.state.editFields} isUpdatePassword={this.state.isUpdatePassword}/>
                 </div>
+
                 <div className={isListVisible ? '' : 'hide'}>
                     <List users={this.state.users} />
                 </div>

@@ -10,7 +10,7 @@ var UserStore = require('../../stores/user-store');
 module.exports = React.createClass({
     propTypes: {
         fields: React.PropTypes.object.isRequired,
-        isUpdatePassword: React.PropTypes.bool.isRequired,
+        isUpdatePassword: React.PropTypes.bool.isRequired
     },
 
     render: function() {

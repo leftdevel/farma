@@ -13,6 +13,9 @@ module.exports = keyMirror({
     USERS_UPDATE: null,
     USERS_UPDATE_SUCCESS: null,
 
+    USERS_VALIDATE_EMAIL: null,
+    USERS_VALIDATE_EMAIL_SUCCESS: null,
+
     // UI
 
     USERS_UI_TOGGLE_LIST: null,

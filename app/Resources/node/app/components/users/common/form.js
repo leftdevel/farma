@@ -14,8 +14,7 @@ module.exports = React.createClass({
         title: React.PropTypes.string.isRequired,
         changeHandler: React.PropTypes.func.isRequired,
         submitLabel: React.PropTypes.string.isRequired,
-        submitHandler: React.PropTypes.func.isRequired
-
+        submitHandler: React.PropTypes.func.isRequired,
     },
 
     render: function() {
