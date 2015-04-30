@@ -4,8 +4,12 @@
 
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var EventEmitter = require('events').EventEmitter;
-var UserConstants = require('../constants/user-constants');
 var assign = require('object-assign');
+
+var UserConstants = require('../constants/user-constants');
+var SettingsConstants = require('../constants/settings-constants');
+
+
 
 var CHANGE_EVENT = 'change';
 
@@ -13,15 +17,23 @@ var _isWorking = false;
 var _queue = 0;
 
 var _increasers = [
+    // SETTINGS
+    SettingsConstants.SETTINGS_FETCH_ALL,
+
+    // USERS
     UserConstants.USERS_FETCH_ALL,
     UserConstants.USERS_CREATE,
     UserConstants.USERS_UPDATE,
 ];
 
 var _reducers = [
+    // SETTINGS
+    SettingsConstants.SETTINGS_SET_ALL,
+
+    // USERS
     UserConstants.USERS_SET_ALL,
     UserConstants.USERS_CREATE_SUCCESS,
-    UserConstants.USERS_UPDATE_SUCCESS
+    UserConstants.USERS_UPDATE_SUCCESS,
 ];
 
 function increaseQueue() {

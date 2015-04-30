@@ -6,6 +6,9 @@ Router.run(routes, function (Handler) {
   React.render(<Handler/>, document.body);
 });
 
-// boot
+// Boot
+var SettingsActions = require('./actions/settings-actions');
 var UserActions = require('./actions/user-actions');
+
+SettingsActions.fetchSettings();
 UserActions.fetchUsers();

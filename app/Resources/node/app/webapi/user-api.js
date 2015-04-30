@@ -1,14 +1,5 @@
 var request = require('superagent');
-
-function handleResponse(err, res, successCallback) {
-    if (err) {
-        alert('ERROR!!!!!');
-        console.log(err);
-        return;
-    }
-
-    successCallback(JSON.parse(res.text));
-}
+var ApiResponseHandler = require('./api-response-handler');
 
 module.exports = {
     fetchUsers: function(successCallback) {
@@ -18,7 +9,7 @@ module.exports = {
             .get(url)
             .set('Accept', 'application/json')
             .end(function(err, res) {
-                handleResponse(err, res, successCallback);
+                ApiResponseHandler.handle(err, res, successCallback);
             })
         ;
     },
@@ -31,7 +22,7 @@ module.exports = {
             .send(entity)
             .set('Accept', 'application/json')
             .end(function(err, res) {
-                handleResponse(err, res, successCallback);
+                ApiResponseHandler.handle(err, res, successCallback);
             })
         ;
     },
@@ -44,7 +35,7 @@ module.exports = {
             .send(entity)
             .set('Accept', 'application/json')
             .end(function(err, res) {
-                handleResponse(err, res, successCallback);
+                ApiResponseHandler.handle(err, res, successCallback);
             })
         ;
     }

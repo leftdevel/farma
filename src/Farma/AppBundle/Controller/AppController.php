@@ -23,7 +23,7 @@ class AppController extends Controller
     }
 
     /**
-     * @Route("/settings", name="app_settings", defaults={"_format" = "json"})
+     * @Route("/settings", name="app_settings", defaults={"_format" = "json"}, options={"expose" = true})
      */
     public function settingsAction()
     {
