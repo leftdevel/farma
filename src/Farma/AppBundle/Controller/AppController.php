@@ -37,6 +37,7 @@ class AppController extends Controller
 
         return array(
             'env' => $env,
+            'logout_url' => $this->generateUrl('_base_logout'),
             'user' =>  $user->toArray()
         );
     }

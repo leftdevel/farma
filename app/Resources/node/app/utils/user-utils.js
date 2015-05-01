@@ -17,9 +17,9 @@ module.exports = {
     getRolesMap: function() {
         return [
             {value: _roles.ROLE_SUPER_ADMIN, label: 'dueño'},
-            {value: _roles.ROLE_ADMIN, label: 'administrador'},
-            {value: _roles.ROLE_SALES, label: 'vendedor'},
-            {value: _roles.ROLE_INVENTORY, label: 'bodeguero'}
+            {value: _roles.ROLE_ADMIN, label: 'administración'},
+            {value: _roles.ROLE_SALES, label: 'ventas'},
+            {value: _roles.ROLE_INVENTORY, label: 'inventario'}
         ];
     },
 

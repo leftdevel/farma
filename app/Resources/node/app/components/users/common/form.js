@@ -63,7 +63,7 @@ var Form = React.createClass({
     },
 
     _getSelectRoleLabel: function() {
-        return this._isSuperAdmin() ? 'Permisos \u00b7 NO MODIFICABLE PARA ESTE USUARIO' : 'Permisos';
+        return this._isSuperAdmin() ? 'Departamento \u00b7 NO MODIFICABLE PARA ESTE USUARIO' : 'Departamento';
     },
 
     _isSelectRoleDisabled: function() {

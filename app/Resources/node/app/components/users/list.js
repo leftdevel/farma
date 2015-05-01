@@ -19,6 +19,14 @@ module.exports = React.createClass({
                             <i className="mdi-editor-mode-edit right"></i>
                             Editar
                         </a>
+                        &nbsp;&nbsp;|&nbsp;&nbsp;
+                        <a
+                            onClick={this._onDeleteClick.bind(null, user.id)}
+                            className="waves-effect waves-light"
+                        >
+                            <i className="mdi-content-clear right"></i>
+                            Eliminar
+                        </a>
                     </td>
                 </tr>
             );
@@ -30,7 +38,8 @@ module.exports = React.createClass({
                     <tr>
                         <th data-field="id">Nombre</th>
                         <th data-field="email">Correo</th>
-                        <th data-field="roles">Permisos</th>
+                        <th data-field="roles">Departamento</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -43,5 +52,9 @@ module.exports = React.createClass({
     _onEditClick: function(userId, event) {
         event.preventDefault();
         UserActions.toggleEditView(userId)
+    },
+
+    _onDeleteClick: function(userId, event) {
+        event.preventDefault();
     }
 });

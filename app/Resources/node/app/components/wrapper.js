@@ -1,13 +1,21 @@
 var React = require('react');
 
-module.exports = React.createClass({
+var SettingsUtils = require('../utils/settings-utils');
+var settings = SettingsUtils.getSettings();
+var user = settings.user;
+
+var Wrapper = React.createClass({
     render: function() {
         return (
             <div>
                 <nav className="top-nav teal">
                 <div className="container">
                   <div className="row">
-                    <div className="nav-wrapper col offset-s1 s11"><a className="page-title">{this.props.title}</a></div>
+                    <div className="nav-wrapper col offset-s1 s11">
+
+                      <span className="page-title">{this.props.title}</span>
+                      <span className="float right">{user.full_name} | <a href={settings.logout_url}>Salir</a></span>
+                    </div>
                   </div>
                 </div>
               </nav>
@@ -24,3 +32,5 @@ module.exports = React.createClass({
         );
     }
 });
+
+module.exports = Wrapper;
