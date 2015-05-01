@@ -115,21 +115,6 @@ var UserActions = {
             actionType: UserConstants.USERS_FORM_SET_ERRORS,
             errors: errors
         });
-    },
-
-    validateFormEmail: function(email) {
-        AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_FORM_VALIDATE_EMAIL
-        });
-
-        UserApi.findOneByEmail(email, UserActions.validateFormEmailSuccess);
-    },
-
-    validateFormEmailSuccess: function(user) {
-        AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_FORM_VALIDATE_EMAIL_SUCCESS,
-            user: user
-        });
     }
 };
 

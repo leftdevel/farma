@@ -74,7 +74,7 @@ var Edit = React.createClass({
 
         mapValidator
             .addValidatorForPath('full_name', ValidationSchema.getFullNameValidator(fields.full_name.value))
-            .addValidatorForPath('email', ValidationSchema.getEmailValidator(fields.email.value))
+            .addValidatorForPath('email', ValidationSchema.getEditableEmailValidator(fields.email.value))
         ;
 
         if (this.props.isUpdatePassword) {

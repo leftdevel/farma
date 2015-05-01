@@ -59,5 +59,34 @@ module.exports = {
         };
 
         return new Constraint(errorMessage, checker);
+    },
+
+    UniquePropertyValue: function(propertyPath, items, errorMessage, itemFoundCallback) {
+        var defaultErrorMessage = 'Property ' + propertyPath + ' is not unique';
+        errorMessage = errorMessage || defaultErrorMessage;
+
+        var checker = function(value) {
+            var found = false;
+            var lastItem;
+
+            for (var i in items) {
+                lastItem = items[i];
+
+                if (lastItem[propertyPath] === value) {
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) return true;
+
+            if (found && itemFoundCallback) {
+                return itemFoundCallback(lastItem);
+            }
+
+            return false;
+        };
+
+        return new Constraint(errorMessage, checker);
     }
 };

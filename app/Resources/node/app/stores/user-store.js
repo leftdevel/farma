@@ -31,7 +31,7 @@ var _data = {
 
         edit: {
             userId: null,
-            update_password: false,
+            updatePassword: false,
             fields: deepAssign({}, defaultFields)
         }
     }
@@ -62,7 +62,7 @@ function changeView(view) {
 }
 
 function toggleUpdatePassword() {
-    _data.form.edit.update_password = !_data.form.edit.update_password;
+    _data.form.edit.updatePassword = !_data.form.edit.updatePassword;
 }
 
 // FORM
@@ -92,7 +92,7 @@ function clearFields() {
     _data.form.create.fields = deepAssign({}, defaultFields);
     _data.form.edit.fields = deepAssign({}, defaultFields);
     _data.form.edit.userId = null;
-    _data.form.edit.update_password = false;
+    _data.form.edit.updatePassword = false;
 }
 
 function setFormErrors(errors) {
@@ -159,7 +159,11 @@ var UserStore = assign({}, EventEmitter.prototype, {
     },
 
     isUpdatePassword: function() {
-        return _data.form.edit.update_password;
+        return _data.form.edit.updatePassword;
+    },
+
+    getUserIdInEditForm: function() {
+        return _data.form.edit.userId;
     },
 
     getFormEntity: function() {
@@ -173,7 +177,7 @@ var UserStore = assign({}, EventEmitter.prototype, {
         if (_data.view === 'edit') {
             entity.id = _data.form.edit.userId;
 
-            if (_data.form.edit.update_password) {
+            if (_data.form.edit.updatePassword) {
                 entity.password = fields.password.value;
             }
         } else {
@@ -203,17 +207,21 @@ AppDispatcher.register(function(action) {
 
     switch(action.actionType) {
 
-        // CRUD
+        // LIST
 
         case UserConstants.USERS_SET_ALL:
             setUsers(action.users);
             UserStore.emitChange();
             break;
 
+        // CREATE
+
         case UserConstants.USERS_CREATE_SUCCESS:
             changeView('list');
             UserStore.emitChange();
             break;
+
+        // UPATE
 
         case UserConstants.USERS_UPDATE_SUCCESS:
             changeView('list');
@@ -254,6 +262,13 @@ AppDispatcher.register(function(action) {
 
         case UserConstants.USERS_FORM_SET_ERRORS:
             setFormErrors(action.errors);
+            UserStore.emitChange();
+            break;
+
+        // EMAIL
+
+        case UserConstants.USERS_FORM_VALIDATE_EMAIL_SUCCESS:
+            handleAsyncFormErrors(action.users);
             UserStore.emitChange();
             break;
 

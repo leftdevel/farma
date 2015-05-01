@@ -23,7 +23,5 @@ module.exports = keyMirror({
     // FORM
 
     USERS_FORM_UPDATE_VALUE: null,
-    USERS_FORM_SET_ERRORS: null,
-    USERS_FORM_VALIDATE_EMAIL: null,
-    USERS_FORM_VALIDATE_EMAIL_SUCCESS: null,
+    USERS_FORM_SET_ERRORS: null
 });
