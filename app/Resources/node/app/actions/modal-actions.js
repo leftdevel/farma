@@ -1,6 +1,5 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var ModalConstants = require('../constants/modal-constants');
-var ModalStore = require('../stores/modal-store');
 
 var _confirmCallback;
 

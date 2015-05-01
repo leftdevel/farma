@@ -23,7 +23,7 @@ var App = React.createClass({
               </a>
               <Progress />
             </li>
-            <li className="bold"><Link to="users" className="waves-effect waves-teal">Usuarios</Link></li>
+            <li className="bold"><Link to="users">Usuarios</Link></li>
           </ul>
         </header>
 

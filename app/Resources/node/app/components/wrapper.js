@@ -8,7 +8,7 @@ var Wrapper = React.createClass({
     render: function() {
         return (
             <div>
-                <nav className="top-nav teal">
+                <nav className="top-nav  light-blue darken-3">
                 <div className="container">
                   <div className="row">
                     <div className="nav-wrapper col offset-s1 s11">

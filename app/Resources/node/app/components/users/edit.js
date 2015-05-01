@@ -56,7 +56,7 @@ var Edit = React.createClass({
             <div className="row">
                 <div className="col s12">
                     <a href="#" onClick={this._onPasswordTogglerClick}>
-                        {this.props.isUpdatePassword ? 'No actualizar contraseña' : 'Acutualizar constraseña'}
+                        {this.props.isUpdatePassword ? 'No cambiar contraseña' : 'Cambiar constraseña'}
                     </a>
                 </div>
             </div>

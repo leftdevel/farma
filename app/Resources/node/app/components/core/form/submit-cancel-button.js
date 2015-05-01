@@ -16,16 +16,14 @@ module.exports = React.createClass({
 
     render: function() {
         var cancelButton = (
-            <button onClick={this._cancel} className="btn waves-effect waves-light red">
+            <button onClick={this._cancel} className="btn waves-effect waves-light  grey">
                 Cancelar
-                <i className="mdi-av-not-interested right"></i>
             </button>
         );
 
         var submitButton = (
-            <button onClick={this._submit} className="btn waves-effect waves-light">
+            <button onClick={this._submit} className="btn waves-effect waves-light light-blue darken-3">
                 {this.props.label}
-                <i className={this._getsubmitIconClassNames()}></i>
             </button>
         );
 

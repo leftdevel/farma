@@ -1,7 +1,9 @@
 var ModalActions  = require('../actions/modal-actions');
 var overlayId = 'lean-overlay';
 
-var clickHandler;
+var clickHandler = function() {
+    ModalActions.cancel();
+};
 
 module.exports = {
     renderOverlay: function() {
@@ -12,10 +14,6 @@ module.exports = {
         var overlayDiv = document.createElement('div');
         overlayDiv.setAttribute('id', 'lean-overlay');
         document.body.appendChild(overlayDiv);
-
-        clickHandler = function() {
-            ModalActions.cancel();
-        };
 
         overlayDiv.addEventListener('click', clickHandler);
     },
