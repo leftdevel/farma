@@ -36,39 +36,37 @@ var Users = React.createClass({
     },
 
     render: function() {
-        var isCreateLinkVisible = this.state.view === 'list';
-        var isCreateVisible = this.state.view === 'create';
-        var isEditVisible = this.state.view === 'edit';
-        var isListVisible = this.state.view === 'list';
+        var currentComponent;
+
+        if (this.state.view === 'list') {
+            currentComponent = (
+                <div>
+                    <CreateLink title='Crear nuevo usuario' clickHandler={UserActions.toggleCreateView} />
+                    <List users={this.state.users} />
+                </div>
+            );
+        } else if (this.state.view === 'create') {
+            currentComponent = (
+                <Create
+                    ref="Create"
+                    fields={this.state.createFields}
+                    changeHandler={this._formChangeHandler}
+                    submitHandler={this._formSubmitHandler.bind(null, 'create')}/>
+            );
+        } else if (this.state.view === 'edit') {
+            currentComponent = (
+                <Edit
+                    ref="Edit"
+                    fields={this.state.editFields}
+                    isUpdatePassword={this.state.isUpdatePassword}
+                    changeHandler={this._formChangeHandler}
+                    submitHandler={this._formSubmitHandler.bind(null, 'edit')}/>
+            );
+        }
 
         return (
             <Wrapper title="Usuarios del Sistema">
-
-                <div className={isCreateLinkVisible ? '' : 'hide'}>
-                    <CreateLink title='Crear nuevo usuario' clickHandler={UserActions.toggleCreateView} />
-                </div>
-
-                <div className={isCreateVisible ? '' : 'hide'}>
-                    <Create
-                        ref="Create"
-                        fields={this.state.createFields}
-                        changeHandler={this._formChangeHandler}
-                        submitHandler={this._formSubmitHandler.bind(null, 'create')}/>
-                </div>
-
-                <div className={isEditVisible ? '' : 'hide'}>
-                    <Edit
-                        ref="Edit"
-                        fields={this.state.editFields}
-                        isUpdatePassword={this.state.isUpdatePassword}
-                        changeHandler={this._formChangeHandler}
-                        submitHandler={this._formSubmitHandler.bind(null, 'edit')}/>
-                </div>
-
-                <div className={isListVisible ? '' : 'hide'}>
-                    <List users={this.state.users} />
-                </div>
-
+                {currentComponent}
             </Wrapper>
         );
     },

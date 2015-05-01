@@ -34,7 +34,7 @@ twig:
 assetic:
     debug:          "%kernel.debug%"
     use_controller: false
-    bundles:        [FarmaAppBundle, FarmaAppBundle]
+    bundles:        [FarmaBaseBundle, FarmaAppBundle]
     #java: /usr/bin/java
     filters:
         cssrewrite: ~
@@ -46,6 +46,7 @@ assetic:
         base_css:
             inputs:
                 - %kernel.root_dir%/Resources/public/css/materialize.min.css
+                - @FarmaBaseBundle/Resources/public/css/main.css
             filters:
                 - "?yui_css"
 

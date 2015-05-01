@@ -37,7 +37,7 @@ var _data = {
     }
 };
 
-// lIST
+// LIST
 
 function setUsers(users) {
     if (SettingsUtil.isSuperAdmin()) {
