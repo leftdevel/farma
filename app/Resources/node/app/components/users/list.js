@@ -1,9 +1,15 @@
 var React = require('react');
 var UserActions = require('../../actions/user-actions');
 var UserUtils = require('../../utils/user-utils');
+var ModalActions = require('../../actions/modal-actions');
 var rolesMap = UserUtils.getRolesMap();
+var UserStore = require('../../stores/user-store');
 
 module.exports = React.createClass({
+    propTypes: {
+        users: React.PropTypes.array.isRequired
+    },
+
     render: function() {
         var records = this.props.users.map(function(user) {
             return (
@@ -56,5 +62,14 @@ module.exports = React.createClass({
 
     _onDeleteClick: function(userId, event) {
         event.preventDefault();
+        var user = UserStore.findOneUserById(userId);
+
+        var title = 'Eliminar Usuario';
+        var content = 'Por favor confirme que desea eliminar a - ' + user.full_name.toUpperCase() + ' - del sistema. La información no podrá ser recuperada.';
+        var confirmCallback = function () {
+            UserActions.deleteUser(userId);
+        };
+
+        ModalActions.open(title, content, confirmCallback);
     }
 });

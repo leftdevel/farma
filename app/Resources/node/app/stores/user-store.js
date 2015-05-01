@@ -146,6 +146,10 @@ var UserStore = assign({}, EventEmitter.prototype, {
         return _data.users;
     },
 
+    findOneUserById: function(userId) {
+        return findOneUserById(userId);
+    },
+
     getView: function() {
         return _data.view;
     },

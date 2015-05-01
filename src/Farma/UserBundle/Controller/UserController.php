@@ -97,6 +97,10 @@ class UserController extends Controller
             throw new AccessDeniedHttpException();
         }
 
+        if ($this->get('security.context')->getToken()->getUser()->getId() === $user->getId()) {
+            throw new BadRequestHttpException();
+        }
+
         try {
             $this->get('user.api')->delete($user);
             return new JsonResponse(array('success' => true));

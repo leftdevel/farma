@@ -8,6 +8,7 @@ var Route = Router.Route;
 
 var Progress = require('./components/progress.js');
 var Users = require('./components/users.js');
+var Modal = require('./components/modal.js');
 
 var App = React.createClass({
   render: function () {
@@ -26,10 +27,10 @@ var App = React.createClass({
           </ul>
         </header>
 
-        <main>
+        <main id="content">
           <RouteHandler />
         </main>
-
+        <Modal />
       </div>
     );
   }

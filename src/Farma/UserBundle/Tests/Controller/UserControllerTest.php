@@ -250,6 +250,16 @@ class UserControllerTest extends FunctionalTestUtil
         $this->assertEquals(Response::HTTP_FORBIDDEN, $this->client->getResponse()->getStatusCode());
     }
 
+    public function testDeleteAction_fail_cannot_delete_self()
+    {
+        $admin = $this->findAdmin();
+        $url = $this->router->generate('user_delete', array('id' => $admin->getId()));
+
+        $this->authenticateClientForUser($this->client, $admin);
+        $this->client->request('DELETE', $url);
+        $this->assertEquals(Response::HTTP_BAD_REQUEST, $this->client->getResponse()->getStatusCode());
+    }
+
     public function testDeleteAction_success()
     {
         $seller = $this->findSeller();

@@ -38,5 +38,17 @@ module.exports = {
                 ApiResponseHandler.handle(err, res, successCallback);
             })
         ;
-    }
+    },
+
+    deleteUser: function(id, successCallback) {
+        var url = Routing.generate('user_delete', {'id': id});
+
+        request
+            .del(url)
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                ApiResponseHandler.handle(err, res, successCallback);
+            })
+        ;
+    },
 };

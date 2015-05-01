@@ -1,20 +1,20 @@
 .side-nav .logo {
-  text-align: center;
-  margin-top: 10px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #ddd;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
 }
 
 li.logo:hover {
-  background-color: transparent;
+    background-color: transparent;
 }
 
 #logo-container {
-  height: 54px;
+    height: 54px;
 }
 
 #nav-mobile {
-  left: 0px;
+    left: 0px;
 }
 
 #nav-mobile.side-nav li {
@@ -31,10 +31,21 @@ li.logo:hover {
 }
 
 #nav-mobile .logo {
-  position: relative;
+    position: relative;
 }
 
 #nav-mobile .progress {
-  position: absolute;
-  bottom: -15px;
+    position: absolute;
+    bottom: -15px;
+}
+
+#lean-overlay {
+    display: block;
+    opacity: 0.5;
+}
+
+.modal {
+    display: block;
+    opacity: 1;
+    top: 10%;
 }

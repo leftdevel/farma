@@ -51,15 +51,16 @@ var UserActions = {
 
     // UPDATE
 
-    updateUser: function(data) {
+    updateUser: function(user) {
         if (isSubmitting) return;
         isSubmitting = true;
 
         AppDispatcher.dispatch({
             actionType: UserConstants.USERS_UPDATE,
+            user: user
         });
 
-        UserApi.updateUser(data, UserActions.updateUserSuccess);
+        UserApi.updateUser(user, UserActions.updateUserSuccess);
     },
 
     updateUserSuccess: function() {
@@ -70,6 +71,26 @@ var UserActions = {
         });
 
         // @TODO Move this to a socket aware util
+        UserActions.fetchUsers();
+    },
+
+    // DELETE
+
+    deleteUser: function(userId) {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_DELETE,
+            userId: userId
+        });
+
+        UserApi.deleteUser(userId, UserActions.deleteUserSuccess);
+    },
+
+    deleteUserSuccess: function() {
+        AppDispatcher.dispatch({
+            actionType: UserConstants.USERS_DELETE_SUCCESS
+        });
+
+        // @TODO move this to a socket aware util
         UserActions.fetchUsers();
     },
 
