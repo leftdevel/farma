@@ -49,3 +49,8 @@ li.logo:hover {
     opacity: 1;
     top: 10%;
 }
+
+a.disabled {
+    color: #9F9F9F !important;
+    cursor: default !important;
+}

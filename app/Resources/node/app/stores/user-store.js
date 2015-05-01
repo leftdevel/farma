@@ -131,7 +131,7 @@ function findOneUserById(userId) {
         for (var i in users) {
             var user = users[i];
 
-            if (user.id === userId) {
+            if (user.id == userId) {
                 return user;
             }
         }

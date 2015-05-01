@@ -11,8 +11,6 @@ var ModalActions = {
     open: function(title, content, confirmCallback) {
         _confirmCallback = confirmCallback;
 
-        console.log(_confirmCallback);
-
         AppDispatcher.dispatch({
             actionType: ModalConstants.MODAL_OPEN,
             title: title,
