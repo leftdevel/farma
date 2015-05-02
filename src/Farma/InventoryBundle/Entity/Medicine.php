@@ -2,24 +2,95 @@
 
 namespace Farma\InventoryBundle\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 use Farma\BaseBundle\Util\StringUtil,
     Farma\BaseBundle\Util\TimestampValidator;
 
+/**
+ * @ORM\Entity(repositoryClass="Farma\InventoryBundle\Repository\MedicineRepository")
+ * @ORM\Table(name="medicine")
+ */
 class Medicine
 {
+    /**
+     * @ORM\Column(type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
     private $id;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     */
     private $created;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     */
     private $updated;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     */
     private $name;
+
+    /**
+     * @ORM\Column(type="string", length=255, name="name_normalized")
+     * @Assert\NotBlank()
+     */
     private $nameNormalized;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     */
     private $generic;
+
+    /**
+     * @ORM\Column(type="string", length=255, name="generic_normalized")
+     * @Assert\NotBlank()
+     */
     private $genericNormalized;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     */
     private $laboratory;
+
+    /**
+     * @ORM\Column(type="string", length=255, name="laboratory_normalized")
+     * @Assert\NotBlank()
+     */
     private $laboratoryNormalized;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     */
     private $presentation;
+
+    /**
+     * @ORM\Column(type="string", length=255, name="presentation_normalized")
+     * @Assert\NotBlank()
+     */
     private $presentationNormalized;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     */
     private $concentration;
+
+    /**
+     * @ORM\Column(type="string", length=255, name="concentration_normalized")
+     * @Assert\NotBlank()
+     */
     private $concentrationNormalized;
 
     private $expiryFirst;

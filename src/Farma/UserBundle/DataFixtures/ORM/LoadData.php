@@ -16,7 +16,6 @@ use Farma\UserBundle\Entity\User,
 class LoadData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
     private $container;
-    private $entityManager;
 
     public function setContainer(ContainerInterface $container = null)
     {
@@ -25,25 +24,19 @@ class LoadData extends AbstractFixture implements OrderedFixtureInterface, Conta
 
     public function load(ObjectManager $entityManager)
     {
-        $this->entityManager  = $entityManager;
-        $this->createUsers();
-    }
-
-    private function createUsers()
-    {
         $superAdmin = $this->createUser('superadmin', array(UserRole::SUPER_ADMIN));
-        $this->entityManager->persist($superAdmin);
+        $entityManager->persist($superAdmin);
 
         $admin = $this->createUser('admin', array(UserRole::ADMIN));
-        $this->entityManager->persist($admin);
+        $entityManager->persist($admin);
 
         $seller = $this->createUser('vendedor', array(UserRole::SALES));
-        $this->entityManager->persist($seller);
+        $entityManager->persist($seller);
 
         $grocer = $this->createUser('bodeguero', array(UserRole::INVENTORY));
-        $this->entityManager->persist($grocer);
+        $entityManager->persist($grocer);
 
-        $this->entityManager->flush();
+        $entityManager->flush();
     }
 
     private function createUser($username, array $roles = array())
