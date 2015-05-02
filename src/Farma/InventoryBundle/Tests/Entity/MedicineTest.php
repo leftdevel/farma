@@ -2,9 +2,6 @@
 
 namespace Farma\InventoryBundle\Tests\Entity;
 
-mb_internal_encoding("UTF-8");
-mb_regex_encoding("UTF-8");
-
 use Farma\InventoryBundle\Entity\Medicine;
 
 class MedicineTest extends \PHPUnit_Framework_TestCase
