@@ -1,3 +1,8 @@
+farma_inventory:
+    resource: "@FarmaInventoryBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 farma_app:
     resource: "@FarmaAppBundle/Controller/"
     type:     annotation

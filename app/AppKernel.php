@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new Farma\BaseBundle\FarmaBaseBundle(),
             new Farma\UserBundle\FarmaUserBundle(),
             new Farma\AppBundle\FarmaAppBundle(),
+            new Farma\InventoryBundle\FarmaInventoryBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
