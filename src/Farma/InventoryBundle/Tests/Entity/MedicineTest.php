@@ -2,6 +2,9 @@
 
 namespace Farma\InventoryBundle\Tests\Entity;
 
+mb_internal_encoding("UTF-8");
+mb_regex_encoding("UTF-8");
+
 use Farma\InventoryBundle\Entity\Medicine;
 
 class MedicineTest extends \PHPUnit_Framework_TestCase
@@ -21,10 +24,10 @@ class MedicineTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($name, $this->medicine->getName());
         $this->assertEquals($nameNormalized, $this->medicine->getNameNormalized());
 
-        $name = 'bàllâdarësñ';
+        $name = ' bàllâdarësñ ';
         $nameNormalized = 'balladaresn';
         $this->medicine->setName($name);
-        $this->assertEquals($name, $this->medicine->getName());
+        $this->assertEquals('bàllâdarësñ', $this->medicine->getName(), 'extra spaces are trimmed');
         $this->assertEquals($nameNormalized, $this->medicine->getNameNormalized());
 
         $name = 'BALLADARES';
@@ -33,10 +36,10 @@ class MedicineTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($name, $this->medicine->getName());
         $this->assertEquals($nameNormalized, $this->medicine->getNameNormalized());
 
-        $name = 'BÁLLÀDÂRESÑ';
-        $nameNormalized = 'balladaresn';
+        $name = 'BÁLLÀD  ÂRESÑ'; // double space
+        $nameNormalized = 'ballad aresn'; // notice only one space
         $this->medicine->setName($name);
-        $this->assertEquals($name, $this->medicine->getName());
+        $this->assertEquals('BÁLLÀD ÂRESÑ', $this->medicine->getName(), 'only one space');
         $this->assertEquals($nameNormalized, $this->medicine->getNameNormalized());
     }
 

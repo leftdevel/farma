@@ -2,11 +2,16 @@
 
 namespace Farma\BaseBundle\Util;
 
-class StringToIndexTransformer
+class StringUtil
 {
-    public static function transform($input)
+    public static function compact($value)
     {
-        return strtolower(self::removeAccents($input));
+        return preg_replace('/\s+/u', ' ', trim($value));
+    }
+
+    public static function createIndexableValue($value)
+    {
+        return strtolower(self::removeAccents($value));
     }
 
 

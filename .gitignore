@@ -13,3 +13,4 @@
 *node_modules*
 *build*
 *bundle_dev.js*
+*.DS_Store*

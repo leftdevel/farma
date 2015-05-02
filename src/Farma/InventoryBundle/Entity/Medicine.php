@@ -2,7 +2,7 @@
 
 namespace Farma\InventoryBundle\Entity;
 
-use Farma\BaseBundle\Util\StringToIndexTransformer,
+use Farma\BaseBundle\Util\StringUtil,
     Farma\BaseBundle\Util\TimestampValidator;
 
 class Medicine
@@ -49,8 +49,9 @@ class Medicine
 
     public function setName($name)
     {
+        $name = StringUtil::compact($name);
         $this->name = $name;
-        $this->nameNormalized = StringToIndexTransformer::transform($name);
+        $this->nameNormalized = StringUtil::createIndexableValue($name);
     }
 
     public function getName()
@@ -65,8 +66,9 @@ class Medicine
 
     public function setGeneric($generic)
     {
+        $generic = StringUtil::compact($generic);
         $this->generic = $generic;
-        $this->genericNormalized = StringToIndexTransformer::transform($generic);
+        $this->genericNormalized = StringUtil::createIndexableValue($generic);
     }
 
     public function getGeneric()
@@ -81,8 +83,9 @@ class Medicine
 
     public function setLaboratory($laboratory)
     {
+        $laboratory = StringUtil::compact($laboratory);
         $this->laboratory = $laboratory;
-        $this->laboratoryNormalized = StringToIndexTransformer::transform($laboratory);
+        $this->laboratoryNormalized = StringUtil::createIndexableValue($laboratory);
     }
 
     public function getLaboratory()
@@ -97,8 +100,9 @@ class Medicine
 
     public function setPresentation($presentation)
     {
+        $presentation = StringUtil::compact($presentation);
         $this->presentation = $presentation;
-        $this->presentationNormalized = StringToIndexTransformer::transform($presentation);
+        $this->presentationNormalized = StringUtil::createIndexableValue($presentation);
     }
 
     public function getPresentation()
@@ -113,8 +117,9 @@ class Medicine
 
     public function setConcentration($concentration)
     {
+        $concentration = StringUtil::compact($concentration);
         $this->concentration = $concentration;
-        $this->concentrationNormalized = StringToIndexTransformer::transform($concentration);
+        $this->concentrationNormalized = StringUtil::createIndexableValue($concentration);
     }
 
     public function getConcentration()

@@ -38,7 +38,7 @@ class BaseController extends Controller
 
         return array(
             'last_username' => $request->getSession()->get(SecurityContext::LAST_USERNAME),
-            'error'         => $error,
+            'error' => $error,
         );
     }
 
