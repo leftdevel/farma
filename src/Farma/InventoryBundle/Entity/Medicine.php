@@ -6,13 +6,15 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 use Farma\BaseBundle\Util\StringUtil,
-    Farma\BaseBundle\Util\TimestampValidator;
+    Farma\BaseBundle\Util\TimestampValidator,
+    Farma\InventoryBundle\Model\Product\ProductInterface,
+    Farma\InventoryBundle\Model\Product\OutOfStockException;
 
 /**
  * @ORM\Entity(repositoryClass="Farma\InventoryBundle\Repository\MedicineRepository")
  * @ORM\Table(name="medicine")
  */
-class Medicine
+class Medicine implements ProductInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -58,14 +60,12 @@ class Medicine
     private $genericNormalized;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $laboratory;
 
     /**
-     * @ORM\Column(type="string", length=255, name="laboratory_normalized")
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, name="laboratory_normalized", nullable=true)
      */
     private $laboratoryNormalized;
 
@@ -82,25 +82,48 @@ class Medicine
     private $presentationNormalized;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $concentration;
 
     /**
-     * @ORM\Column(type="string", length=255, name="concentration_normalized")
-     * @Assert\NotBlank()
+     * @ORM\Column(type="string", length=255, name="concentration_normalized", nullable=true)
      */
     private $concentrationNormalized;
 
+    /**
+     * @ORM\Column(type="integer", name="expiry_first", nullable=true)
+     */
     private $expiryFirst;
+
+    /**
+     * @ORM\Column(type="integer", name="expiry_last", nullable=true)
+     */
     private $expiryLast;
+
+    /**
+     * @ORM\Column(type="decimal", scale=10, precision=2, nullable=true)
+     */
+    private $cost;
+
+    /**
+     * @ORM\Column(type="decimal", scale=10, precision=2)
+     * @Assert\NotBlank()
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     */
+    private $quantity;
 
     public function __construct()
     {
         $time = time();
         $this->created = $time;
         $this->updated = $time;
+        $this->quantity = 0;
     }
 
     public function getId()
@@ -203,24 +226,13 @@ class Medicine
         return $this->concentrationNormalized;
     }
 
-    public function setExpiry($expiry)
+    public function setExpiryFirst($expiryFirst)
     {
-        if (!TimestampValidator::isValid($expiry)) {
-            throw new MedicineException('Invalid expiry timestamp: '.$expiry);
+        if (!TimestampValidator::isValid($expiryFirst)) {
+            throw new MedicineException('Invalid expiry timestamp: '.$expiryFirst);
         }
 
-        if (!$this->expiryFirst) {
-            $this->expiryFirst = $expiry;
-            $this->expiryLast = $expiry;
-
-            return;
-        }
-
-        if ($expiry < $this->expiryFirst) {
-            $this->expiryFirst = $expiry;
-        } elseif ($expiry > $this->expiryLast) {
-            $this->expiryLast = $expiry;
-        }
+        $this->expiryFirst = $expiryFirst;
     }
 
     public function getExpiryFirst()
@@ -228,8 +240,56 @@ class Medicine
         return $this->expiryFirst;
     }
 
+    public function setExpiryLast($expiryLast)
+    {
+        if (!TimestampValidator::isValid($expiryLast)) {
+            throw new MedicineException('Invalid expiry timestamp: '.$expiryLast);
+        }
+
+        $this->expiryLast = $expiryLast;
+    }
+
     public function getExpiryLast()
     {
         return $this->expiryLast;
+    }
+
+    public function setCost($cost)
+    {
+        $this->cost = $cost;
+    }
+
+    public function getCost()
+    {
+        return $this->cost;
+    }
+
+    public function setPrice($price)
+    {
+        $this->price = $price;
+    }
+
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    public function getQuantity()
+    {
+        return $this->quantity;
+    }
+
+    public function addQuantity($add)
+    {
+        $this->quantity += $add;
+    }
+
+    public function reduceQuantity($reduce)
+    {
+        if (($this->quantity - $reduce) < 0) {
+            throw new OutOfStockException(sprintf('Tried to reduce %s but stock is %s', $reduce, $this->quantity));
+        }
+
+        $this->quantity -= $reduce;
     }
 }

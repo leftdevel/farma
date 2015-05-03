@@ -155,50 +155,47 @@ class MedicineTest extends \PHPUnit_Framework_TestCase
 
         $this->setExpectedException('Farma\InventoryBundle\Entity\MedicineException');
         $invalidTimestamp = 12345;
-        $this->medicine->setExpiry($invalidTimestamp);
+        $this->medicine->setExpiryFirst($invalidTimestamp);
     }
 
-    public function testSetExpiry_first_last_equals()
+    public function testSetExpiry_first()
     {
         $expiry = 1430521163;
-        $this->medicine->setExpiry($expiry);
+        $this->medicine->setExpiryFirst($expiry);
 
         $this->assertEquals($expiry, $this->medicine->getExpiryFirst());
+    }
+
+    public function testSetExpiry_last()
+    {
+        $expiry = 1430521163;
+        $this->medicine->setExpiryLast($expiry);
+
         $this->assertEquals($expiry, $this->medicine->getExpiryLast());
     }
 
-    public function testSetExpiry_replaces_first()
+    public function testAddQuantity()
     {
-        $expiry = 1430521163;
-        $this->medicine->setExpiry($expiry);
-        $expiryFirst = $expiry - 100;
-        $this->medicine->setExpiry($expiryFirst);
+        $add = 10;
+        $this->medicine->addQuantity($add);
+        $this->medicine->addQuantity($add);
 
-        $this->assertEquals($expiryFirst, $this->medicine->getExpiryFirst());
-        $this->assertEquals($expiry, $this->medicine->getExpiryLast());
+        $this->assertEquals($add * 2, $this->medicine->getQuantity());
     }
 
-    public function testSetExpiry_replaces_last()
+    public function testReduceQuantity()
     {
-        $expiry = 1430521163;
-        $this->medicine->setExpiry($expiry);
-        $expiryLast = $expiry + 100;
-        $this->medicine->setExpiry($expiryLast);
-
-        $this->assertEquals($expiry, $this->medicine->getExpiryFirst());
-        $this->assertEquals($expiryLast, $this->medicine->getExpiryLast());
+        $add = 100;
+        $this->medicine->addQuantity($add);
+        $reduce = 40;
+        $this->medicine->reduceQuantity($reduce);
+        $this->assertEquals($add - $reduce, $this->medicine->getQuantity());
     }
 
-    public function testSetExpiry_ignored()
+    public function testReduceQuantity_out_of_stock_exception()
     {
-        $expiryFirst = 1430521163;
-        $this->medicine->setExpiry($expiryFirst);
-        $expiryLast = $expiryFirst + 100;
-        $this->medicine->setExpiry($expiryLast);
-        $expiryBetween = $expiryFirst + 50;
-        $this->medicine->setExpiry($expiryBetween);
-
-        $this->assertEquals($expiryFirst, $this->medicine->getExpiryFirst());
-        $this->assertEquals($expiryLast, $this->medicine->getExpiryLast());
+        $this->setExpectedException('Farma\InventoryBundle\Model\Product\OutOfStockException');
+        $this->medicine->addQuantity(100);
+        $this->medicine->reduceQuantity(101);
     }
 }
