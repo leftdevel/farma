@@ -2,7 +2,7 @@
 
 namespace Farma\InventoryBundle\Tests\Api;
 
-use Farma\UserBundle\DataFixtures\ORM\LoadData as UserFixtures,
+use Farma\InventoryBundle\DataFixtures\ORM\LoadMedicineData as MedicineFixtures,
     Farma\BaseBundle\Tests\Utils\FunctionalTestUtil;
 
 class MedicineApiTest extends FunctionalTestUtil
@@ -15,7 +15,7 @@ class MedicineApiTest extends FunctionalTestUtil
     {
         $this->client = $this->createClient();
         $this->setupDatabase();
-        $this->loadFixtures(array(new UserFixtures()));
+        $this->loadFixtures(array(new MedicineFixtures()));
         $this->container = $this->client->getContainer();
         $this->medicineApi = $this->container->get('inventory.api.medicine');
     }
@@ -56,5 +56,6 @@ class MedicineApiTest extends FunctionalTestUtil
         $this->assertTrue(isset($medicine['price']));
         $this->assertTrue(isset($medicine['expiry_first']));
         $this->assertTrue(isset($medicine['expiry_last']));
+        $this->assertTrue(isset($medicine['updated']));
     }
 }
