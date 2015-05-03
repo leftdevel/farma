@@ -54,7 +54,7 @@ class MedicineTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($generic, $this->medicine->getGeneric());
         $this->assertEquals($genericNormalized, $this->medicine->getGenericNormalized());
 
-        $generic = 'BALLADARES';
+        $generic = 'BALLAD.AR,ES';
         $genericNormalized = 'balladares';
         $this->medicine->setGeneric($generic);
         $this->assertEquals($generic, $this->medicine->getGeneric());

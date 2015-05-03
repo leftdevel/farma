@@ -9,9 +9,13 @@ class StringUtil
         return preg_replace('/\s+/u', ' ', trim($value));
     }
 
-    public static function createIndexableValue($value)
+    public static function createIndexable($value)
     {
-        return strtolower(self::removeAccents($value));
+        $indexable = self::removeAccents($value);
+        $indexable = str_replace(array('.', ','), '' , $indexable);
+        $indexable = strtolower($indexable);
+
+        return $indexable;
     }
 
 

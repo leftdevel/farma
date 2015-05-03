@@ -145,7 +145,7 @@ class Medicine implements ProductInterface
     {
         $name = StringUtil::compact($name);
         $this->name = $name;
-        $this->nameNormalized = StringUtil::createIndexableValue($name);
+        $this->nameNormalized = StringUtil::createIndexable($name);
     }
 
     public function getName()
@@ -162,7 +162,7 @@ class Medicine implements ProductInterface
     {
         $generic = StringUtil::compact($generic);
         $this->generic = $generic;
-        $this->genericNormalized = StringUtil::createIndexableValue($generic);
+        $this->genericNormalized = StringUtil::createIndexable($generic);
     }
 
     public function getGeneric()
@@ -179,7 +179,7 @@ class Medicine implements ProductInterface
     {
         $laboratory = StringUtil::compact($laboratory);
         $this->laboratory = $laboratory;
-        $this->laboratoryNormalized = StringUtil::createIndexableValue($laboratory);
+        $this->laboratoryNormalized = StringUtil::createIndexable($laboratory);
     }
 
     public function getLaboratory()
@@ -196,7 +196,7 @@ class Medicine implements ProductInterface
     {
         $presentation = StringUtil::compact($presentation);
         $this->presentation = $presentation;
-        $this->presentationNormalized = StringUtil::createIndexableValue($presentation);
+        $this->presentationNormalized = StringUtil::createIndexable($presentation);
     }
 
     public function getPresentation()
@@ -213,7 +213,7 @@ class Medicine implements ProductInterface
     {
         $concentration = StringUtil::compact($concentration);
         $this->concentration = $concentration;
-        $this->concentrationNormalized = StringUtil::createIndexableValue($concentration);
+        $this->concentrationNormalized = StringUtil::createIndexable($concentration);
     }
 
     public function getConcentration()
