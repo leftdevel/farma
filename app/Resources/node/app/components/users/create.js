@@ -7,11 +7,14 @@ var Text = require('../core/form/text');
 var FormMixin = require('./common/form-mixin');
 
 var Wrapper = require('../wrapper');
-var Navigation = require('react-router').Navigation;
 var _roles = require('../../utils/user-utils').getRoles();
 
 var Create = React.createClass({
-    mixins: [FormMixin, Navigation],
+    mixins: [FormMixin],
+
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
+    },
 
     getInitialState: function() {
         return  {
@@ -114,7 +117,7 @@ var Create = React.createClass({
         entity.password = fields.password.value;
 
         return entity;
-    },
+    }
 });
 
 module.exports = Create;

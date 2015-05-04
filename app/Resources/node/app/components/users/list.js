@@ -9,7 +9,6 @@ var cx = require('class-set');
 
 var CreateLink = require('../core/create-link');
 var Wrapper = require('../wrapper');
-var Navigation = require('react-router').Navigation;
 
 function getState() {
     return {
@@ -18,7 +17,9 @@ function getState() {
 }
 
 module.exports = React.createClass({
-    mixins: [Navigation],
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
+    },
 
     getInitialState: function() {
         return getState();
@@ -90,7 +91,8 @@ module.exports = React.createClass({
 
     _onEditClick: function(userId, event) {
         event.preventDefault();
-        //UserActions.toggleEditView(userId)
+        console.log(userId);
+        this.context.router.transitionTo('users-edit', {userId: userId});
     },
 
     // @TODO move to Store

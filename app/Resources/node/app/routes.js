@@ -13,6 +13,7 @@ var Modal = require('./components/modal');
 
 var Users = require('./components/users/list');
 var UserCreate = require('./components/users/create');
+var UserEdit = require('./components/users/edit');
 
 var App = React.createClass({
   render: function () {
@@ -44,6 +45,7 @@ var routes = (
   <Route name="app" path="/" handler={App}>
     <Route name="users" path="users" handler={Users} />
     <Route name="users-create" path="users/create" handler={UserCreate} />
+    <Route name="users-edit" path="users/edit/:userId" handler={UserEdit} />
     <DefaultRoute handler={Users}/>
   </Route>
 );
