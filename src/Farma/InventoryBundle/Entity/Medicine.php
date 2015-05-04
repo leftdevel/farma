@@ -26,14 +26,22 @@ class Medicine implements ProductInterface
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
+     * @Assert\Type(type="integer")
      */
     private $created;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
+     * @Assert\Type(type="integer")
      */
     private $updated;
+
+    /**
+     * @ORM\Column(type="boolean", name="is_disabled")
+     * @Assert\NotNull()
+     */
+    private $isDisabled;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -91,30 +99,41 @@ class Medicine implements ProductInterface
      */
     private $concentrationNormalized;
 
+
+    // DENORMALIZED
+
     /**
      * @ORM\Column(type="integer", name="expiry_first", nullable=true)
+     * @Assert\Type(type="integer")
      */
     private $expiryFirst;
 
     /**
      * @ORM\Column(type="integer", name="expiry_last", nullable=true)
+     * @Assert\Type(type="integer")
      */
     private $expiryLast;
 
     /**
-     * @ORM\Column(type="decimal", scale=10, precision=2, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
+     * @Assert\Type(type="integer")
+     * @Assert\GreaterThanOrEqual(value=0)
      */
     private $cost;
 
     /**
-     * @ORM\Column(type="decimal", scale=10, precision=2)
+     * @ORM\Column(type="integer")
      * @Assert\NotBlank()
+     * @Assert\Type(type="integer")
+     * @Assert\GreaterThanOrEqual(value=0)
      */
     private $price;
 
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
+     * @Assert\Type(type="integer")
+     * @Assert\GreaterThanOrEqual(value=0)
      */
     private $quantity;
 
@@ -124,6 +143,7 @@ class Medicine implements ProductInterface
         $this->created = $time;
         $this->updated = $time;
         $this->quantity = 0;
+        $this->isDisabled = false;
     }
 
     public function getId()
@@ -228,7 +248,7 @@ class Medicine implements ProductInterface
 
     public function setExpiryFirst($expiryFirst)
     {
-        if (!TimestampValidator::isValid($expiryFirst)) {
+        if ($expiryFirst !== null && !TimestampValidator::isValid($expiryFirst)) {
             throw new MedicineException('Invalid expiry timestamp: '.$expiryFirst);
         }
 
@@ -242,7 +262,7 @@ class Medicine implements ProductInterface
 
     public function setExpiryLast($expiryLast)
     {
-        if (!TimestampValidator::isValid($expiryLast)) {
+        if ($expiryLast !== null && !TimestampValidator::isValid($expiryLast)) {
             throw new MedicineException('Invalid expiry timestamp: '.$expiryLast);
         }
 
@@ -291,5 +311,20 @@ class Medicine implements ProductInterface
         }
 
         $this->quantity -= $reduce;
+    }
+
+    public function disable()
+    {
+        $this->isDisabled = true;
+    }
+
+    public function enable()
+    {
+        $this->isDisabled = false;
+    }
+
+    public function getIsDisabled()
+    {
+        return $this->isDisabled;
     }
 }

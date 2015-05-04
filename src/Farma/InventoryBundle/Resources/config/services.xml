@@ -13,6 +13,7 @@
 
         <service id="inventory.api.medicine" class="Farma\InventoryBundle\Api\MedicineApi">
             <argument type="service" id="inventory.repository.medicine" />
+            <argument type="service" id="validator" />
         </service>
     </services>
 

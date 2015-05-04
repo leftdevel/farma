@@ -198,4 +198,13 @@ class MedicineTest extends \PHPUnit_Framework_TestCase
         $this->medicine->addQuantity(100);
         $this->medicine->reduceQuantity(101);
     }
+
+    public function testIsDisabled()
+    {
+        $this->assertFalse($this->medicine->getIsDisabled());
+        $this->medicine->disable();
+        $this->assertTrue($this->medicine->getIsDisabled());
+        $this->medicine->enable();
+        $this->assertFalse($this->medicine->getIsDisabled());
+    }
 }

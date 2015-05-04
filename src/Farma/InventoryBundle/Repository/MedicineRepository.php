@@ -4,11 +4,15 @@ namespace Farma\InventoryBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
+use Farma\InventoryBundle\Entity\Medicine,
+    Farma\InventoryBundle\Entity\MedicineBatch;
+
 class MedicineRepository extends EntityRepository
 {
-    public function save($object)
+    public function saveNewMedicine(Medicine $medicine, MedicineBatch $batch)
     {
-        $this->getEntityManager()->persist($object);
+        $this->getEntityManager()->persist($medicine);
+        $this->getEntityManager()->persist($batch);
         $this->getEntityManager()->flush();
     }
 
@@ -21,14 +25,21 @@ class MedicineRepository extends EntityRepository
             laboratory_normalized, concentration,
             concentration_normalized, cost, price, quantity,
             expiry_first, expiry_last, updated
-            FROM medicine ORDER BY name_normalized ASC";
+            FROM medicine
+            WHERE is_disabled != 1
+            ORDER BY name_normalized ASC";
 
         return $conn->fetchAll($query);
     }
 
-    public function delete($object)
+    public function findBatchesByMedicineId($medicineId)
     {
-        $this->getEntityManager()->remove($object);
-        $this->getEntityManager()->flush();
+        $query = "SELECT id, medicine_id, quantity, cost, expiry FROM medicine_batch WHERE medicine_id = ? ORDER BY CREATED DESC";
+        $conn = $this->getEntityManager()->getConnection();
+        $stmt = $conn->prepare($query);
+        $stmt->bindValue(1, intval($medicineId));
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 }

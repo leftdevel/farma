@@ -125,7 +125,7 @@ class UserApi
     {
         $allowedColumns = array('full_name', 'email', 'roles');
 
-        if (count(array_diff($allowedColumns, array_keys($input))) !== 0) {
+        if (count(array_diff($allowedColumns, array_keys($input))) > 0) {
             throw new UserApiException('Missing properties');
         }
 
