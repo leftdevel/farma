@@ -27,7 +27,6 @@ class MedicineApiTest extends FunctionalTestUtil
         $this->destroy($this->client);
     }
 
-
     public function testListAll()
     {
         $medicines = $this->medicineApi->listAll();
