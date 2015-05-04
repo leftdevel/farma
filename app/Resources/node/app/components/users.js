@@ -28,7 +28,7 @@ var Users = React.createClass({
     },
 
     componentWillUnmount: function() {
-        UserStore.removeChangeListener();
+        UserStore.removeChangeListener(this._onChange);
     },
 
     _onChange: function() {

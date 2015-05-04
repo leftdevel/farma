@@ -11,13 +11,11 @@ var CreateLink = require('../core/create-link');
 var Wrapper = require('../wrapper');
 var Navigation = require('react-router').Navigation;
 
-
 function getState() {
     return {
         users: UserStore.getUsers()
     };
 }
-
 
 module.exports = React.createClass({
     mixins: [Navigation],
@@ -31,7 +29,7 @@ module.exports = React.createClass({
     },
 
     componentWillUnmount: function() {
-        UserStore.removeChangeListener();
+        UserStore.removeChangeListener(this._onChange);
     },
 
     _onChange: function() {
@@ -87,7 +85,7 @@ module.exports = React.createClass({
     },
 
     _onCreateLinkClick: function() {
-        this.transitionTo('/users/create');
+        this.context.router.transitionTo('users-create');
     },
 
     _onEditClick: function(userId, event) {

@@ -9,9 +9,10 @@ var _roles = UserUtils.getRoles();
 var UserActions = require('../../../actions/user-actions');
 
 var FormMixin = require('./form-mixin');
+var Navigation = require('react-router').Navigation;
 
 var Form = React.createClass({
-    mixins: [FormMixin],
+    mixins: [FormMixin, Navigation],
 
     propTypes: {
         title: React.PropTypes.string.isRequired,
@@ -75,7 +76,7 @@ var Form = React.createClass({
     },
 
     _onCancel: function() {
-        UserActions.toggleListView();
+        this.context.router.transitionTo('users');
     }
 });
 

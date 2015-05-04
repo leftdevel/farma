@@ -12,6 +12,7 @@ var Modal = require('./components/modal');
 
 
 var Users = require('./components/users/list');
+var UserCreate = require('./components/users/create');
 
 var App = React.createClass({
   render: function () {
@@ -41,7 +42,8 @@ var App = React.createClass({
 
 var routes = (
   <Route name="app" path="/" handler={App}>
-    <Route name="users" handler={Users}/>
+    <Route name="users" path="users" handler={Users} />
+    <Route name="users-create" path="users/create" handler={UserCreate} />
     <DefaultRoute handler={Users}/>
   </Route>
 );
