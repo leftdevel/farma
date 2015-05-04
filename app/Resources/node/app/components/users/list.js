@@ -7,13 +7,39 @@ var SettingsUtils = require('../../utils/settings-utils');
 var settings = SettingsUtils.getSettings();
 var cx = require('class-set');
 
+var CreateLink = require('../core/create-link');
+var Wrapper = require('../wrapper');
+var Navigation = require('react-router').Navigation;
+
+
+function getState() {
+    return {
+        users: UserStore.getUsers()
+    };
+}
+
+
 module.exports = React.createClass({
-    propTypes: {
-        users: React.PropTypes.array.isRequired
+    mixins: [Navigation],
+
+    getInitialState: function() {
+        return getState();
+    },
+
+    componentDidMount: function() {
+        UserStore.addChangeListener(this._onChange);
+    },
+
+    componentWillUnmount: function() {
+        UserStore.removeChangeListener();
+    },
+
+    _onChange: function() {
+        this.setState(getState());
     },
 
     render: function() {
-        var records = this.props.users.map(function(user) {
+        var records = this.state.users.map(function(user) {
             var canDeleteUser = this._canDeleteUser(user.id);
 
             var deleteButtonClassNames = cx({
@@ -41,27 +67,35 @@ module.exports = React.createClass({
         }.bind(this));
 
         return (
-            <table className="hoverable">
-                <thead>
-                    <tr>
-                        <th data-field="id">Nombre</th>
-                        <th data-field="email">Correo</th>
-                        <th data-field="roles">Departamento</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {records}
-                </tbody>
-            </table>
+            <Wrapper title="Usuarios del Sistema - Lista">
+                <CreateLink title='Crear nuevo usuario' clickHandler={this._onCreateLinkClick} />
+                <table className="hoverable">
+                    <thead>
+                        <tr>
+                            <th data-field="id">Nombre</th>
+                            <th data-field="email">Correo</th>
+                            <th data-field="roles">Departamento</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {records}
+                    </tbody>
+                </table>
+            </Wrapper>
         );
+    },
+
+    _onCreateLinkClick: function() {
+        this.transitionTo('/users/create');
     },
 
     _onEditClick: function(userId, event) {
         event.preventDefault();
-        UserActions.toggleEditView(userId)
+        //UserActions.toggleEditView(userId)
     },
 
+    // @TODO move to Store
     _canDeleteUser: function(userId) {
         return settings.user.id != userId;
     },
