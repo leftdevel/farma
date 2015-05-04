@@ -91,7 +91,6 @@ module.exports = React.createClass({
 
     _onEditClick: function(userId, event) {
         event.preventDefault();
-        console.log(userId);
         this.context.router.transitionTo('users-edit', {userId: userId});
     },
 

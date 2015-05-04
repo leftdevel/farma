@@ -21,11 +21,10 @@ module.exports = {
         return new Validator(email, constraints);
     },
 
-    getEditableEmailValidator: function(email) {
-        var userIdInEditForm = UserStore.getUserIdInEditForm();
+    getEditableEmailValidator: function(email, userId) {
 
         var userFoundCallback = function(userFound) {
-            return userIdInEditForm === userFound.id;
+            return userId === userFound.id;
         };
 
         var constraints = getCommonEmailConstraints();

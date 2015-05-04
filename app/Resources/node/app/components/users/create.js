@@ -1,6 +1,7 @@
 var React = require('react');
 
 var MapValidator = require('../../lib/validator/map-validator');
+var UserActions = require('../../actions/user-actions');
 var Form = require('./common/form');
 var ValidationSchema = require('./common/validation-schema');
 var Text = require('../core/form/text');
@@ -78,7 +79,7 @@ var Create = React.createClass({
         var entity = this._getFormEntity();
 
         UserActions.createUser(entity);
-        this.transitionTo('/users');
+        this.context.router.transitionTo('users');
     },
 
     _getMapValidator: function() {

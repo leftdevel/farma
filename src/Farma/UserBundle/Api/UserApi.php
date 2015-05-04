@@ -136,7 +136,7 @@ class UserApi
         if (isset($input['password'])) {
             $rawPassword = trim($input['password']);
 
-            if (strlen($rawPassword) < 3) {
+            if (strlen($rawPassword) === 0) {
                 throw new UserApiException('Invalid Password');
             }
 

@@ -92,50 +92,6 @@ var UserActions = {
 
         // @TODO move this to a socket aware util
         UserActions.fetchUsers();
-    },
-
-    // UI
-
-    toggleListView: function() {
-        AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_UI_TOGGLE_LIST,
-        });
-    },
-
-    toggleCreateView: function() {
-        AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_UI_TOGGLE_CREATE,
-        });
-    },
-
-    toggleEditView: function(userId) {
-        AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_UI_TOGGLE_EDIT,
-            userId: userId
-        });
-    },
-
-    toggleUpdatePassword: function() {
-        AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_UI_TOGGLE_UPDATE_PASSWORD
-        });
-    },
-
-    // FORM
-
-    updateFormValue: function(propertyPath, value) {
-        AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_FORM_UPDATE_VALUE,
-            propertyPath: propertyPath,
-            value: value
-        });
-    },
-
-    setFormErrors: function(errors) {
-        AppDispatcher.dispatch({
-            actionType: UserConstants.USERS_FORM_SET_ERRORS,
-            errors: errors
-        });
     }
 };
 

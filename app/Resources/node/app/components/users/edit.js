@@ -8,9 +8,49 @@ var Text = require('../core/form/text');
 var UserStore = require('../../stores/user-store');
 
 var FormMixin = require('./common/form-mixin');
-
 var Wrapper = require('../wrapper');
 var _roles = require('../../utils/user-utils').getRoles();
+var ModalActions = require('../../actions/modal-actions');
+
+
+function getDefaultState() {
+    return  {
+        user: null,
+        isUpdatePassword: false,
+        hasStoreBooted: UserStore.hasBooted(),
+        fields: {
+            full_name: {value: '', error: ''},
+            email: {value: '', error: ''},
+            role: {value: _roles.ROLE_ADMIN, error: ''}, // One role at a time for current version.
+            password: {value: '', error: ''},
+            repeat_password: {value: '', error: ''}
+        }
+    };
+}
+
+function getStateForUserId(userId) {
+    var user = UserStore.findOneUserById(userId);
+    var state = getDefaultState();
+
+    if (!user) {
+        state.user = null;
+        return state;
+    }
+
+    state.user = user;
+
+    var fields = state.fields;
+    fields.full_name.value = user.full_name;
+    fields.email.value = user.email;
+    // Roles are fetched as array but we only support
+    // one role at a time in current frontend version
+    // for the form specifically.
+    fields.role.value = user.roles[0];
+
+    return state;
+}
+
+// Component
 
 var Edit = React.createClass({
     mixins: [FormMixin],
@@ -20,28 +60,37 @@ var Edit = React.createClass({
     },
 
     getInitialState: function() {
-        return  {
-            fields: {
-                full_name: {value: '', error: ''},
-                email: {value: '', error: ''},
-                role: {value: _roles.ROLE_ADMIN, error: ''}, // One role at a time for current version.
-                password: {value: '', error: ''},
-                repeat_password: {value: '', error: ''}
-            },
-
-            isUpdatePassword: false
-        };
+        var userId = this.context.router.getCurrentParams().userId;
+        return getStateForUserId(userId);
     },
 
     componentDidMount: function() {
-        // var userId = this.props.params.userId;
-        console.log(this.context.router.getCurrentParams());
+        UserStore.addChangeListener(this._onChange);
+    },
 
-        // @ TODO prefill form with current user data.
-        // @ TODO listen to users store changes, on first run we won't have a list of users straight away.
+    componentWillUnmount: function() {
+        UserStore.removeChangeListener(this._onChange);
+    },
+
+    _onChange: function() {
+        var userId = this.context.router.getCurrentParams().userId;
+        var state = getStateForUserId(userId);
+        state.hasStoreBooted = true;
+        this.setState(state);
     },
 
     render: function() {
+       if (!this.state.hasStoreBooted) {
+            return (
+                <Wrapper title="Usuarios del Sistema - Editar" />
+            );
+       }
+
+       if (!this.state.user) {
+            this.context.router.transitionTo('users');
+            return null;
+       }
+
         var fields = this.state.fields;
 
         return (
@@ -55,7 +104,7 @@ var Edit = React.createClass({
 
                     {this._getPasswordToggler()}
 
-                    <div className={this._isUpdatePassword ? '' : 'hide'}>
+                    <div className={this.state.isUpdatePassword ? '' : 'hide'}>
                         <Text
                             inputType="password"
                             id="password"
@@ -113,16 +162,17 @@ var Edit = React.createClass({
         var entity = this._getFormEntity();
 
         UserActions.updateUser(entity);
-        this.transitionTo('/users');
+        this.context.router.transitionTo('users');
     },
 
     _getMapValidator: function() {
         var mapValidator = new MapValidator();
         var fields = this.state.fields;
+        var userId = this.state.user.id;
 
         mapValidator
             .addValidatorForPath('full_name', ValidationSchema.getFullNameValidator(fields.full_name.value))
-            .addValidatorForPath('email', ValidationSchema.getEditableEmailValidator(fields.email.value))
+            .addValidatorForPath('email', ValidationSchema.getEditableEmailValidator(fields.email.value, userId))
         ;
 
         if (this.state.isUpdatePassword) {
@@ -151,12 +201,14 @@ var Edit = React.createClass({
         var fields = this.state.fields;
         var entity = {};
 
+        entity.id = this.state.user.id;
         entity.full_name = fields.full_name.value;
         entity.email = fields.email.value;
         entity.roles = [fields.role.value]; // Backend API expects array
-        entity.password = fields.password.value;
 
-        entity.id = this.props.params.userId;
+        if (this.state.isUpdatePassword) {
+            entity.password = fields.password.value;
+        }
 
         return entity;
     }
