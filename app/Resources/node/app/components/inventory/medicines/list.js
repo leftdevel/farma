@@ -2,6 +2,10 @@ var React = require('react');
 var CreateLink = require('../../core/create-link');
 var Wrapper = require('../../wrapper');
 var MedicineStore = require('../../../stores/medicine-store');
+var SmartTable = require('../../core/smart-table');
+var ListTable = require('./list-table');
+
+var searchableProperties = ['name_normalized', 'generic_normalized', 'presentation_normalized', 'laboratory_normalized'];
 
 function getState() {
     return {
@@ -34,7 +38,16 @@ var List = React.createClass({
         return (
             <Wrapper title = "Inventario - Medicinas">
                 <CreateLink title='Registrar Nueva Medicina' clickHandler={this._onCreateLinkClick} />
-                {this._getTable()}
+                <SmartTable
+                    items={this.state.medicines}
+                    title='Buscar'
+                    placeholder='cualquier término'
+                    searchTermNormalizer={this._searchsearchTermNormalizer}
+                    searchableProperties={searchableProperties}>
+
+                    <ListTable filteredItems={[]} key="0" />
+
+                </SmartTable>
             </Wrapper>
         );
     },
@@ -43,34 +56,15 @@ var List = React.createClass({
         //this.context.router.transitionTo('users-create');
     },
 
-    _getTable: function() {
-        var records = this.state.medicines.map(function(medicine) {
-            return (
-                <tr key={medicine.id}>
-                    <td>{medicine.name}</td>
-                    <td>{medicine.generic}</td>
-                    <td>{medicine.presentation}</td>
-                    <td>{medicine.laboratory}</td>
-                </tr>
-            );
-        });
+    _searchsearchTermNormalizer: function(value) {
+        return value.toLowerCase();
+    },
 
-        return (
-            <table>
-                <thead>
-                    <tr>
-                        <th>Nombre</th>
-                        <th>Genérico</th>
-                        <th>Presentación</th>
-                        <th>Laboratorio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {records}
-                </tbody>
-            </table>
-        );
-    }
+    _onFilter: function(filteredMedicines) {
+        this.setState({filteredMedicines: filteredMedicines});
+    },
+
+
 });
 
 module.exports = List;

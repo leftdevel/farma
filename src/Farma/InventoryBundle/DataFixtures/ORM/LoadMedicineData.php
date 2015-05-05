@@ -29,7 +29,7 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
         $aleve->setGeneric('naproxeno');
         $aleve->setPresentation('tableta');
 
-        $aleve->setLaboratory('BEYER');
+        $aleve->setLaboratory('BAYERN');
         $aleve->setConcentration('100 mg');
         $aleve->addQuantity(100);
         $aleve->setPrice(50);
