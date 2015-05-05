@@ -3,8 +3,6 @@ var UserActions = require('../../actions/user-actions');
 var UserUtils = require('../../utils/user-utils');
 var ModalActions = require('../../actions/modal-actions');
 var UserStore = require('../../stores/user-store');
-var SettingsUtils = require('../../utils/settings-utils');
-var settings = SettingsUtils.getSettings();
 var cx = require('class-set');
 
 var CreateLink = require('../core/create-link');
@@ -39,7 +37,7 @@ module.exports = React.createClass({
 
     render: function() {
         var records = this.state.users.map(function(user) {
-            var canDeleteUser = this._canDeleteUser(user.id);
+            var canDeleteUser = UserStore.canDeleteUser(user.id);
 
             var deleteButtonClassNames = cx({
                 'waves-light waves-effect': true,
@@ -95,14 +93,11 @@ module.exports = React.createClass({
     },
 
     // @TODO move to Store
-    _canDeleteUser: function(userId) {
-        return settings.user.id != userId;
-    },
 
     _onDeleteClick: function(userId, event) {
         event.preventDefault();
 
-        if (!this._canDeleteUser(userId)) return;
+        if (!UserStore.canDeleteUser(userId)) return;
 
         var user = UserStore.findOneUserById(userId);
 

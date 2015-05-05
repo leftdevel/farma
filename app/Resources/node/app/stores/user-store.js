@@ -42,6 +42,10 @@ var UserStore = assign({}, EventEmitter.prototype, {
         return null;
     },
 
+    canDeleteUser: function(userId) {
+        return SettingsUtil.getSettings().user.id != userId;
+    },
+
     hasBooted: function() {
         return _has_booted;
     },
