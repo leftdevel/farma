@@ -1,36 +1,48 @@
 var React = require('react');
+var assign = require('object-assign');
+
+// Components
 var Form = require('./common/form');
 var Text = require('../core/form/text');
-var UserStore = require('../../stores/user-store');
-var CreateEditUtils = require('./common/create-edit-utils');
 var Wrapper = require('../wrapper');
 
-// Component
+// Utils
+var UserStore = require('../../stores/user-store');
+var BaseCreateEdit = require('./common/base-create-edit');
+var UserActions = require('../../actions/user-actions');
 
-var Edit = React.createClass({
+// Validation
+var MapValidator = require('../../lib/validator/map-validator');
+var ValidationSchema = require('./common/validation-schema');
+
+
+var Edit = React.createClass(assign({}, BaseCreateEdit.prototype, {
     contextTypes: {
         router: React.PropTypes.func.isRequired
     },
 
     getInitialState: function() {
         var userId = this.context.router.getCurrentParams().userId;
-        return CreateEditUtils.getEditInitialState(userId);
+
+        var state = {
+            user: null,
+            isUpdatePassword: false,
+            hasStoreBooted: UserStore.hasBooted(),
+            fields: this.getDefaultFields()
+        };
+
+        var user = UserStore.findOneUserById(userId);
+
+        if (user) {
+            state.user = user;
+            this.bindUserToFields(user, state.fields);
+        }
+
+        return state;
     },
 
     componentDidMount: function() {
         UserStore.addChangeListener(this._onChange);
-
-        var getState = function() {
-            return this.state;
-        }.bind(this);
-
-        var setState = function(state) {
-            this.setState(state);
-        }.bind(this);
-
-        var router = this.context.router;
-
-        CreateEditUtils.initialize('edit', getState, setState, router);
     },
 
     componentWillUnmount: function() {
@@ -38,8 +50,7 @@ var Edit = React.createClass({
     },
 
     _onChange: function() {
-        var userId = this.context.router.getCurrentParams().userId;
-        var state = CreateEditUtils.getEditInitialState(userId);
+        var state = this.getInitialState();
         state.hasStoreBooted = true;
         this.setState(state);
     },
@@ -63,10 +74,10 @@ var Edit = React.createClass({
             <Wrapper title="Usuarios del Sistema - Editar">
                 <Form
                     fields={fields}
-                    changeHandler={CreateEditUtils.changeHandler}
+                    changeHandler={this.changeHandler}
                     title="Actualizar Usuario"
                     submitLabel="Actualizar"
-                    submitHandler={CreateEditUtils.submitHandler}>
+                    submitHandler={this.submitHandler}>
 
                     {this._getPasswordToggler()}
 
@@ -76,7 +87,7 @@ var Edit = React.createClass({
                             id="password"
                             label="Nueva Contraseña"
                             value={fields.password.value}
-                            changeHandler={CreateEditUtils.changeHandler}
+                            changeHandler={this.changeHandler}
                             error={fields.password.error} />
 
                         <Text
@@ -84,7 +95,7 @@ var Edit = React.createClass({
                             id="repeat_password"
                             label="Confirmar Nueva Contraseña"
                             value={fields.repeat_password.value}
-                            changeHandler={CreateEditUtils.changeHandler}
+                            changeHandler={this.changeHandler}
                             error={fields.repeat_password.error} />
                     </div>
 
@@ -108,7 +119,49 @@ var Edit = React.createClass({
     _onPasswordTogglerClick: function(event) {
         event.preventDefault();
         this.setState({isUpdatePassword: !this.state.isUpdatePassword});
+    },
+
+    _getMapValidator: function() {
+        var mapValidator = new MapValidator();
+        var fields = this.state.fields;
+        var userId = this.state.user.id;
+
+        mapValidator
+            .addValidatorForPath('full_name', ValidationSchema.getFullNameValidator(fields.full_name.value))
+            .addValidatorForPath('email', ValidationSchema.getEditableEmailValidator(fields.email.value, userId))
+        ;
+
+        if (this.state.isUpdatePassword) {
+            mapValidator
+                .addValidatorForPath('password', ValidationSchema.getPasswordValidator(fields.password.value))
+                .addValidatorForPath('repeat_password',
+                    ValidationSchema.getRepeatPasswordValidator(fields.repeat_password.value, fields.password.value))
+            ;
+        }
+
+        return mapValidator;
+    },
+
+    _sendUserAction: function() {
+        var entity = this._getFormEntity();
+        UserActions.updateUser(entity);
+    },
+
+    _getFormEntity: function() {
+        var fields = this.state.fields;
+        var entity = {};
+
+        entity.id = this.state.user.id;
+        entity.full_name = fields.full_name.value;
+        entity.email = fields.email.value;
+        entity.roles = [fields.role.value]; // Backend API expects array
+
+        if (this.state.isUpdatePassword) {
+            entity.password = fields.password.value;
+        }
+
+        return entity;
     }
-});
+}));
 
 module.exports = Edit;
