@@ -1,11 +1,16 @@
 var React = require('react');
+var Text = require('./form/text');
+var StringUtils = require('../../lib/string/string-utils');
+
+// Notice. Should also apply StringUtils::createIndexable to the items property values (table columns).
+// Not doing in order to preserve good performance. Items are expected to have normalized column values.
+// @See e.g. Medicine.php.
 
 var SmartTable = React.createClass({
     propTypes: {
         items: React.PropTypes.array.isRequired,
         searchableProperties: React.PropTypes.array.isRequired,
         placeholder: React.PropTypes.string,
-        searchTermNormalizer: React.PropTypes.func,
         title: React.PropTypes.string
     },
 
@@ -30,16 +35,15 @@ var SmartTable = React.createClass({
 
         return (
             <div>
-                {this.props.title || 'Search'}
-                <input onChange={this._onChange} value={this.state.searchTerm} placeholder={this.props.placeholder || 'Enter a term'} />
+                <Text id="search" label={this.props.title || 'Search'} changeHandler={this._onChange} value={this.state.searchTerm} placeholder={this.props.placeholder || 'Enter a term'} />
                 {children}
             </div>
         );
     },
 
-    _onChange: function(event) {
-        var searchTerm = event.target.value;
-        var normalizedSearchTerm = this.props.searchTermNormalizer ? this.props.searchTermNormalizer(searchTerm) : searchTerm;
+    _onChange: function(id, value) {
+        var searchTerm = value;
+        var normalizedSearchTerm = StringUtils.createIndexable(searchTerm);
         this.setState({searchTerm: searchTerm, normalizedSearchTerm: normalizedSearchTerm});
     },
 

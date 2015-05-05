@@ -128,12 +128,30 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
         $bisolvon->setExpiryFirst($timestamp);
         $bisolvon->setExpiryLast($timestamp);
 
+        // DOLOFIN
+        $dolofin = new Medicine();
+        $dolofin->setName('Dolofín');
+        $dolofin->setGeneric('acetaminofén');
+        $dolofin->setPresentation('tableta');
+
+        $dolofin->setLaboratory('Laboratorio López');
+        $dolofin->setConcentration('200 ml');
+        $dolofin->addQuantity(120);
+        $dolofin->setPrice(10);
+        $dolofin->setCost(1);
+
+        $expiry = new \DateTime('now +12 days');
+        $timestamp = $expiry->getTimestamp();
+        $dolofin->setExpiryFirst($timestamp);
+        $dolofin->setExpiryLast($timestamp);
+
         $entityManager->persist($aleve);
         $entityManager->persist($dorival);
         $entityManager->persist($ventolin1);
         $entityManager->persist($ventolin2);
         $entityManager->persist($ventolin3);
         $entityManager->persist($bisolvon);
+        $entityManager->persist($dolofin);
         $entityManager->flush();
     }
 

@@ -1,4 +1,6 @@
 var React = require('react');
+var DateUtils = require('../../../lib/date/date-utils');
+
 
 var ListTable = React.createClass({
     propTypes: {
@@ -9,12 +11,20 @@ var ListTable = React.createClass({
         var medicines = this.props.filteredItems;
 
         var getRow = function(medicine) {
+            var expiryFirst = medicine.expiry_first ? DateUtils.fromTimestamp(medicine.expiry_first).format('d/m/Y') : '';
+            var expiryLast = medicine.expiry_last ? DateUtils.fromTimestamp(medicine.expiry_last).format('d/m/Y') : '';
+
             return (
                 <tr key={medicine.id}>
                     <td>{medicine.name}</td>
                     <td>{medicine.generic}</td>
-                    <td>{medicine.presentation}</td>
                     <td>{medicine.laboratory}</td>
+                    <td>{medicine.presentation}</td>
+                    <td>{medicine.concentration}</td>
+                    <td>{medicine.quantity}</td>
+                    <td>{medicine.cost}</td>
+                    <td>{medicine.price}</td>
+                    <td>{expiryFirst === expiryLast ? expiryFirst : expiryFirst + ' / ' + expiryLast}</td>
                 </tr>
             );
         };
@@ -25,8 +35,13 @@ var ListTable = React.createClass({
                     <tr>
                         <th>Nombre</th>
                         <th>Genérico</th>
-                        <th>Presentación</th>
                         <th>Laboratorio</th>
+                        <th>Presentación</th>
+                        <th>Concentración</th>
+                        <th>Cantidad</th>
+                        <th>Costo</th>
+                        <th>Precio</th>
+                        <th>Expira</th>
                     </tr>
                 </thead>
                 <tbody>
