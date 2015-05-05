@@ -2,7 +2,10 @@ var React = require('react');
 var Router = require('react-router');
 var routes = require('./routes');
 
-Router.run(routes, function (Handler) {
+var RouteActions = require('./actions/route-actions');
+
+Router.run(routes, function (Handler, state) {
+    RouteActions.change(state);
     React.render(<Handler />, document.body);
 });
 

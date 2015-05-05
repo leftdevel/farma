@@ -1,23 +1,17 @@
 var assign = require('object-assign');
-var deepAssign = require('object-assign-deep');
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var EventEmitter = require('events').EventEmitter;
 
 var SettingsUtil = require('../utils/settings-utils');
 var UserConstants = require('../constants/user-constants');
-var UserUtils = require('../utils/user-utils');
-var _roles = UserUtils.getRoles();
+var _roles = require('../utils/user-utils').getRoles();
 
 var CHANGE_EVENT = 'change';
-var allowedViews = ['list', 'create', 'edit'];
-
 var _has_booted = false;
 
 var _data = {
     users: []
 };
-
-// LIST
 
 function setUsers(users) {
     if (SettingsUtil.isSuperAdmin()) {
@@ -28,8 +22,6 @@ function setUsers(users) {
         });
     }
 }
-
-// STORE
 
 var UserStore = assign({}, EventEmitter.prototype, {
     getUsers: function() {

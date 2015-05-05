@@ -80,16 +80,17 @@ var Edit = React.createClass({
     },
 
     render: function() {
-       if (!this.state.hasStoreBooted) {
+        // For when the url is hit directly or by a page refresh
+        if (!this.state.hasStoreBooted) {
             return (
                 <Wrapper title="Usuarios del Sistema - Editar" />
             );
-       }
+        }
 
-       if (!this.state.user) {
+        if (!this.state.user) {
             this.context.router.transitionTo('users');
             return null;
-       }
+        }
 
         var fields = this.state.fields;
 
