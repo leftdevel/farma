@@ -12,3 +12,6 @@ Router.run(routes, function (Handler, state) {
 // Boot
 var UserActions = require('./actions/user-actions');
 UserActions.fetchUsers();
+
+var MedicineActions = require('./actions/medicine-actions');
+MedicineActions.fetchMedicines();

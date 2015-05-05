@@ -14,7 +14,7 @@ function getState() {
     };
 }
 
-module.exports = React.createClass({
+var List = React.createClass({
     contextTypes: {
         router: React.PropTypes.func.isRequired
     },
@@ -36,6 +36,17 @@ module.exports = React.createClass({
     },
 
     render: function() {
+
+
+        return (
+            <Wrapper title="Usuarios del Sistema - Lista">
+                <CreateLink title='Crear nuevo usuario' clickHandler={this._onCreateLinkClick} />
+                {this._getTable()}
+            </Wrapper>
+        );
+    },
+
+    _getTable: function() {
         var records = this.state.users.map(function(user) {
             var canDeleteUser = UserStore.canDeleteUser(user.id);
 
@@ -64,22 +75,19 @@ module.exports = React.createClass({
         }.bind(this));
 
         return (
-            <Wrapper title="Usuarios del Sistema - Lista">
-                <CreateLink title='Crear nuevo usuario' clickHandler={this._onCreateLinkClick} />
-                <table className="hoverable">
-                    <thead>
-                        <tr>
-                            <th data-field="id">Nombre</th>
-                            <th data-field="email">Correo</th>
-                            <th data-field="roles">Departamento</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {records}
-                    </tbody>
-                </table>
-            </Wrapper>
+            <table className="hoverable">
+                <thead>
+                    <tr>
+                        <th data-field="id">Nombre</th>
+                        <th data-field="email">Correo</th>
+                        <th data-field="roles">Departamento</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {records}
+                </tbody>
+            </table>
         );
     },
 
@@ -110,3 +118,5 @@ module.exports = React.createClass({
         ModalActions.open(title, content, confirmCallback);
     }
 });
+
+module.exports = List;

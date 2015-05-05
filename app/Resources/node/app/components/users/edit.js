@@ -56,7 +56,7 @@ var Edit = React.createClass(assign({}, BaseCreateEdit.prototype, {
     },
 
     render: function() {
-        // For when the url is hit directly or by a page refresh
+        // For when the url is hit directly or for a page refresh
         if (!this.state.hasStoreBooted) {
             return (
                 <Wrapper title="Usuarios del Sistema - Editar" />

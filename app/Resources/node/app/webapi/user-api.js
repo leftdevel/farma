@@ -1,7 +1,7 @@
 var request = require('superagent');
 var ApiResponseHandler = require('./api-response-handler');
 
-module.exports = {
+var UserApi = {
     fetchUsers: function(successCallback) {
         var url = Routing.generate('user_list');
 
@@ -52,3 +52,5 @@ module.exports = {
         ;
     },
 };
+
+module.exports = UserApi;

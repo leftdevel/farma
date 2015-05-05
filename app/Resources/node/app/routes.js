@@ -8,9 +8,13 @@ var Route = Router.Route;
 var Header = require('./components/header');
 var Modal = require('./components/modal');
 
-var Users = require('./components/users/list');
+// User pages
+var UsersList = require('./components/users/list');
 var UserCreate = require('./components/users/create');
 var UserEdit = require('./components/users/edit');
+
+// Inventory pages
+var InventoryMedicinesList = require('./components/inventory/medicines/list');
 
 var App = React.createClass({
   render: function () {
@@ -28,10 +32,11 @@ var App = React.createClass({
 
 var routes = (
   <Route name="app" path="/" handler={App}>
-    <Route name="users" path="users" handler={Users} />
+    <Route name="users" path="users" handler={UsersList} />
     <Route name="users-create" path="users/create" handler={UserCreate} />
     <Route name="users-edit" path="users/edit/:userId" handler={UserEdit} />
-    <DefaultRoute handler={Users}/>
+    <Route name="inventory-medicines" path="inventory/medicines" handler={InventoryMedicinesList} />
+    <DefaultRoute handler={UsersList}/>
   </Route>
 );
 

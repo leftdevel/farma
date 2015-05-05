@@ -14,7 +14,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route,
 class MedicineController extends Controller
 {
     /**
-     * @Route("/", name="medicine_list", defaults={"_format" = "json"}, options={"expose"= true})
+     * @Route("/", name="medicine_list", defaults={"_format" = "json"}, options={"expose" = true})
      * @Method({"GET"})
      */
     public function listAction()

@@ -38,13 +38,18 @@ var Header = React.createClass({
                   <Progress />
                 </li>
                 <li className={ this._isUsersRoute() ?  "bold active" : "bold"}><Link to="users">Usuarios</Link></li>
+                <li className={ this._isInventoryMedicine() ?  "bold active" : "bold"}><Link to="inventory-medicines">Inventario - Medicinas</Link></li>
               </ul>
             </header>
         );
     },
 
     _isUsersRoute: function() {
-        return this.state.routing.path.indexOf('/users') !== -1;
+        return this.state.routing.path.indexOf('/users') >= 0;
+    },
+
+    _isInventoryMedicine: function() {
+        return this.state.routing.path.indexOf('/inventory/medicines') >= 0;
     }
 });
 
