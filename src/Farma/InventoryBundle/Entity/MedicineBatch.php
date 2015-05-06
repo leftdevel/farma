@@ -34,12 +34,13 @@ class MedicineBatch implements BatchInterface
     /**
      * @ORM\Column(type="integer", nullable=true)
      * @Assert\Type(type="integer")
-     * @Assert\GreaterThan(value=0)
+     * @Assert\GreaterThanOrEqual(value=0)
      */
     private $cost;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     * @Assert\NotBlank()
      * @Assert\Type(type="integer")
      */
     private $expiry;

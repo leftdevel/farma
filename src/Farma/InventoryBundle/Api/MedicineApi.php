@@ -39,6 +39,7 @@ class MedicineApi
         // validation before persist
 
         $errors = $this->validator->validate($batch);
+        print_r($errors);
         if (count($errors) > 0) {
             throw new MedicineApiException('Invalid batch input');
         }

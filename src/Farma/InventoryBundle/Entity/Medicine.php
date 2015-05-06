@@ -104,12 +104,14 @@ class Medicine implements ProductInterface
 
     /**
      * @ORM\Column(type="integer", name="expiry_first", nullable=true)
+     * @Assert\NotBlank()
      * @Assert\Type(type="integer")
      */
     private $expiryFirst;
 
     /**
      * @ORM\Column(type="integer", name="expiry_last", nullable=true)
+     * @Assert\NotBlank()
      * @Assert\Type(type="integer")
      */
     private $expiryLast;

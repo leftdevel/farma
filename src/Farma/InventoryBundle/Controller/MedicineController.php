@@ -42,16 +42,16 @@ class MedicineController extends Controller
             throw new BadRequestHttpException('Invalid input');
         }
 
-        try {
+        // try {
             $user = $this->get('security.context')->getToken()->getUser();
             $this->get('inventory.api.medicine')->create($input, $user);
 
             return new JsonResponse(array('success' => true), Response::HTTP_CREATED);
 
-        } catch (MedicineApiException $e) {
-            throw new BadRequestHttpException('invalid input');
-        } catch (MedicineException $e) {
-            throw new BadRequestHttpException('invalid input');
-        }
+        // } catch (MedicineApiException $e) {
+        //     throw new BadRequestHttpException('invalid input');
+        // } catch (MedicineException $e) {
+        //     throw new BadRequestHttpException('invalid input');
+        // }
     }
 }
