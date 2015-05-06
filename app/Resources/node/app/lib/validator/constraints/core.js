@@ -61,7 +61,7 @@ module.exports = {
         return new Constraint(errorMessage, checker);
     },
 
-    UniquePropertyValue: function(propertyPath, items, errorMessage, itemFoundCallback) {
+    Unique: function(propertyPath, items, errorMessage, itemFoundCallback) {
         var defaultErrorMessage = 'Property ' + propertyPath + ' is not unique';
         errorMessage = errorMessage || defaultErrorMessage;
 

@@ -15,7 +15,7 @@ module.exports = {
         var constraints = getCommonEmailConstraints();
 
         constraints.push(
-            Constraints.UniquePropertyValue('email', UserStore.getUsers(), 'Actualmente en uso, elija uno diferente')
+            Constraints.Unique('email', UserStore.getUsers(), 'Actualmente en uso, elija uno diferente')
         );
 
         return new Validator(email, constraints);
@@ -29,7 +29,7 @@ module.exports = {
 
         var constraints = getCommonEmailConstraints();
         constraints.push(
-            Constraints.UniquePropertyValue('email', UserStore.getUsers(), 'Actualmente en uso, elija uno diferente', userFoundCallback)
+            Constraints.Unique('email', UserStore.getUsers(), 'Actualmente en uso, elija uno diferente', userFoundCallback)
         );
 
         return new Validator(email, constraints);

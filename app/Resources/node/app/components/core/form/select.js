@@ -2,7 +2,7 @@ var React = require('react');
 var FormFieldMixin = require('./form-field-mixin');
 var cx = require('class-set');
 
-module.exports = React.createClass({
+var Select = React.createClass({
     mixins: [FormFieldMixin],
 
     propTypes: {
@@ -48,3 +48,5 @@ module.exports = React.createClass({
         this.props.changeHandler(this.props.id, event.target.value);
     }
 });
+
+module.exports = Select;

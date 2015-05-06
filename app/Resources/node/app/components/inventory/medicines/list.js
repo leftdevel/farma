@@ -36,7 +36,7 @@ var List = React.createClass({
 
     render: function() {
         return (
-            <Wrapper title = "Inventario - Medicinas">
+            <Wrapper title = "Inventario - Medicamentos">
                 <CreateLink title='Nuevo Medicamento' clickHandler={this._onCreateLinkClick} />
                 <SmartTable
                     items={this.state.medicines}
@@ -53,7 +53,7 @@ var List = React.createClass({
     },
 
     _onCreateLinkClick: function() {
-        //this.context.router.transitionTo('users-create');
+        this.context.router.transitionTo('inventory-medicines-create');
     },
 
     _searchsearchTermNormalizer: function(value) {

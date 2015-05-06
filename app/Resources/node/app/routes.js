@@ -15,6 +15,7 @@ var UserEdit = require('./components/users/edit');
 
 // Inventory pages
 var InventoryMedicinesList = require('./components/inventory/medicines/list');
+var InventoryMedicinesCreate = require('./components/inventory/medicines/create');
 
 var App = React.createClass({
   render: function () {
@@ -36,6 +37,7 @@ var routes = (
     <Route name="users-create" path="users/create" handler={UserCreate} />
     <Route name="users-edit" path="users/edit/:userId" handler={UserEdit} />
     <Route name="inventory-medicines" path="inventory/medicines" handler={InventoryMedicinesList} />
+    <Route name="inventory-medicines-create" path="inventory/medicines/create" handler={InventoryMedicinesCreate} />
     <DefaultRoute handler={UsersList}/>
   </Route>
 );

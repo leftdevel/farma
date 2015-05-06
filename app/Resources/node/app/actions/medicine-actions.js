@@ -16,6 +16,24 @@ var MedicineActions = {
             actionType: MedicineConstants.MEDICINES_SET_ALL,
             medicines: medicines
         });
+    },
+
+    createMedicine: function(entity) {
+        AppDispatcher.dispatch({
+            actionType: MedicineConstants.MEDICINES_CREATE,
+            entity: entity
+        });
+
+        MedicineApi.createMedicine(entity, MedicineActions.createMedicineSuccess);
+    },
+
+    createMedicineSuccess: function() {
+        AppDispatcher.dispatch({
+            actionType: MedicineConstants.MEDICINES_CREATE_SUCCESS
+        });
+
+        // @TODO move to a socket listener
+        MedicineApi.fetchMedicines();
     }
 };
 

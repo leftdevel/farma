@@ -7,12 +7,10 @@ var SubmitCancelButton = require('../../core/form/submit-cancel-button');
 var UserUtils = require('../../../utils/user-utils');
 var _roles = UserUtils.getRoles();
 var UserActions = require('../../../actions/user-actions');
-
 var FormMixin = require('./form-mixin');
-var Navigation = require('react-router').Navigation;
 
 var Form = React.createClass({
-    mixins: [FormMixin, Navigation],
+    mixins: [FormMixin],
 
     propTypes: {
         title: React.PropTypes.string.isRequired,
