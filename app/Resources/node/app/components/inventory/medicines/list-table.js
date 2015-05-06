@@ -11,8 +11,8 @@ var ListTable = React.createClass({
         var medicines = this.props.filteredItems;
 
         var getRow = function(medicine) {
-            var expiryFirst = medicine.expiry_first ? DateUtils.fromTimestamp(medicine.expiry_first).format('d/m/Y') : '';
-            var expiryLast = medicine.expiry_last ? DateUtils.fromTimestamp(medicine.expiry_last).format('d/m/Y') : '';
+            var expiryFirst = medicine.expiry_first ? DateUtils.fromTimestamp(medicine.expiry_first).format('M, Y') : '';
+            var expiryLast = medicine.expiry_last ? DateUtils.fromTimestamp(medicine.expiry_last).format('M, Y') : '';
 
             return (
                 <tr key={medicine.id}>

@@ -21,20 +21,31 @@ var DateUtil = {
         var minutes = this.date.getMinutes();
         var seconds = this.date.getMinutes();
 
-        month = month.toString().length === 1 ? '0' + month.toString() : month;
-        day = day.toString().length === 1 ? '0' + day.toString() : day;
-        hours = hours.toString().length === 1 ? '0' + hours.toString() : hours;
-        minutes = minutes.toString().length === 1 ? '0' + minutes.toString() : minutes;
-        seconds = seconds.toString().length === 1 ? '0' + seconds.toString() : seconds;
+        monthPadded = month.toString().length === 1 ? '0' + month.toString() : month;
+        dayPadded = day.toString().length === 1 ? '0' + day.toString() : day;
+        hoursPadded = hours.toString().length === 1 ? '0' + hours.toString() : hours;
+        minutesPadded = minutes.toString().length === 1 ? '0' + minutes.toString() : minutes;
+        secondsPadded = seconds.toString().length === 1 ? '0' + seconds.toString() : seconds;
 
         format = format.replace(/Y/g, year);
-        format = format.replace(/m/g, month);
-        format = format.replace(/d/g, day);
-        format = format.replace(/H/g, hours);
-        format = format.replace(/i/g, minutes);
-        format = format.replace(/s/g, seconds);
+        format = format.replace(/m/g, monthPadded);
+        format = format.replace(/d/g, dayPadded);
+        format = format.replace(/H/g, hoursPadded);
+        format = format.replace(/i/g, minutesPadded);
+        format = format.replace(/s/g, secondsPadded);
+
+        // string replacements must go after numbers.
+        format = format.replace(/M/g, this.getMonthName(indexMonth));
 
         return format;
+    },
+
+    getMonthName: function(index) {
+        return this.getMonths()[index];
+    },
+
+    getMonths: function() {
+        return ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
     }
 };
 
