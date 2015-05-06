@@ -118,7 +118,7 @@ var Create = React.createClass({
 
                     <Text
                         id="price"
-                        label="Precio C$"
+                        label="Precio unitario C$"
                         placeholder = "ejemplo: 50"
                         value={fields.price.value}
                         changeHandler={this._onChange}
@@ -134,7 +134,7 @@ var Create = React.createClass({
 
                     <Text
                         id="cost"
-                        label="Costo C$"
+                        label="Costo unitario C$"
                         placeholder="opcional - ejemplo: 0.50"
                         value={fields.cost.value}
                         changeHandler={this._onChange}
@@ -176,7 +176,9 @@ var Create = React.createClass({
     },
 
     _onSubmit: function() {
-        var mapValidator = this._getMapValidator();
+        var entity = this._getFormEntity();
+
+        var mapValidator = this._getMapValidator(entity);
         mapValidator.validateAll();
 
         if (mapValidator.hasErrors) {
@@ -184,21 +186,19 @@ var Create = React.createClass({
             return;
         }
 
-        var entity = this._getFormEntity();
         MedicineActions.createMedicine(entity);
         this.context.router.transitionTo('inventory-medicines');
     },
 
-    _getMapValidator: function() {
+    _getMapValidator: function(entity) {
         var mapValidator = new MapValidator();
-        var fields = this.state.fields;
 
         mapValidator
-            .addValidatorForPath('name', ValidationSchema.getNameValidator(fields.name.value))
-            .addValidatorForPath('generic', ValidationSchema.getNameValidator(fields.generic.value))
-            .addValidatorForPath('presentation', ValidationSchema.getNameValidator(fields.presentation.value))
-            .addValidatorForPath('price', ValidationSchema.getNameValidator(fields.price.value))
-            .addValidatorForPath('quantity', ValidationSchema.getNameValidator(fields.quantity.value))
+            .addValidatorForPath('name', ValidationSchema.getNameValidator(entity.name))
+            .addValidatorForPath('generic', ValidationSchema.getNameValidator(entity.generic))
+            .addValidatorForPath('presentation', ValidationSchema.getNameValidator(entity.presentation))
+            .addValidatorForPath('price', ValidationSchema.getNameValidator(entity.price))
+            .addValidatorForPath('quantity', ValidationSchema.getNameValidator(entity.quantity))
         ;
 
         return mapValidator;
@@ -226,8 +226,9 @@ var Create = React.createClass({
         entity.concentration = fields.concentration.value;
         entity.price = fields.price.value;
         entity.quantity = fields.quantity.value;
-        entity.expiry = fields.expiry.value;
         entity.cost = fields.cost.value;
+        entity.expiry_month = fields.expiry_month.value;
+        entity.expiry_year = fields.expiry_year.value;
 
         return entity;
     }

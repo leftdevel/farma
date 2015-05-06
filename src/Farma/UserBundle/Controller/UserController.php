@@ -4,6 +4,7 @@ namespace Farma\UserBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller,
     Symfony\Component\HttpFoundation\JsonResponse,
+    Symfony\Component\HttpFoundation\Response,
     Symfony\Component\HttpFoundation\Request,
     Symfony\Component\HttpKernel\Exception\BadRequestHttpException,
     Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -46,7 +47,7 @@ class UserController extends Controller
 
         try {
             $this->get('user.api')->create($input);
-            return new JsonResponse(array('success' => true), 201);
+            return new JsonResponse(array('success' => true), Response::HTTP_CREATED);
 
         } catch (UserException $e) {
             throw new BadRequestHttpException();

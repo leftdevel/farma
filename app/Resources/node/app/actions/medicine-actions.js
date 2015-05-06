@@ -1,6 +1,8 @@
 var AppDispatcher = require('../dispatcher/app-dispatcher');
 var MedicineConstants = require('../constants/medicine-constants');
 var MedicineApi = require('../webapi/medicine-api');
+var DateUtils = require('../lib/date/date-utils');
+
 
 var MedicineActions = {
     fetchMedicines: function() {
@@ -19,6 +21,8 @@ var MedicineActions = {
     },
 
     createMedicine: function(entity) {
+        entity.expiry = DateUtils.convertToUnixTimestampUTC(entity.expiry_year, entity.expiry_month);
+
         AppDispatcher.dispatch({
             actionType: MedicineConstants.MEDICINES_CREATE,
             entity: entity

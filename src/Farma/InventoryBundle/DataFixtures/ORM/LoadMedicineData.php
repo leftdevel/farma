@@ -23,7 +23,6 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
     public function load(ObjectManager $entityManager)
     {
         // ALEVE
-
         $aleve = new Medicine();
         $aleve->setName('Aleve');
         $aleve->setGeneric('naproxeno');
@@ -41,7 +40,6 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
         $aleve->setExpiryLast($timestamp);
 
         // DORIVAL
-
         $dorival = new Medicine();
         $dorival->setName('Dorival');
         $dorival->setGeneric('ibuprofeno');

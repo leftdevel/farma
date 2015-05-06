@@ -2,15 +2,32 @@ var date = new Date();
 var offset = date.getTimezoneOffset();
 
 var DateUtil = {
-    fromTimestamp: function(unixTimestamp) {
+    getTimezoneOffset: function() {
+        return offset;
+    },
+
+    fromTimestampUTC: function(unixTimestamp) {
         this.date = new Date(unixTimestamp * 1000);
+
+        return this;
+    },
+
+    toDateTimeLocal: function() {
+        if (!this.date) {
+            throw 'Date was not previously defined';
+        }
+
+        var time = this.date.getTime();
+        time -= this.getTimezoneOffset();
+
+        this.date = new Date(time);
 
         return this;
     },
 
     format: function(format) {
         if (!this.date) {
-            throw "Date is not defined";
+            throw 'Date was not previously defined';
         }
 
         var year = this.date.getFullYear();
@@ -46,7 +63,35 @@ var DateUtil = {
 
     getMonths: function() {
         return ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+    },
+
+    convertToDate: function(year, monthIndex) {
+        var date = new Date();
+        date.setDate(1); // failsafe, e.g. for when current day is 31, and target month is Feb.
+        date.setMonth(monthIndex);
+        date.setFullYear(year);
+
+        return date;
+    },
+
+    convertToTimestamp: function(year, monthIndex) {
+        var date = this.convertToDate(monthIndex, year);
+        return date.getTime();
+    },
+
+    convertToUnixTimestamp: function(year, monthIndex) {
+        var unixTimestamp = this.convertToTimestamp(monthIndex, year) / 1000;
+        return parseInt(unixTimestamp, 10);
+    },
+
+    convertToUnixTimestampUTC: function(year, monthIndex) {
+        var unixTimestamp = this.convertToUnixTimestamp(year, monthIndex);
+
+        return unixTimestamp + this.getTimezoneOffset();
     }
 };
+
+window.DateUtil = DateUtil;
+
 
 module.exports = DateUtil;
