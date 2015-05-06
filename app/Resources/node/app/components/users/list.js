@@ -36,8 +36,6 @@ var List = React.createClass({
     },
 
     render: function() {
-
-
         return (
             <Wrapper title="Usuarios del Sistema - Lista">
                 <CreateLink title='Crear nuevo usuario' clickHandler={this._onCreateLinkClick} />

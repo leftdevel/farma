@@ -37,11 +37,11 @@ var List = React.createClass({
     render: function() {
         return (
             <Wrapper title = "Inventario - Medicinas">
-                <CreateLink title='Registrar Nueva Medicina' clickHandler={this._onCreateLinkClick} />
+                <CreateLink title='Nuevo Medicamento' clickHandler={this._onCreateLinkClick} />
                 <SmartTable
                     items={this.state.medicines}
                     title='Buscar'
-                    placeholder='cualquier término'
+                    placeholder='nombre, genérico, laboratorio o presentación'
                     searchTermNormalizer={this._searchsearchTermNormalizer}
                     searchableProperties={searchableProperties}>
 

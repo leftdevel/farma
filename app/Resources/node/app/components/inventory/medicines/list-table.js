@@ -30,7 +30,7 @@ var ListTable = React.createClass({
         };
 
         return (
-            <table>
+            <table className="hoverable">
                 <thead>
                     <tr>
                         <th>Nombre</th>
