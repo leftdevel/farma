@@ -34,7 +34,7 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
         $aleve->setPrice(5000);
         $aleve->setCost(3000);
 
-        $expiry = new \DateTime('now +30 days');
+        $expiry = new \DateTime('now -30 days');
         $timestamp = $expiry->getTimestamp();
         $aleve->setExpiryFirst($timestamp);
         $aleve->setExpiryLast($timestamp);

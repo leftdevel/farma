@@ -54,3 +54,19 @@ a.disabled {
     color: #9F9F9F !important;
     cursor: default !important;
 }
+
+td {
+    border-bottom: 1px solid #d0d0d0;
+}
+
+.helper-text {
+    color: #cfcfcf;
+}
+
+.urgent {
+    color: #F44336;
+}
+
+.notice {
+    color: #009688;
+}

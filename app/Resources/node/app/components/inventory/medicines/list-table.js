@@ -2,6 +2,33 @@ var React = require('react');
 var DateUtils = require('../../../lib/date/date-utils');
 var MoneyUtils = require('../../../lib/money/money-utils');
 var currency = require('../../../utils/settings-utils').getSettings().currency;
+var cx = require('class-set');
+
+function getExpiryData(expiry) {
+    var monthsLeft = expiry ?
+        DateUtils().fromTimestampUTC(expiry).toDateTimeLocal().monthsLeft() :
+       ''
+    ;
+
+    var data = {
+        label: '',
+        status: ''
+    };
+
+    if (monthsLeft < 0) {
+        monthsLeft = Math.abs(monthsLeft);
+        data.label =  monthsLeft + (monthsLeft === 1 ? ' mes atrás' : ' meses atrás');
+        data.status = 'urgent';
+    } else if (monthsLeft === 0) {
+        data.label = 'este mes';
+        data.status = 'urgent';
+    } else {
+        data.label = monthsLeft + ( monthsLeft === 1 ? ' mes' : ' meses');
+        data.status = monthsLeft === 1 ? 'notice' : '';
+    }
+
+    return data;
+}
 
 var ListTable = React.createClass({
     propTypes: {
@@ -12,27 +39,16 @@ var ListTable = React.createClass({
         var medicines = this.props.filteredItems;
 
         var getRow = function(medicine) {
-            var expiryFirst = medicine.expiry_first ?
-                DateUtils.fromTimestampUTC(medicine.expiry_first).toDateTimeLocal().format('M, Y') :
-                ''
-            ;
-
-            var expiryLast = medicine.expiry_last ?
-                DateUtils.fromTimestampUTC(medicine.expiry_last).toDateTimeLocal().format('M, Y') :
-                ''
-            ;
+            var expiryFirstData = getExpiryData(medicine.expiry_first);
 
             return (
                 <tr key={medicine.id}>
-                    <td>{medicine.name}</td>
-                    <td>{medicine.generic}</td>
+                    <td>{medicine.name} - {medicine.presentation} - {medicine.concentration} <span className="helper-text">({medicine.generic})</span></td>
                     <td>{medicine.laboratory}</td>
-                    <td>{medicine.presentation}</td>
-                    <td>{medicine.concentration}</td>
                     <td>{medicine.quantity}</td>
                     <td>{currency}{MoneyUtils.centsToUnits(medicine.cost)}</td>
                     <td>{currency}{MoneyUtils.centsToUnits(medicine.price)}</td>
-                    <td>{expiryFirst === expiryLast ? expiryFirst : expiryFirst + ' / ' + expiryLast}</td>
+                    <td><span className={expiryFirstData.status}>{expiryFirstData.label}</span></td>
                 </tr>
             );
         };
@@ -42,14 +58,11 @@ var ListTable = React.createClass({
                 <thead>
                     <tr>
                         <th>Nombre</th>
-                        <th>Genérico</th>
                         <th>Laboratorio</th>
-                        <th>Presentación</th>
-                        <th>Concentración</th>
                         <th>Cantidad</th>
                         <th>Costo</th>
                         <th>Precio</th>
-                        <th>Expira</th>
+                        <th>Expira En</th>
                     </tr>
                 </thead>
                 <tbody>
