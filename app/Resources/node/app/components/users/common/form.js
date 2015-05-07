@@ -10,6 +10,10 @@ var UserActions = require('../../../actions/user-actions');
 var FormMixin = require('./form-mixin');
 
 var Form = React.createClass({
+    contextTypes: {
+        router: React.PropTypes.func.isRequired
+    },
+
     mixins: [FormMixin],
 
     propTypes: {

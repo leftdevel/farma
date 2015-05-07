@@ -26,6 +26,20 @@ var MedicineStore = assign({}, EventEmitter.prototype, {
 
     hasBooted: function() {
         return _has_booted;
+    },
+
+    findOneById: function(medicineId) {
+        var medicine;
+
+        for (var i in _medicines) {
+            medicine = _medicines[i];
+
+            if (medicine.id == medicineId) {
+                return medicine;
+            }
+        }
+
+        return null;
     }
 });
 

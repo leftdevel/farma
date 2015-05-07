@@ -1,7 +1,6 @@
 var Validator = require('../../../../lib/validator/validator');
 var Constraints = require('../../../../lib/validator/constraints/core');
 
-
 module.exports = {
     getNameValidator: function(name) {
         return new Validator(name, [Constraints.NotBlank('Llene este campo')]);
