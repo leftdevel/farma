@@ -31,8 +31,8 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
         $aleve->setLaboratory('BAYERN');
         $aleve->setConcentration('100 mg');
         $aleve->addQuantity(100);
-        $aleve->setPrice(50);
-        $aleve->setCost(30);
+        $aleve->setPrice(5000);
+        $aleve->setCost(3000);
 
         $expiry = new \DateTime('now +30 days');
         $timestamp = $expiry->getTimestamp();
@@ -48,8 +48,8 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
         $dorival->setLaboratory('Fontana S.A.');
         $dorival->setConcentration('200 mg');
         $dorival->addQuantity(80);
-        $dorival->setPrice(20);
-        $dorival->setCost(10);
+        $dorival->setPrice(2000);
+        $dorival->setCost(1000);
 
         $expiry = new \DateTime('now +20 days');
         $timestamp = $expiry->getTimestamp();
@@ -67,8 +67,8 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
         $ventolin1->setLaboratory('rarpe');
         $ventolin1->setConcentration('100 mcg');
         $ventolin1->addQuantity(50);
-        $ventolin1->setPrice(21);
-        $ventolin1->setCost(8);
+        $ventolin1->setPrice(2100);
+        $ventolin1->setCost(800);
 
         $expiry = new \DateTime('now +28 days');
         $timestamp = $expiry->getTimestamp();
@@ -84,8 +84,8 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
         $ventolin2->setLaboratory('rarpe');
         $ventolin2->setConcentration('10 mL');
         $ventolin2->addQuantity(50);
-        $ventolin2->setPrice(21);
-        $ventolin2->setCost(8);
+        $ventolin2->setPrice(2100);
+        $ventolin2->setCost(800);
 
         $expiry = new \DateTime('now +35 days');
         $timestamp = $expiry->getTimestamp();
@@ -101,8 +101,8 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
         $ventolin3->setLaboratory('rarpe');
         $ventolin3->setConcentration('1 mL');
         $ventolin3->addQuantity(120);
-        $ventolin3->setPrice(10);
-        $ventolin3->setCost(2);
+        $ventolin3->setPrice(1000);
+        $ventolin3->setCost(200);
 
         $expiry = new \DateTime('now +1 days');
         $timestamp = $expiry->getTimestamp();
@@ -118,8 +118,8 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
         $bisolvon->setLaboratory('Boehringer');
         $bisolvon->setConcentration('100 ml');
         $bisolvon->addQuantity(60);
-        $bisolvon->setPrice(40);
-        $bisolvon->setCost(25);
+        $bisolvon->setPrice(4000);
+        $bisolvon->setCost(2500);
 
         $expiry = new \DateTime('now +7 days');
         $timestamp = $expiry->getTimestamp();
@@ -135,8 +135,8 @@ class LoadMedicineData extends AbstractFixture implements OrderedFixtureInterfac
         $dolofin->setLaboratory('Laboratorio López');
         $dolofin->setConcentration('200 ml');
         $dolofin->addQuantity(120);
-        $dolofin->setPrice(10);
-        $dolofin->setCost(1);
+        $dolofin->setPrice(1000);
+        $dolofin->setCost(100);
 
         $expiry = new \DateTime('now +12 days');
         $timestamp = $expiry->getTimestamp();

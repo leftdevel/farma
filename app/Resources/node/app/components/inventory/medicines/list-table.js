@@ -1,6 +1,7 @@
 var React = require('react');
 var DateUtils = require('../../../lib/date/date-utils');
-
+var MoneyUtils = require('../../../lib/money/money-utils');
+var currency = require('../../../utils/settings-utils').getSettings().currency;
 
 var ListTable = React.createClass({
     propTypes: {
@@ -11,8 +12,15 @@ var ListTable = React.createClass({
         var medicines = this.props.filteredItems;
 
         var getRow = function(medicine) {
-            var expiryFirst = medicine.expiry_first ? DateUtils.fromTimestampUTC(medicine.expiry_first).toDateTimeLocal().format('M, Y') : '';
-            var expiryLast = medicine.expiry_last ? DateUtils.fromTimestampUTC(medicine.expiry_last).toDateTimeLocal().format('M, Y') : '';
+            var expiryFirst = medicine.expiry_first ?
+                DateUtils.fromTimestampUTC(medicine.expiry_first).toDateTimeLocal().format('M, Y') :
+                ''
+            ;
+
+            var expiryLast = medicine.expiry_last ?
+                DateUtils.fromTimestampUTC(medicine.expiry_last).toDateTimeLocal().format('M, Y') :
+                ''
+            ;
 
             return (
                 <tr key={medicine.id}>
@@ -22,8 +30,8 @@ var ListTable = React.createClass({
                     <td>{medicine.presentation}</td>
                     <td>{medicine.concentration}</td>
                     <td>{medicine.quantity}</td>
-                    <td>{medicine.cost}</td>
-                    <td>{medicine.price}</td>
+                    <td>{currency}{MoneyUtils.centsToUnits(medicine.cost)}</td>
+                    <td>{currency}{MoneyUtils.centsToUnits(medicine.price)}</td>
                     <td>{expiryFirst === expiryLast ? expiryFirst : expiryFirst + ' / ' + expiryLast}</td>
                 </tr>
             );

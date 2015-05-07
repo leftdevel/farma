@@ -23,6 +23,7 @@ class UserApi
 
     private $safeSelectColumns;
     private $safeSelectFilters;
+    private $numericColumns;
 
     public function __construct(
         UserRepository $repository,
@@ -37,6 +38,7 @@ class UserApi
 
         $this->safeSelectColumns = array('id', 'full_name', 'email', 'flat_roles');
         $this->safeSelectFilters = array('email');
+        $this->numericColumns = array('id');
     }
 
     public function listAll(array $filters = array())
@@ -70,6 +72,12 @@ class UserApi
     {
         $user['roles'] = User::transformFlatRolesToArray($user['flat_roles']);
         unset($user['flat_roles']);
+
+        foreach ($this->numericColumns as $column) {
+            if (isset($user[$column])) {
+                $user[$column] = intval($user[$column]);
+            }
+        }
 
         return $user;
     }

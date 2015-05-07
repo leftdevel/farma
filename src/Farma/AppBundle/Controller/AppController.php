@@ -38,7 +38,8 @@ class AppController extends Controller
         return array(
             'env' => $env,
             'logout_url' => $this->generateUrl('_base_logout'),
-            'user' =>  $user->toArray()
+            'user' =>  $user->toArray(),
+            'currency' => $this->container->getParameter('currency')
         );
     }
 }

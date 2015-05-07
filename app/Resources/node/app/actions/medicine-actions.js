@@ -2,7 +2,16 @@ var AppDispatcher = require('../dispatcher/app-dispatcher');
 var MedicineConstants = require('../constants/medicine-constants');
 var MedicineApi = require('../webapi/medicine-api');
 var DateUtils = require('../lib/date/date-utils');
+var deepAssign = require('object-assign-deep');
 
+function prepareEntity(entity) {
+    var preparedEntity = deepAssign({}, entity);
+    preparedEntity.expiry = DateUtils.convertToUnixTimestampUTC(entity.expiry_year, entity.expiry_month);
+    preparedEntity.cost = parseInt(entity.cost * 100, 10);
+    preparedEntity.price = parseInt(entity.price * 100, 10);
+
+    return preparedEntity;
+}
 
 var MedicineActions = {
     fetchMedicines: function() {
@@ -21,14 +30,14 @@ var MedicineActions = {
     },
 
     createMedicine: function(entity) {
-        entity.expiry = DateUtils.convertToUnixTimestampUTC(entity.expiry_year, entity.expiry_month);
+        var preparedEntity = prepareEntity(entity);
 
         AppDispatcher.dispatch({
             actionType: MedicineConstants.MEDICINES_CREATE,
             entity: entity
         });
 
-        MedicineApi.createMedicine(entity, MedicineActions.createMedicineSuccess);
+        MedicineApi.createMedicine(preparedEntity, MedicineActions.createMedicineSuccess);
     },
 
     createMedicineSuccess: function() {
@@ -37,7 +46,7 @@ var MedicineActions = {
         });
 
         // @TODO move to a socket listener
-        MedicineApi.fetchMedicines();
+        MedicineActions.fetchMedicines();
     }
 };
 

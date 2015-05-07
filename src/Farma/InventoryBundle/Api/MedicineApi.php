@@ -14,15 +14,25 @@ class MedicineApi
     private $repository;
     private $validator;
 
+    private $numericColumns;
+
     public function __construct(MedicineRepository $repository, LegacyValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
+        $this->numericColumns = array('id', 'cost', 'price', 'quantity');
     }
 
     public function listAll()
     {
-        return $this->repository->listAll();
+        $medicines = $this->repository->listAll();
+        $normalizedMedicines = array();
+
+        foreach($medicines as $medicine) {
+            $normalizedMedicines[] = $this->normalizeMedicine($medicine);
+        }
+
+        return $normalizedMedicines;
     }
 
     public function create(array $input, UserInterface $user)
@@ -39,7 +49,6 @@ class MedicineApi
         // validation before persist
 
         $errors = $this->validator->validate($batch);
-        print_r($errors);
         if (count($errors) > 0) {
             throw new MedicineApiException('Invalid batch input');
         }
@@ -88,5 +97,15 @@ class MedicineApi
         $batch->setMedicine($medicine);
 
         return $batch;
+    }
+
+    private function normalizeMedicine(array $medicine) {
+        foreach ($this->numericColumns as $column) {
+            if (isset($medicine[$column])) {
+                $medicine[$column] = intval($medicine[$column]);
+            }
+        }
+
+        return $medicine;
     }
 }

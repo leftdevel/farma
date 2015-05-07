@@ -32,7 +32,7 @@ class MedicineApiTest extends FunctionalTestUtil
         $medicines = $this->medicineApi->listAll();
 
         $this->assertTrue(is_array($medicines));
-        $this->assertEquals(6, count($medicines));
+        $this->assertEquals(7, count($medicines));
 
         $medicine = $medicines[0];
         $this->assertTrue(isset($medicine['id']));
