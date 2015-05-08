@@ -6,7 +6,7 @@ var deepAssign = require('object-assign-deep');
 
 function prepareEntity(entity) {
     var preparedEntity = deepAssign({}, entity);
-    preparedEntity.expiry = DateUtils.convertToUnixTimestampUTC(entity.expiry_year, entity.expiry_month);
+    preparedEntity.expiry = DateUtils().convertToUnixTimestampUTC(entity.expiry_year, entity.expiry_month);
     preparedEntity.cost = parseInt(entity.cost * 100, 10);
     preparedEntity.price = parseInt(entity.price * 100, 10);
 

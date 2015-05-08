@@ -88,5 +88,50 @@ module.exports = {
         };
 
         return new Constraint(errorMessage, checker);
+    },
+
+    StringIsNumeric: function(errorMessage) {
+        var defaultErrorMessage = 'value is not a valid number';
+        errorMessage = errorMessage || defaultErrorMessage;
+
+        var checker = function(value) {
+            if (typeof value !== 'string') {
+                throw "value is not a string";
+            }
+
+            var regex = /^[0-9.]+$/;
+
+            return regex.test(value);
+        };
+
+        return new Constraint(errorMessage, checker);
+    },
+
+    StringIsInteger: function(errorMessage) {
+        var defaultErrorMessage = 'value is not a valid integer';
+        errorMessage = errorMessage || defaultErrorMessage;
+
+        var checker = function(value) {
+            if (typeof value !== 'string') {
+                throw "value is not a string";
+            }
+
+            var regex = /^[0-9]+$/;
+
+            return regex.test(value);
+        };
+
+        return new Constraint(errorMessage, checker);
+    },
+
+    GreaterThanOrEqual: function(aNumber, errorMessage) {
+        var defaultErrorMessage = 'value must be greater or equal than ' + aNumber;
+        errorMessage = errorMessage || defaultErrorMessage;
+
+        var checker = function(value) {
+            return value >= aNumber;
+        };
+
+        return new Constraint(errorMessage, checker);
     }
 };

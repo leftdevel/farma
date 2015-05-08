@@ -12,19 +12,32 @@ module.exports = React.createClass({
     },
 
     render: function() {
+        if (this.props.noWrap) {
+            return this._getInput();
+        } else {
+            return (
+                <div className='row'>
+                    <div className='input-field col s12'>
+                        {this._getInput()}
+                    </div>
+                </div>
+            );
+        }
+    },
+
+    _getInput: function() {
         var inputType = this.props.inputType ? this.props.inputType : 'text';
 
-       return (
-            <div className="row">
-                <div className="input-field col s12">
-                    <input
-                        id={this.props.id}
-                        type={inputType}
-                        placeholder={this.props.placeholder}
-                        value={this.props.value}
-                        onChange={this._onChange} />
-                    {this._getLabel()}
-                </div>
+        return (
+            <div>
+            <input
+                id={this.props.id}
+                type={inputType}
+                placeholder={this.props.placeholder}
+                value={this.props.value}
+                onChange={this._onChange}
+                autoComplete='off' />
+            {this._getLabel()}
             </div>
         );
     },
@@ -43,13 +56,13 @@ module.exports = React.createClass({
 
         if (this.props.error) {
             label = (
-                <label className="active" htmlFor={this.props.id}>
-                    {this.props.label} &middot; <span className="red-text">{this.props.error}</span>
+                <label className='active' htmlFor={this.props.id}>
+                    {this.props.label} &middot; <span className='red-text'>{this.props.error}</span>
                 </label>
             );
         } else {
             label = (
-                <label className="active" htmlFor={this.props.id}>
+                <label className='active' htmlFor={this.props.id}>
                     {this.props.label}
                 </label>
             );

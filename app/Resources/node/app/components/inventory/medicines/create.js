@@ -17,7 +17,7 @@ function getDefaultMonth() {
 }
 
 function getMonthOptions() {
-    var months = DateUtils.getMonths();
+    var months = DateUtils().getMonths();
     var options = [];
 
     options = months.map(function(month, index) {
@@ -76,85 +76,112 @@ var Create = React.createClass({
             <Wrapper title="Inventario - Medicamentos - Nuevo">
                 <h5>Nuevo Medicamento</h5>
                 <form>
-                    <p>General</p>
-                    <Text
-                        id="name"
-                        label="Nombre"
-                        value={fields.name.value}
-                        changeHandler={this._onChange}
-                        error={fields.name.error} />
-
-                    <Text
-                        id="generic"
-                        label="Genérico"
-                        placeholder="ejemplo: acetaminofén, ibuprofeno"
-                        value={fields.generic.value}
-                        changeHandler={this._onChange}
-                        error={fields.generic.error} />
-
-                    <Text
-                        id="laboratory"
-                        label="Laboratorio"
-                        placeholder="opcional"
-                        value={fields.laboratory.value}
-                        changeHandler={this._onChange}
-                        error={fields.laboratory.error} />
-
-                    <Text
-                        id="presentation"
-                        label="Presentación"
-                        placeholder="ejemplo: tableta, jarabe, spray"
-                        value={fields.presentation.value}
-                        changeHandler={this._onChange}
-                        error={fields.presentation.error} />
-
-                    <Text
-                        id="concentration"
-                        label="Concentración"
-                        placeholder="opcional - ejemplo: 100 mg, 5 ml"
-                        value={fields.concentration.value}
-                        changeHandler={this._onChange}
-                        error={fields.concentration.error} />
-
-                    <Text
-                        id="price"
-                        label="Precio unitario C$"
-                        placeholder = "ejemplo: 50"
-                        value={fields.price.value}
-                        changeHandler={this._onChange}
-                        error={fields.price.error} />
-
-                    <p>Lote</p>
-                    <Text
-                        id="quantity"
-                        label="Cantidad/Unidades"
-                        value={fields.quantity.value}
-                        changeHandler={this._onChange}
-                        error={fields.quantity.error} />
-
-                    <Text
-                        id="cost"
-                        label="Costo unitario C$"
-                        placeholder="opcional - ejemplo: 0.50"
-                        value={fields.cost.value}
-                        changeHandler={this._onChange}
-                        error={fields.cost.error} />
-
-                    <Select
-                        id="expiry_month"
-                        value={fields.expiry_month.value}
-                        label={'Expira - Mes'}
-                        options={getMonthOptions()}
-                        changeHandler={this._onChange}
-                        error={fields.expiry_month.error} />
-
-                    <Select
-                        id="expiry_year"
-                        value={fields.expiry_year.value}
-                        label={'Expira - Año'}
-                        options={getYearOptions()}
-                        changeHandler={this._onChange}
-                        error={fields.expiry_year.error} />
+                    <div className="row">
+                        <div className="input-field col s6">
+                            <Text
+                                noWrap={true}
+                                id="name"
+                                label="Nombre"
+                                value={fields.name.value}
+                                changeHandler={this._onChange}
+                                error={fields.name.error} />
+                        </div>
+                        <div className="input-field col s6">
+                            <Text
+                                noWrap={true}
+                                id="generic"
+                                label="Genérico"
+                                placeholder="ejemplo: acetaminofén, ibuprofeno"
+                                value={fields.generic.value}
+                                changeHandler={this._onChange}
+                                error={fields.generic.error} />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="input-field col s6">
+                            <Text
+                                noWrap={true}
+                                id="laboratory"
+                                label="Laboratorio"
+                                placeholder="opcional"
+                                value={fields.laboratory.value}
+                                changeHandler={this._onChange}
+                                error={fields.laboratory.error} />
+                        </div>
+                        <div className="input-field col s6">
+                            <Text
+                                noWrap={true}
+                                id="presentation"
+                                label="Presentación"
+                                placeholder="ejemplo: tableta, jarabe, spray"
+                                value={fields.presentation.value}
+                                changeHandler={this._onChange}
+                                error={fields.presentation.error} />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="input-field col s6">
+                            <Text
+                                noWrap={true}
+                                id="concentration"
+                                label="Concentración"
+                                placeholder="ejemplo: 100 mg, 5 ml"
+                                value={fields.concentration.value}
+                                changeHandler={this._onChange}
+                                error={fields.concentration.error} />
+                        </div>
+                        <div className="input-field col s6">
+                            <Text
+                                noWrap={true}
+                                id="quantity"
+                                label="Cantidad/Unidades"
+                                value={fields.quantity.value}
+                                changeHandler={this._onChange}
+                                error={fields.quantity.error} />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="input-field col s6">
+                            <Text
+                                noWrap={true}
+                                id="cost"
+                                label="Costo unitario C$"
+                                placeholder="opcional - ejemplo: 0.50"
+                                value={fields.cost.value}
+                                changeHandler={this._onChange}
+                                error={fields.cost.error} />
+                        </div>
+                        <div className="input-field col s6">
+                            <Text
+                                noWrap={true}
+                                id="price"
+                                label="Precio unitario C$"
+                                placeholder = "ejemplo: 50"
+                                value={fields.price.value}
+                                changeHandler={this._onChange}
+                                error={fields.price.error} />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="input-field col s6">
+                            <Select
+                                id="expiry_month"
+                                value={fields.expiry_month.value}
+                                label={'Expira - Mes'}
+                                options={getMonthOptions()}
+                                changeHandler={this._onChange}
+                                error={fields.expiry_month.error} />
+                        </div>
+                        <div className="input-field col s6">
+                            <Select
+                                id="expiry_year"
+                                value={fields.expiry_year.value}
+                                label={'Expira - Año'}
+                                options={getYearOptions()}
+                                changeHandler={this._onChange}
+                                error={fields.expiry_year.error} />
+                        </div>
+                    </div>
 
                     <SubmitCancelButton
                         label="Crear"
@@ -194,11 +221,14 @@ var Create = React.createClass({
         var mapValidator = new MapValidator();
 
         mapValidator
-            .addValidatorForPath('name', ValidationSchema.getNameValidator(entity.name))
-            .addValidatorForPath('generic', ValidationSchema.getNameValidator(entity.generic))
-            .addValidatorForPath('presentation', ValidationSchema.getNameValidator(entity.presentation))
-            .addValidatorForPath('price', ValidationSchema.getNameValidator(entity.price))
-            .addValidatorForPath('quantity', ValidationSchema.getNameValidator(entity.quantity))
+            .addValidatorForPath('name', ValidationSchema.getNotBlankValidator(entity.name))
+            .addValidatorForPath('generic', ValidationSchema.getNotBlankValidator(entity.generic))
+            .addValidatorForPath('presentation', ValidationSchema.getNotBlankValidator(entity.presentation))
+            .addValidatorForPath('concentration', ValidationSchema.getNotBlankValidator(entity.concentration))
+            // numbers
+            .addValidatorForPath('price', ValidationSchema.getPriceValidator(entity.price))
+            .addValidatorForPath('cost', ValidationSchema.getPriceValidator(entity.cost))
+            .addValidatorForPath('quantity', ValidationSchema.getQuantityValidator(entity.quantity))
         ;
 
         return mapValidator;
