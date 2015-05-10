@@ -93,7 +93,11 @@ var Create = React.createClass({
                 <form>
                     <div className="row">
                         <div className="input-field col s6">
-                            <Text
+                            <Autocomplete
+                                options={this.state.medicines}
+                                valuePropertyPath="id"
+                                labelPropertyPath="name"
+                                onChoseHandler={this._onNameChose}
                                 noWrap={true}
                                 id="name"
                                 label="Nombre"
@@ -128,7 +132,11 @@ var Create = React.createClass({
                                 error={fields.laboratory.error} />
                         </div>
                         <div className="input-field col s6">
-                            <Text
+                            <Autocomplete
+                                options={this.state.medicines}
+                                valuePropertyPath="id"
+                                labelPropertyPath="presentation"
+                                onChoseHandler={this._onPresentationChose}
                                 noWrap={true}
                                 id="presentation"
                                 label="Presentación"
@@ -217,12 +225,36 @@ var Create = React.createClass({
         this.setState({fields: fields});
     },
 
+    _onNameChose: function(medicineId) {
+        var medicine = MedicineStore.findOneById(medicineId);
+        if (!medicine) return;
+
+        var fields = this.state.fields;
+        fields.name.value = medicine.name;
+
+        if (fields.generic.value === '' && fields.laboratory.value === '') {
+            fields.generic.value = medicine.generic;
+            fields.laboratory.value = medicine.laboratory;
+        }
+
+        this.setState({fields: fields});
+    },
+
     _onLaboratoryChose: function(medicineId) {
         var medicine = MedicineStore.findOneById(medicineId);
         if (!medicine) return;
 
         var fields = this.state.fields;
         fields.laboratory.value = medicine.laboratory;
+        this.setState({fields: fields});
+    },
+
+    _onPresentationChose: function(medicineId) {
+        var medicine = MedicineStore.findOneById(medicineId);
+        if (!medicine) return;
+
+        var fields = this.state.fields;
+        fields.presentation.value = medicine.presentation;
         this.setState({fields: fields});
     },
 
