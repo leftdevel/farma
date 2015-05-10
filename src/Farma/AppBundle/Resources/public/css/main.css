@@ -1,3 +1,7 @@
+body {
+    background-color: #fcfcfc;
+}
+
 .side-nav .logo {
     text-align: center;
     margin-top: 10px;
@@ -69,4 +73,31 @@ td {
 
 .notice {
     color: #009688;
+}
+
+.autocomplete-container {
+    position: relative;
+}
+
+.autocomplete-container label.active {
+    left: 0; /* fixes buggy label position */
+}
+
+.autocomplete {
+    position: absolute;
+    top: 40px;
+    width: 100%;
+    background-color: white;
+    z-index: 100;
+    max-height: 200px; /* supply current height here */
+    height: auto;
+    overflow: auto;
+}
+
+.autocomplete .collection-item {
+    border-bottom: none;
+}
+
+.autocomplete .collection-item:hover {
+    background-color: #ddd;
 }

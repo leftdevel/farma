@@ -1,6 +1,7 @@
 var React = require('react');
 var MedicineActions = require('../../../actions/medicine-actions');
 var Text = require('../../core/form/text');
+var Autocomplete = require('../../core/form/autocomplete');
 var Select = require('../../core/form/select');
 var SubmitCancelButton = require('../../core/form/submit-cancel-button');
 var Wrapper = require('../../wrapper');
@@ -9,6 +10,7 @@ var Wrapper = require('../../wrapper');
 var MapValidator = require('../../../lib/validator/map-validator');
 var ValidationSchema = require('./common/validation-schema');
 var DateUtils = require('../../../lib/date/date-utils');
+var MedicineStore = require('../../../stores/medicine-store');
 
 
 function getDefaultMonth() {
@@ -51,6 +53,7 @@ var Create = React.createClass({
 
     getInitialState: function() {
         return {
+            medicines: MedicineStore.getMedicines(),
             fields: {
                 name: {value: '', error: ''},
                 generic: {value: '', error: ''},
@@ -67,10 +70,27 @@ var Create = React.createClass({
         };
     },
 
+    componentDidMount: function() {
+        MedicineStore.addChangeListener(this._onStoreChange);
+    },
+
+    componentWillUnmount: function() {
+        MedicineStore.removeChangeListener(this._onStoreChange);
+    },
+
+    _onStoreChange: function() {
+        this.setState({medicines: MedicineStore.getMedicines()});
+    },
+
     render: function() {
         var fields = this.state.fields;
         var datetime = new Date();
         var expiryPlaceholder = (datetime.getMonth() + 3).toString() + '/' + datetime.getFullYear();
+
+        var laboratoryOptions = this.state.medicines.map(function(medicine) {
+            return {value: medicine.id, label: medicine.laboratory};
+        });
+
 
         return (
             <Wrapper title="Inventario - Medicamentos - Nuevo">
@@ -83,7 +103,7 @@ var Create = React.createClass({
                                 id="name"
                                 label="Nombre"
                                 value={fields.name.value}
-                                changeHandler={this._onChange}
+                                changeHandler={this._onInputChange}
                                 error={fields.name.error} />
                         </div>
                         <div className="input-field col s6">
@@ -93,19 +113,21 @@ var Create = React.createClass({
                                 label="Genérico"
                                 placeholder="ejemplo: acetaminofén, ibuprofeno"
                                 value={fields.generic.value}
-                                changeHandler={this._onChange}
+                                changeHandler={this._onInputChange}
                                 error={fields.generic.error} />
                         </div>
                     </div>
                     <div className="row">
                         <div className="input-field col s6">
-                            <Text
+                            <Autocomplete
+                                options={laboratoryOptions}
+                                onChoseHandler={this._onLaboratoryChose}
                                 noWrap={true}
                                 id="laboratory"
                                 label="Laboratorio"
                                 placeholder="opcional"
                                 value={fields.laboratory.value}
-                                changeHandler={this._onChange}
+                                changeHandler={this._onInputChange}
                                 error={fields.laboratory.error} />
                         </div>
                         <div className="input-field col s6">
@@ -115,7 +137,7 @@ var Create = React.createClass({
                                 label="Presentación"
                                 placeholder="ejemplo: tableta, jarabe, spray"
                                 value={fields.presentation.value}
-                                changeHandler={this._onChange}
+                                changeHandler={this._onInputChange}
                                 error={fields.presentation.error} />
                         </div>
                     </div>
@@ -127,7 +149,7 @@ var Create = React.createClass({
                                 label="Concentración"
                                 placeholder="ejemplo: 100 mg, 5 ml"
                                 value={fields.concentration.value}
-                                changeHandler={this._onChange}
+                                changeHandler={this._onInputChange}
                                 error={fields.concentration.error} />
                         </div>
                         <div className="input-field col s6">
@@ -136,7 +158,7 @@ var Create = React.createClass({
                                 id="quantity"
                                 label="Cantidad/Unidades"
                                 value={fields.quantity.value}
-                                changeHandler={this._onChange}
+                                changeHandler={this._onInputChange}
                                 error={fields.quantity.error} />
                         </div>
                     </div>
@@ -148,7 +170,7 @@ var Create = React.createClass({
                                 label="Costo unitario C$"
                                 placeholder="opcional - ejemplo: 0.50"
                                 value={fields.cost.value}
-                                changeHandler={this._onChange}
+                                changeHandler={this._onInputChange}
                                 error={fields.cost.error} />
                         </div>
                         <div className="input-field col s6">
@@ -158,7 +180,7 @@ var Create = React.createClass({
                                 label="Precio unitario C$"
                                 placeholder = "ejemplo: 50"
                                 value={fields.price.value}
-                                changeHandler={this._onChange}
+                                changeHandler={this._onInputChange}
                                 error={fields.price.error} />
                         </div>
                     </div>
@@ -169,7 +191,7 @@ var Create = React.createClass({
                                 value={fields.expiry_month.value}
                                 label={'Expira - Mes'}
                                 options={getMonthOptions()}
-                                changeHandler={this._onChange}
+                                changeHandler={this._onInputChange}
                                 error={fields.expiry_month.error} />
                         </div>
                         <div className="input-field col s6">
@@ -178,7 +200,7 @@ var Create = React.createClass({
                                 value={fields.expiry_year.value}
                                 label={'Expira - Año'}
                                 options={getYearOptions()}
-                                changeHandler={this._onChange}
+                                changeHandler={this._onInputChange}
                                 error={fields.expiry_year.error} />
                         </div>
                     </div>
@@ -192,7 +214,7 @@ var Create = React.createClass({
         );
     },
 
-    _onChange: function(propertyPath, value) {
+    _onInputChange: function(propertyPath, value) {
         var fields = this.state.fields;
         fields[propertyPath].value = value;
         this.setState({fields: fields});
@@ -261,6 +283,15 @@ var Create = React.createClass({
         entity.expiry_year = fields.expiry_year.value;
 
         return entity;
+    },
+
+    _onLaboratoryChose: function(medicineId) {
+        var medicine = MedicineStore.findOneById(medicineId);
+        if (!medicine) return;
+
+        var fields = this.state.fields;
+        fields.laboratory.value = medicine.laboratory;
+        this.setState({fields: fields});
     }
 });
 

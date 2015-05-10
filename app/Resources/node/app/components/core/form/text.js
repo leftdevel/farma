@@ -4,11 +4,12 @@ var cx = require('class-set');
 
 module.exports = React.createClass({
     mixins: [
-        FormFieldMixing
+        FormFieldMixing,
     ],
 
    propTypes: {
         inputType: React.PropTypes.oneOf(['text', 'password']),
+        onFocus: React.PropTypes.func
     },
 
     render: function() {
@@ -19,6 +20,7 @@ module.exports = React.createClass({
                 <div className='row'>
                     <div className='input-field col s12'>
                         {this._getInput()}
+                        {this.props.children}
                     </div>
                 </div>
             );
@@ -30,14 +32,16 @@ module.exports = React.createClass({
 
         return (
             <div>
-            <input
-                id={this.props.id}
-                type={inputType}
-                placeholder={this.props.placeholder}
-                value={this.props.value}
-                onChange={this._onChange}
-                autoComplete='off' />
-            {this._getLabel()}
+                {this._getLabel()}
+                <input
+                    onFocus={this.props.onFocus ? this.props.onFocus : null}
+                    id={this.props.id}
+                    type={inputType}
+                    placeholder={this.props.placeholder}
+                    value={this.props.value}
+                    onChange={this._onChange}
+                    autoComplete='off' />
+                {this.props.children}
             </div>
         );
     },

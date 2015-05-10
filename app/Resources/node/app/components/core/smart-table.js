@@ -35,7 +35,7 @@ var SmartTable = React.createClass({
 
         return (
             <div>
-                <Text id="search" label={this.props.title || 'Search'} changeHandler={this._onChange} value={this.state.searchTerm} placeholder={this.props.placeholder || 'Enter a term'} />
+                <Text id='search' label={this.props.title || 'Search'} changeHandler={this._onChange} value={this.state.searchTerm} placeholder={this.props.placeholder || 'Enter a term'} />
                 {children}
             </div>
         );
