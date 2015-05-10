@@ -101,3 +101,16 @@ td {
 .autocomplete .collection-item:hover {
     background-color: #ddd;
 }
+
+#toast-container {
+    top: inherit;
+    bottom: 10%;
+}
+
+#toast-container .toast {
+    touch-action: pan-y;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    bottom: 0px;
+    opacity: 1;
+}

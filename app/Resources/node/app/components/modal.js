@@ -28,32 +28,28 @@ var Modal = React.createClass({
     },
 
     render: function() {
-        if (this.state.title) {
-            return (
-                <div id="modal1" className="modal">
-                    <div className="modal-content">
-                        <h4>{this.state.title}</h4>
-                        <p>{this.state.content}</p>
-                    </div>
-                    <div className="modal-footer">
-                        {this._getCancelButtonForContext()}
-                        {this._getConfirmButtonForContext()}
-                    </div>
+        if (!this.state.title) return null;
+
+        return (
+            <div id="modal1" className="modal">
+                <div className="modal-content">
+                    <h4>{this.state.title}</h4>
+                    <p>{this.state.content}</p>
                 </div>
-            );
-        } else {
-            return null;
-        }
+                <div className="modal-footer">
+                    {this._getCancelButtonForContext()}
+                    {this._getConfirmButtonForContext()}
+                </div>
+            </div>
+        );
     },
 
     _getConfirmButtonForContext: function() {
-        if (this.state.isConfirm) {
-            return (
-                <a href="#" onClick={this._onConfirmClick} className="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
-            );
-        } else {
-            return null;
-        }
+        if (!this.state.isConfirm) return null;
+
+        return (
+            <a href="#" onClick={this._onConfirmClick} className="modal-action modal-close waves-effect waves-green btn-flat">Confirmar</a>
+        );
     },
 
     _getCancelButtonForContext: function() {

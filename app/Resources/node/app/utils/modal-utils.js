@@ -1,13 +1,17 @@
 var ModalActions  = require('../actions/modal-actions');
 var overlayId = 'lean-overlay';
 
-var clickHandler = function() {
+function isBrowser() {
+    return !!docuement;
+}
+
+function clickHandler() {
     ModalActions.cancel();
-};
+}
 
 module.exports = {
     renderOverlay: function() {
-        if (!document) return; // For when 'document' is not available, eg NodeJS.
+        if (!isBrowser()) return;
         var existingDom = document.getElementById(overlayId);
         if (existingDom) return;
 
@@ -19,7 +23,7 @@ module.exports = {
     },
 
     removeOverlay: function() {
-        if (!document) return;
+        if (!isBrowser()) return;
         var overlayDiv = document.getElementById(overlayId);
         if (overlayDiv) {
             overlayDiv.removeEventListener('click', clickHandler);
@@ -27,3 +31,5 @@ module.exports = {
         }
     }
 };
+
+window.ModalActions = ModalActions;
