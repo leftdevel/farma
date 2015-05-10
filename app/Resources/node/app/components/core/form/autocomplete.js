@@ -13,6 +13,8 @@ var Autocomplete = React.createClass({
 
     propTypes: {
         options: React.PropTypes.array.isRequired,
+        valuePropertyPath: React.PropTypes.string.isRequired,
+        labelPropertyPath: React.PropTypes.string.isRequired,
         onChoseHandler: React.PropTypes.func.isRequired
     },
 
@@ -80,7 +82,13 @@ var Autocomplete = React.createClass({
 
         var options = this._filterOptions().map(function(option, index) {
             return (
-                <li onClick={this._onChose.bind(null, option.value)} key={option.value} className="collection-item">{option.label}</li>
+                <li
+                    className="collection-item"
+                    onClick={this._onChose.bind(null, option[this.props.valuePropertyPath])}
+                    key={option[this.props.valuePropertyPath]}>
+
+                    {option[this.props.labelPropertyPath]}
+                </li>
             );
         }.bind(this));
 
@@ -94,9 +102,29 @@ var Autocomplete = React.createClass({
     },
 
     _filterOptions: function() {
-        return this.props.options.filter(function(option) {
-            return StringUtils.createIndexable(option.label).indexOf(StringUtils.createIndexable(this.props.value)) !== -1;
+        var uniqueOptions = {};
+        var normalizedValue = StringUtils.createIndexable(this.props.value);
+
+        var matchingOptions = this.props.options.filter(function(option) {
+            var normalizedLabel = StringUtils.createIndexable(option[this.props.labelPropertyPath]);
+            var matches = normalizedLabel.indexOf(normalizedValue) !== -1;
+
+            if (matches) {
+                uniqueOptions[normalizedLabel] = option;
+            }
+
+            return matches;
+
         }.bind(this));
+
+        var compressedResult = [];
+
+        for (var i in uniqueOptions) {
+            var option = uniqueOptions[i];
+            compressedResult.push(option);
+        }
+
+        return compressedResult;
     },
 
     _onChose: function(value) {

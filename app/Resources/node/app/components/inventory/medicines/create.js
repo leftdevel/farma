@@ -87,11 +87,6 @@ var Create = React.createClass({
         var datetime = new Date();
         var expiryPlaceholder = (datetime.getMonth() + 3).toString() + '/' + datetime.getFullYear();
 
-        var laboratoryOptions = this.state.medicines.map(function(medicine) {
-            return {value: medicine.id, label: medicine.laboratory};
-        });
-
-
         return (
             <Wrapper title="Inventario - Medicamentos - Nuevo">
                 <h5>Nuevo Medicamento</h5>
@@ -120,7 +115,9 @@ var Create = React.createClass({
                     <div className="row">
                         <div className="input-field col s6">
                             <Autocomplete
-                                options={laboratoryOptions}
+                                options={this.state.medicines}
+                                valuePropertyPath="id"
+                                labelPropertyPath="laboratory"
                                 onChoseHandler={this._onLaboratoryChose}
                                 noWrap={true}
                                 id="laboratory"
@@ -220,6 +217,15 @@ var Create = React.createClass({
         this.setState({fields: fields});
     },
 
+    _onLaboratoryChose: function(medicineId) {
+        var medicine = MedicineStore.findOneById(medicineId);
+        if (!medicine) return;
+
+        var fields = this.state.fields;
+        fields.laboratory.value = medicine.laboratory;
+        this.setState({fields: fields});
+    },
+
     _onCancel: function() {
         this.context.router.transitionTo('inventory-medicines');
     },
@@ -283,15 +289,6 @@ var Create = React.createClass({
         entity.expiry_year = fields.expiry_year.value;
 
         return entity;
-    },
-
-    _onLaboratoryChose: function(medicineId) {
-        var medicine = MedicineStore.findOneById(medicineId);
-        if (!medicine) return;
-
-        var fields = this.state.fields;
-        fields.laboratory.value = medicine.laboratory;
-        this.setState({fields: fields});
     }
 });
 
