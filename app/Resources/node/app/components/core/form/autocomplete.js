@@ -20,8 +20,8 @@ var Autocomplete = React.createClass({
 
     getInitialState: function() {
         return {
-            focused: false,
             hovered: 0,
+            isUserKeypress: false,
         };
     },
 
@@ -59,10 +59,9 @@ var Autocomplete = React.createClass({
                     value={this.props.value}
                     changeHandler={this._changeHandler}
                     error={this.props.error}
-                    onFocus={this._onFocus}
                     onKeyDown={this._onKeyDown}>
 
-                    {this._getAutoCompleteList()}
+                    {this._canShow() ? this._getAutoCompleteList() : null}
                 </Text>
             </div>
         );
@@ -70,11 +69,7 @@ var Autocomplete = React.createClass({
 
     _changeHandler: function(propertyPath, value) {
         this.props.changeHandler(propertyPath, value);
-        this.setState({hovered: 0});
-    },
-
-    _onFocus: function() {
-        this.setState({focused: true});
+        this.setState({hovered: 0, isUserKeypress: true});
     },
 
     _onKeyDown: function(event) {
@@ -119,21 +114,20 @@ var Autocomplete = React.createClass({
         var options = this._filterOptions();
         var hoveredOption = options[this.state.hovered];
         var value = hoveredOption[this.props.valuePropertyPath];
-        this.setState({hovered: 0}); // reset
+        this.setState({hovered: 0, isUserKeypress: false}); // reset
         this.props.onChoseHandler(value);
     },
 
     _blur: function(event) {
-        this.setState({focused: false});
+        this.setState({isUserKeypress: false});
     },
 
+    _canShow: function() {
+        return this.state.isUserKeypress && this.props.value !== '';
+    },
 
     // @TODO handle onMouseEnter
     _getAutoCompleteList: function() {
-        if (!this.state.focused || this.props.value === '') {
-            return null;
-        }
-
         var filteredOptions = this._filterOptions();
         this._filteredOptionsLength = filteredOptions.length; // cache
 

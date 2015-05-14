@@ -9,7 +9,6 @@ module.exports = React.createClass({
 
    propTypes: {
         inputType: React.PropTypes.oneOf(['text', 'password']),
-        onFocus: React.PropTypes.func,
         onKeyDown: React.PropTypes.func
     },
 
@@ -35,7 +34,6 @@ module.exports = React.createClass({
             <div>
                 {this._getLabel()}
                 <input
-                    onFocus={this.props.onFocus ? this.props.onFocus : null}
                     id={this.props.id}
                     type={inputType}
                     placeholder={this.props.placeholder}
