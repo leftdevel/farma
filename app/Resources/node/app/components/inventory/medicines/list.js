@@ -48,11 +48,6 @@ var List = React.createClass({
                     <ListTable filteredItems={[]} key="0" />
 
                 </SmartTable>
-                <div id="toast-container">
-                  <div className="toast rounded">
-                    I am a toast!
-                  </div>
-                </div>
             </Wrapper>
         );
     },

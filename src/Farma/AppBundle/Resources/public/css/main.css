@@ -1,5 +1,5 @@
 body {
-    background-color: #fcfcfc;
+    background-color: #fff;
 }
 
 .side-nav .logo {
@@ -112,5 +112,35 @@ td {
     -webkit-user-drag: none;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     bottom: 0px;
+}
+
+/* React Transitions */
+
+#toast-container .toast-appear {
+    opacity: 0.01;
+    transition: opacity .3s ease-in;
+}
+
+#toast-container .toast-appear.toast-appear-active {
     opacity: 1;
 }
+
+#toast-container .toast-enter {
+    opacity: 0.01;
+    transition: opacity .3s ease-in;
+}
+
+#toast-container .toast-enter.toast-enter-active {
+    opacity: 1;
+}
+
+#toast-container .toast-leave {
+    opacity: 1;
+    transition: opacity .3s ease-in;
+}
+
+#toast-container .toast-leave.toast-leave-active {
+  opacity: 0.01;
+}
+
+/* end - React Transitions */

@@ -7,6 +7,7 @@ var Route = Router.Route;
 
 var Header = require('./components/header');
 var Modal = require('./components/modal');
+var Toast = require('./components/toast')
 
 // User pages
 var UsersList = require('./components/users/list');
@@ -27,6 +28,7 @@ var App = React.createClass({
           <RouteHandler />
         </main>
         <Modal />
+        <Toast />
       </div>
     );
   }

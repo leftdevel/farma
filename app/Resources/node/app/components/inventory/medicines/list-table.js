@@ -57,7 +57,7 @@ var ListTable = React.createClass({
             <table className="hoverable">
                 <thead>
                     <tr>
-                        <th>Nombre</th>
+                        <th>Medicamento</th>
                         <th>Laboratorio</th>
                         <th>Cantidad</th>
                         <th>Costo</th>
