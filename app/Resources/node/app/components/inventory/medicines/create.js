@@ -11,7 +11,7 @@ var MapValidator = require('../../../lib/validator/map-validator');
 var ValidationSchema = require('./common/validation-schema');
 var DateUtils = require('../../../lib/date/date-utils');
 var MedicineStore = require('../../../stores/medicine-store');
-
+var ToastActions = require('../../../actions/toast-actions');
 
 function getDefaultMonth() {
     var date = new Date();
@@ -46,28 +46,33 @@ function getYearOptions() {
     return options;
 }
 
+
+function getDefaultState() {
+    return {
+        medicines: MedicineStore.getMedicines(),
+        fields: {
+            name: {value: '', error: ''},
+            generic: {value: '', error: ''},
+            laboratory: {value: '', error: ''},
+            presentation: {value: '', error: ''},
+            concentration: {value: '', error: ''},
+            price: {value: '', error: ''},
+
+            quantity: {value: '', error: ''},
+            expiry_month: {value: getDefaultMonth(), error: ''},
+            expiry_year: {value: getCurrentYear(), error: ''},
+            cost: {value: '', error: ''},
+        }
+    };
+}
+
 var Create = React.createClass({
     contextTypes: {
         router: React.PropTypes.func.isRequired
     },
 
     getInitialState: function() {
-        return {
-            medicines: MedicineStore.getMedicines(),
-            fields: {
-                name: {value: '', error: ''},
-                generic: {value: '', error: ''},
-                laboratory: {value: '', error: ''},
-                presentation: {value: '', error: ''},
-                concentration: {value: '', error: ''},
-                price: {value: '', error: ''},
-
-                quantity: {value: '', error: ''},
-                expiry_month: {value: getDefaultMonth(), error: ''},
-                expiry_year: {value: getCurrentYear(), error: ''},
-                cost: {value: '', error: ''},
-            }
-        };
+        return getDefaultState();
     },
 
     componentDidMount: function() {
@@ -274,7 +279,8 @@ var Create = React.createClass({
         }
 
         MedicineActions.createMedicine(entity);
-        this.context.router.transitionTo('inventory-medicines');
+        ToastActions.showToast('cambios guardados');
+        this.setState(getDefaultState());
     },
 
     _getMapValidator: function(entity) {

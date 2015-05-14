@@ -11,5 +11,3 @@ var ToastActions = {
 };
 
 module.exports = ToastActions;
-
-window.ToastActions = ToastActions;
