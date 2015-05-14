@@ -27,10 +27,6 @@ var Toast = React.createClass({
     },
 
     render: function() {
-        if (!this.state.toasts.length) {
-            return null;
-        }
-
         var toastList = this.state.toasts.map(function(el) {
             return (
                 <div key={el._id} className="toast rounded">

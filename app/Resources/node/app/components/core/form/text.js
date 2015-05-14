@@ -9,7 +9,8 @@ module.exports = React.createClass({
 
    propTypes: {
         inputType: React.PropTypes.oneOf(['text', 'password']),
-        onFocus: React.PropTypes.func
+        onFocus: React.PropTypes.func,
+        onKeyDown: React.PropTypes.func
     },
 
     render: function() {
@@ -38,6 +39,7 @@ module.exports = React.createClass({
                     id={this.props.id}
                     type={inputType}
                     placeholder={this.props.placeholder}
+                    onKeyDown={this.props.onKeyDown}
                     value={this.props.value}
                     onChange={this._onChange}
                     autoComplete='off' />

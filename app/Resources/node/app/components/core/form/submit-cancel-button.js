@@ -16,13 +16,13 @@ module.exports = React.createClass({
 
     render: function() {
         var cancelButton = (
-            <button onClick={this._cancel} className="btn waves-effect waves-light  grey">
+            <button onClick={this._cancel} type="button" className="btn waves-effect waves-light  grey">
                 Cancelar
             </button>
         );
 
         var submitButton = (
-            <button onClick={this._submit} className="btn waves-effect waves-light light-blue darken-3">
+            <button onClick={this._submit} type="button" className="btn waves-effect waves-light light-blue darken-3">
                 {this.props.label}
             </button>
         );

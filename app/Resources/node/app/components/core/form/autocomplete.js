@@ -3,8 +3,8 @@ var FormFieldMixing = require('./form-field-mixin');
 var Text = require('./text');
 var StringUtils = require('../../../lib/string/string-utils');
 var DomUtils = require('../../../lib/dom/dom-utils');
-
-//StringUtils.createIndexable();
+var KeyboardUtils = require('../../../lib/keyboard/keyboard-utils');
+var cx = require('class-set');
 
 var Autocomplete = React.createClass({
     mixins: [
@@ -20,7 +20,8 @@ var Autocomplete = React.createClass({
 
     getInitialState: function() {
         return {
-            focused: false
+            focused: false,
+            hovered: 0,
         };
     },
 
@@ -29,15 +30,14 @@ var Autocomplete = React.createClass({
     },
 
     componentDidMount: function() {
-        if (document) {
-            document.body.addEventListener('click', this._onBodyClick);
-        }
+        this._filteredOptionsLength = 0;
+        if (!document) return;
+        document.body.addEventListener('click', this._onBodyClick);
     },
 
     componentWillUnmount: function() {
-        if (document) {
-            document.body.removeEventListener('click', this._onBodyClick);
-        }
+        if (!document) return;
+        document.body.removeEventListener('click', this._onBodyClick);
     },
 
     _onBodyClick: function(event) {
@@ -57,34 +57,96 @@ var Autocomplete = React.createClass({
                     label={this.props.label}
                     placeholder={this.props.placeholder}
                     value={this.props.value}
-                    changeHandler={this.props.changeHandler}
+                    changeHandler={this._changeHandler}
                     error={this.props.error}
-                    onFocus={this._onFocus}>
+                    onFocus={this._onFocus}
+                    onKeyDown={this._onKeyDown}>
 
-                    {this._getAutoComplete()}
+                    {this._getAutoCompleteList()}
                 </Text>
             </div>
         );
+    },
+
+    _changeHandler: function(propertyPath, value) {
+        this.props.changeHandler(propertyPath, value);
+        this.setState({hovered: 0});
     },
 
     _onFocus: function() {
         this.setState({focused: true});
     },
 
+    _onKeyDown: function(event) {
+        switch (event.which) {
+            case KeyboardUtils.KEY.UP:
+                event.preventDefault();
+                this._hoverUp();
+                break;
+
+            case KeyboardUtils.KEY.DOWN:
+                event.preventDefault();
+                this._hoverDown();
+                break;
+
+            case KeyboardUtils.KEY.ENTER:
+                event.preventDefault();
+                this._choseHoveredOption();
+                break;
+
+            case KeyboardUtils.KEY.TAB:
+                this._blur();
+                break;
+
+            default:
+                // no pop
+        }
+    },
+
+    _hoverUp: function() {
+        var hovered = this.state.hovered;
+        hovered > 0 && this.setState({hovered: --hovered});
+    },
+
+    _hoverDown: function() {
+        var hovered = this.state.hovered;
+        (this._filteredOptionsLength -1) > hovered && this.setState({hovered: ++hovered})
+    },
+
+    _choseHoveredOption: function() {
+        if (this._filteredOptionsLength == 0) return;
+
+        var options = this._filterOptions();
+        var hoveredOption = options[this.state.hovered];
+        var value = hoveredOption[this.props.valuePropertyPath];
+        this.setState({hovered: 0}); // reset
+        this.props.onChoseHandler(value);
+    },
+
     _blur: function(event) {
         this.setState({focused: false});
     },
 
-    _getAutoComplete: function() {
+
+    // @TODO handle onMouseEnter
+    _getAutoCompleteList: function() {
         if (!this.state.focused || this.props.value === '') {
             return null;
         }
 
-        var options = this._filterOptions().map(function(option, index) {
+        var filteredOptions = this._filterOptions();
+        this._filteredOptionsLength = filteredOptions.length; // cache
+
+        var optionsEl = filteredOptions.map(function(option, index) {
+            var classNames = cx({
+                'collection-item': true,
+                'hover': this.state.hovered === index
+            });
+
             return (
                 <li
-                    className="collection-item"
-                    onClick={this._onChose.bind(null, option[this.props.valuePropertyPath])}
+                    className={classNames}
+                    onClick={this._choose.bind(null, option[this.props.valuePropertyPath])}
                     key={option[this.props.valuePropertyPath]}>
 
                     {option[this.props.labelPropertyPath]}
@@ -92,11 +154,11 @@ var Autocomplete = React.createClass({
             );
         }.bind(this));
 
-        if (options.length === 0) return null;
+        if (optionsEl.length === 0) return null;
 
         return (
             <ul className="autocomplete collection">
-                {options}
+                {optionsEl}
             </ul>
         );
     },
@@ -127,7 +189,7 @@ var Autocomplete = React.createClass({
         return compressedResult;
     },
 
-    _onChose: function(value) {
+    _choose: function(value) {
         this.props.onChoseHandler(value);
         this._blur();
     }

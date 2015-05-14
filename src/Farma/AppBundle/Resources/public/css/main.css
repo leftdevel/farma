@@ -144,3 +144,7 @@ td {
 }
 
 /* end - React Transitions */
+
+.collection-item.hover {
+    background-color: #ddd;
+}
