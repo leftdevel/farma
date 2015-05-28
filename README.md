@@ -31,4 +31,4 @@ For the Javascript part, all resources are found in app/Resources/node/ director
 I'm planning to move most of the backend logic to CQRS + event sourcing sooner than later. I already have a simple dashboard for crud operations on Users and Medicines, but still planning the best approach to keep the GUI and UX as simple as possible whithout chopping up functionality.
 
 ##### Mision.
-Once the App is finished, I'll go store by store offering a raspberry pi 2 preinstalled with the app, ready to be used and give back to my community. I may charge only for the cost of the device and ask for a hat tip :)
+Once the App is finished, I'll go store by store offering a raspberry pi 2 preinstalled with the app, ready to be used and give back to my community. I may charge only for the cost of the device and ask for a mentos :)
