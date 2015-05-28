@@ -126,7 +126,6 @@ var Autocomplete = React.createClass({
         return this.state.isUserKeypress && this.props.value !== '';
     },
 
-    // @TODO handle onMouseEnter
     _getAutoCompleteList: function() {
         var filteredOptions = this._filterOptions();
         this._filteredOptionsLength = filteredOptions.length; // cache
@@ -141,6 +140,7 @@ var Autocomplete = React.createClass({
                 <li
                     className={classNames}
                     onClick={this._choose.bind(null, option[this.props.valuePropertyPath])}
+                    onMouseEnter={this._onListOptionMouseEnter.bind(null, index)}
                     key={option[this.props.valuePropertyPath]}>
 
                     {option[this.props.labelPropertyPath]}
@@ -155,6 +155,10 @@ var Autocomplete = React.createClass({
                 {optionsEl}
             </ul>
         );
+    },
+
+    _onListOptionMouseEnter: function(index) {
+        this.setState({hovered: index});
     },
 
     _filterOptions: function() {

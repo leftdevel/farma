@@ -2,7 +2,7 @@ var ModalActions  = require('../actions/modal-actions');
 var overlayId = 'lean-overlay';
 
 function isBrowser() {
-    return !!docuement;
+    return !!document;
 }
 
 function clickHandler() {
