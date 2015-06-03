@@ -5,6 +5,7 @@
   "repository": "https://github.com/leftdevel/farma",
   "main": "app/app.js",
   "dependencies": {
+    "browserify": "^10.2.3",
     "class-set": "0.0.4",
     "flux": "^2.0.3",
     "keymirror": "^0.1.1",
