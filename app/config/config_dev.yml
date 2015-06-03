@@ -2,7 +2,7 @@ imports:
     - { resource: config.yml }
 
 parameters:
-    database_path: '%kernel.root_dir%/data/farma_dev.sqlite'
+    #database_path: '%kernel.root_dir%/data/farma_dev.sqlite'
 
 framework:
     router:
