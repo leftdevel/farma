@@ -30,7 +30,6 @@
     "watchify": "^3.2.0"
   },
   "scripts": {
-    "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > public/bundle_prod.js",
     "test": "jest"
   },
   "author": "Bill Fisher",

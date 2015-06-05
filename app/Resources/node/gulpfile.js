@@ -1,54 +1,59 @@
-// @see http://blog.avisi.nl/2014/04/25/how-to-keep-a-fast-build-with-browserify-and-reactjs/
+// Most of this script => http://blog.avisi.nl/2014/04/25/how-to-keep-a-fast-build-with-browserify-and-reactjs/
 
 var gulp = require('gulp');
+var uglify = require('gulp-uglify');
+var gutil = require('gulp-util');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var source = require('vinyl-source-stream');
-//var rename = require('gulp-rename');
+var buffer = require('vinyl-buffer');
 var reactify = require('reactify');
-var gutil = require('gulp-util');
 
-var production = process.env.NODE_ENV === 'production';
-var outputFileName = production ? 'bundle-prod.js' : 'bundle-dev.js';
+function scripts(prod) {
+    var outputFileName = prod ? 'bundle-prod.js' : 'bundle-dev.js';
 
-function scripts(watch) {
-    var bundler, rebundle;
+    var bundler, bundle;
     bundler = browserify('./app/app.js', {
         basedir: __dirname,
-        debug: !production,
+        debug: !prod,
         cache: {}, // required for watchify
         packageCache: {}, // required for watchify
-        fullPaths: watch // required to be true only for watchify
+        fullPaths: !prod // required to be true only for watchify
     });
 
-    if(watch) {
+    if(!prod) {
         bundler = watchify(bundler)
     }
 
     bundler.transform(reactify);
-    rebundle = function() {
+
+    bundle = function() {
         var stream = bundler.bundle();
         stream.on('error', handleError);
         stream = stream.pipe(source(outputFileName));
-        //stream.pipe(rename(outputFileName));
-        gutil.log('rebundled...');
+
+        if (prod) {
+            stream = stream.pipe(buffer());
+            stream = stream.pipe(uglify());
+        }
+
         return stream.pipe(gulp.dest('./dist'));
     };
 
-    bundler.on('update', rebundle);
-    return rebundle();
+    bundler.on('update', bundle);
+    return bundle();
 }
 
-gulp.task('scripts', function() {
-    return scripts(false);
+gulp.task('prod', function() {
+    gutil.log('bundling for production...');
+    return scripts(true);
 });
 
 gulp.task('default', function() {
     gutil.log('watching...');
-    return scripts(true);
+    return scripts(false);
 });
 
-function handleError(error, error2) {
+function handleError(error) {
     gutil.log(error);
-    gutil.log(error2);
 }
