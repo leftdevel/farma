@@ -12,5 +12,9 @@
 /web/bundles/
 *node_modules*
 *build*
-*bundle_dev.js*
+*bundle-dev.js*
+*bundle-prod.js*
 *.DS_Store*
+web/assetic/
+web/css/
+web/js/

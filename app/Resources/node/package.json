@@ -5,7 +5,6 @@
   "repository": "https://github.com/leftdevel/farma",
   "main": "app/app.js",
   "dependencies": {
-    "browserify": "^10.2.3",
     "class-set": "0.0.4",
     "flux": "^2.0.3",
     "keymirror": "^0.1.1",
@@ -17,15 +16,20 @@
     "superagent": "^1.2.0"
   },
   "devDependencies": {
-    "browserify": "^9.0.8",
+    "browserify": "^10.2.3",
     "envify": "^3.4.0",
+    "es6ify": "^1.6.0",
+    "gulp": "^3.9.0",
+    "gulp-browserify": "^0.5.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-util": "^3.0.5",
     "jest-cli": "~0.1.17",
     "reactify": "^1.1.0",
     "uglify-js": "~2.4.15",
+    "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.0"
   },
   "scripts": {
-    "start": "watchify -o public/bundle_dev.js -v -d app/app.js",
     "build": "browserify . -t [envify --NODE_ENV production] | uglifyjs -cm > public/bundle_prod.js",
     "test": "jest"
   },

@@ -59,7 +59,7 @@ assetic:
 
         root_js:
             inputs:
-                - %kernel.root_dir%/Resources/node/public/bundle_%kernel.environment%.js
+                - %kernel.root_dir%/Resources/node/dist/bundle-%kernel.environment%.js
 
 
 # Doctrine Configuration
