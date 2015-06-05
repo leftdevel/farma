@@ -37,8 +37,8 @@ var Header = React.createClass({
                   </a>
                   <Progress />
                 </li>
-                <li className={ this._isUsersRoute() ?  "bold active" : "bold"}><Link to="users">Usuarios</Link></li>
-                <li className={ this._isInventoryMedicineRoute() ?  "bold active" : "bold"}><Link to="inventory-medicines">Inventario - Medicinas</Link></li>
+                <li className={this._isUsersRoute() ?  "bold active" : "bold"}><Link to="users">Usuarios</Link></li>
+                <li className={this._isInventoryMedicineRoute() ?  "bold active" : "bold"}><Link to="inventory-medicines">Inventario - Medicinas</Link></li>
               </ul>
             </header>
         );

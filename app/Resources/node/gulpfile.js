@@ -1,4 +1,4 @@
-// Most of this script => http://blog.avisi.nl/2014/04/25/how-to-keep-a-fast-build-with-browserify-and-reactjs/
+// twaeked from http://blog.avisi.nl/2014/04/25/how-to-keep-a-fast-build-with-browserify-and-reactjs/
 
 var gulp = require('gulp');
 var uglify = require('gulp-uglify');
@@ -16,9 +16,9 @@ function scripts(prod) {
     bundler = browserify('./app/app.js', {
         basedir: __dirname,
         debug: !prod,
-        cache: {}, // required for watchify
-        packageCache: {}, // required for watchify
-        fullPaths: !prod // required to be true only for watchify
+        cache: {},
+        packageCache: {},
+        fullPaths: !prod
     });
 
     if(!prod) {
