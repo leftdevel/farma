@@ -22,12 +22,10 @@ var SmartTable = React.createClass({
         };
     },
 
-    componentWillMount: function() {
-        this._filteredItems = this._filter(this.state.normalizedSearchTerm);
-    },
-
-    componentDidUpdate: function() {
-       // this._filterDelayed();
+    componentDidUpdate: function(prevProps, prevState) {
+        if (this.state.normalizedSearchTerm !== prevState.normalizedSearchTerm) {
+            this._filterDelayed();
+        }
     },
 
     _filterDelayed: function() {
@@ -36,17 +34,18 @@ var SmartTable = React.createClass({
         }
 
         this._timerId = setTimeout(function() {
-            this._filteredItems = this._filter(this.state.normalizedSearchTerm);
+            this._filter();
             this.forceUpdate();
-        }.bind(this), 2000);
+        }.bind(this), 200);
     },
 
     render: function() {
         var children = [];
+        var items = this._filteredItems || this.props.items;
 
         React.Children.forEach(this.props.children, function(child, index) {
             var props = child.props;
-            props.filteredItems = this._filteredItems;
+            props.filteredItems = items;
             var ClonedChild = React.cloneElement(child, props);
             children.push(ClonedChild);
         }.bind(this));
@@ -65,20 +64,20 @@ var SmartTable = React.createClass({
         this.setState({searchTerm: searchTerm, normalizedSearchTerm: normalizedSearchTerm});
     },
 
-    _filter: function(normalizedSearchTerm) {
-        if (!normalizedSearchTerm) {
-            return this.props.items;
+    _filter: function() {
+        if (this.state.normalizedSearchTerm === '') {
+            this._filteredItems = this.props.items;
+            return;
         }
 
         var searchableProperties = this.props.searchableProperties;
-
         var filteredItems = this.props.items.filter(function(item) {
             var match = false;
 
             for (var i in searchableProperties) {
                 var prop = searchableProperties[i];
 
-                if (item[prop].indexOf(normalizedSearchTerm) >= 0) {
+                if (item[prop].indexOf(this.state.normalizedSearchTerm) >= 0) {
                     return true;
                 }
             }
@@ -88,7 +87,7 @@ var SmartTable = React.createClass({
 
         }.bind(this));
 
-        return filteredItems;
+        this._filteredItems = filteredItems;
     }
 });
 
