@@ -37,6 +37,7 @@ function scripts(prod) {
             stream = stream.pipe(uglify());
         }
 
+        gutil.log('now bundling.');
         return stream.pipe(gulp.dest('./dist'));
     };
 

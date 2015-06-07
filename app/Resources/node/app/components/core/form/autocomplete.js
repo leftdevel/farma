@@ -27,20 +27,31 @@ var Autocomplete = React.createClass({
 
     componentWillMount: function() {
         this._id = 'autocomplete-' + Date.now();
+        this._filteredOptions = [];
     },
 
     componentDidMount: function() {
-        this._filteredOptionsLength = 0;
         if (!document) return;
-        document.body.addEventListener('click', this._onBodyClick);
+        document.body.addEventListener('click', this._onWebPageClick);
     },
 
     componentWillUnmount: function() {
         if (!document) return;
-        document.body.removeEventListener('click', this._onBodyClick);
+        document.body.removeEventListener('click', this._onWebPageClick);
     },
 
-    _onBodyClick: function(event) {
+    componentDidUpdate: function() {
+        if (this._timerId) {
+            clearTimeout(this._timerId);
+        }
+
+        this._timerId = setTimeout(function() {
+            this._filteredOptions = this._filterOptions();
+            this.forceUpdate();
+        }.bind(this), 100);
+    },
+
+    _onWebPageClick: function(event) {
         var currentComponent = DomUtils.closestWithId(this._id, event.target);
 
         if (!currentComponent) {
@@ -105,11 +116,11 @@ var Autocomplete = React.createClass({
 
     _hoverDown: function() {
         var hovered = this.state.hovered;
-        (this._filteredOptionsLength -1) > hovered && this.setState({hovered: ++hovered})
+        (this._filteredOptions.length -1) > hovered && this.setState({hovered: ++hovered})
     },
 
     _choseHoveredOption: function() {
-        if (this._filteredOptionsLength == 0) return;
+        if (this._filteredOptions.length == 0) return;
 
         var options = this._filterOptions();
         var hoveredOption = options[this.state.hovered];
@@ -127,10 +138,7 @@ var Autocomplete = React.createClass({
     },
 
     _getAutoCompleteList: function() {
-        var filteredOptions = this._filterOptions();
-        this._filteredOptionsLength = filteredOptions.length; // cache
-
-        var optionsEl = filteredOptions.map(function(option, index) {
+        var optionsEl = this._filteredOptions.map(function(option, index) {
             var classNames = cx({
                 'collection-item': true,
                 'hover': this.state.hovered === index

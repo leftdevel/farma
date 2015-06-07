@@ -22,16 +22,34 @@ var SmartTable = React.createClass({
         };
     },
 
+    componentWillMount: function() {
+        this._filteredItems = this._filter(this.state.normalizedSearchTerm);
+    },
+
+    componentDidUpdate: function() {
+       // this._filterDelayed();
+    },
+
+    _filterDelayed: function() {
+        if (this._timerId) {
+            clearTimeout(this._timerId);
+        }
+
+        this._timerId = setTimeout(function() {
+            this._filteredItems = this._filter(this.state.normalizedSearchTerm);
+            this.forceUpdate();
+        }.bind(this), 2000);
+    },
+
     render: function() {
         var children = [];
-        var filteredItems = this._filter(this.state.normalizedSearchTerm);
 
         React.Children.forEach(this.props.children, function(child, index) {
             var props = child.props;
-            props.filteredItems = filteredItems;
+            props.filteredItems = this._filteredItems;
             var ClonedChild = React.cloneElement(child, props);
             children.push(ClonedChild);
-        });
+        }.bind(this));
 
         return (
             <div>
