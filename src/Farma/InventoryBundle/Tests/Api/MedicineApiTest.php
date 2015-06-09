@@ -76,8 +76,7 @@ class MedicineApiTest extends FunctionalTestUtil
         );
 
         $grocer = $this->findGrocer();
-
-        $this->medicineApi->create($medicine, $grocer);
+        $this->medicineApi->create($grocer, $medicine);
     }
 
     public function testCreate_batch_validation()
@@ -98,7 +97,7 @@ class MedicineApiTest extends FunctionalTestUtil
         );
 
         $grocer = $this->findGrocer();
-        $this->medicineApi->create($medicine, $grocer);
+        $this->medicineApi->create($grocer, $medicine);
     }
 
     public function testCreate_medicine_validation()
@@ -119,7 +118,7 @@ class MedicineApiTest extends FunctionalTestUtil
         );
 
         $grocer = $this->findGrocer();
-        $this->medicineApi->create($medicine, $grocer);
+        $this->medicineApi->create($grocer, $medicine);
     }
 
     public function testCreate_success()
@@ -142,7 +141,7 @@ class MedicineApiTest extends FunctionalTestUtil
         );
 
         $grocer = $this->findGrocer();
-        $this->medicineApi->create($medicine, $grocer);
+        $this->medicineApi->create($grocer, $medicine);
 
         $nusprinCollection = $this->repository->findByName('nusprin');
         $this->assertEquals(1, count($nusprinCollection));

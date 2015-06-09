@@ -44,10 +44,10 @@ class MedicineController extends Controller
 
         try {
             $user = $this->get('security.context')->getToken()->getUser();
-            $this->get('inventory.api.medicine')->create($input, $user);
+            $this->get('inventory.api.medicine')->create($user, $input);
 
             return new JsonResponse(array('success' => true), Response::HTTP_CREATED);
-            
+
          } catch (MedicineApiException $e) {
              throw new BadRequestHttpException('invalid input');
          } catch (MedicineException $e) {
