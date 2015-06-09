@@ -40,7 +40,13 @@ var Autocomplete = React.createClass({
         document.body.removeEventListener('click', this._onWebPageClick);
     },
 
-    componentDidUpdate: function() {
+    componentDidUpdate: function(prevProps) {
+        if (this.props.value !== prevProps.value && this.state.isUserKeypress) {
+            this._filterDelayed();
+        }
+    },
+
+    _filterDelayed: function() {
         if (this._timerId) {
             clearTimeout(this._timerId);
         }
@@ -48,7 +54,7 @@ var Autocomplete = React.createClass({
         this._timerId = setTimeout(function() {
             this._filteredOptions = this._filterOptions();
             this.forceUpdate();
-        }.bind(this), 100);
+        }.bind(this), 200);
     },
 
     _onWebPageClick: function(event) {
@@ -122,8 +128,7 @@ var Autocomplete = React.createClass({
     _choseHoveredOption: function() {
         if (this._filteredOptions.length == 0) return;
 
-        var options = this._filterOptions();
-        var hoveredOption = options[this.state.hovered];
+        var hoveredOption = this._filteredOptions[this.state.hovered];
         var value = hoveredOption[this.props.valuePropertyPath];
         this.setState({hovered: 0, isUserKeypress: false}); // reset
         this.props.onChoseHandler(value);
