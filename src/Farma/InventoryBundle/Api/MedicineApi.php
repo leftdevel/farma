@@ -11,18 +11,16 @@ class MedicineApi
 {
     private $repository;
     private $validator;
-    private $numericColumns;
 
     public function __construct(MedicineRepository $repository, LegacyValidator $validator)
     {
         $this->repository = $repository;
         $this->validator = $validator;
-        $this->numericColumns = array('id', 'cost', 'price', 'quantity');
     }
 
     public function listAll()
     {
-        $command = new MedicineListAllCommand($this->repository, $this->numericColumns);
+        $command = new MedicineListAllCommand($this->repository);
         return $command->execute();
     }
 
