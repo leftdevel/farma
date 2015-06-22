@@ -39,31 +39,6 @@ var SmartTable = React.createClass({
         }.bind(this), 200);
     },
 
-    render: function() {
-        var children = [];
-        var items = this._filteredItems || this.props.items;
-
-        React.Children.forEach(this.props.children, function(child, index) {
-            var props = child.props;
-            props.filteredItems = items;
-            var ClonedChild = React.cloneElement(child, props);
-            children.push(ClonedChild);
-        }.bind(this));
-
-        return (
-            <div>
-                <Text id='search' label={this.props.title || 'Search'} changeHandler={this._onChange} value={this.state.searchTerm} placeholder={this.props.placeholder || 'Enter a term'} />
-                {children}
-            </div>
-        );
-    },
-
-    _onChange: function(id, value) {
-        var searchTerm = value;
-        var normalizedSearchTerm = StringUtils.createIndexable(searchTerm);
-        this.setState({searchTerm: searchTerm, normalizedSearchTerm: normalizedSearchTerm});
-    },
-
     _filter: function() {
         if (this.state.normalizedSearchTerm === '') {
             this._filteredItems = this.props.items;
@@ -88,7 +63,36 @@ var SmartTable = React.createClass({
         }.bind(this));
 
         this._filteredItems = filteredItems;
-    }
+    },
+
+    render: function() {
+        return (
+            <div>
+                <Text id='search' label={this.props.title || 'Search'} changeHandler={this._onChange} value={this.state.searchTerm} placeholder={this.props.placeholder || 'Enter a term'} />
+                {this._getNormalizedChildren()}
+            </div>
+        );
+    },
+
+    _getNormalizedChildren: function() {
+        var normalizedChildren = [];
+        var items = this._filteredItems || this.props.items;
+
+        React.Children.forEach(this.props.children, function(child, index) {
+            var props = child.props;
+            props.filteredItems = items;
+            var ClonedChild = React.cloneElement(child, props);
+            normalizedChildren.push(ClonedChild);
+        }.bind(this));
+
+        return normalizedChildren;
+    },
+
+    _onChange: function(id, value) {
+        var searchTerm = value;
+        var normalizedSearchTerm = StringUtils.createIndexable(searchTerm);
+        this.setState({searchTerm: searchTerm, normalizedSearchTerm: normalizedSearchTerm});
+    },
 });
 
 module.exports = SmartTable;
