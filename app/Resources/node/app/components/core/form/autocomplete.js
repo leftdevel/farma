@@ -52,7 +52,7 @@ var Autocomplete = React.createClass({
         }
 
         this._timerId = setTimeout(function() {
-            this._filteredOptions = this._filterOptions();
+            this._filterOptions();
             this.forceUpdate();
         }.bind(this), 200);
     },
@@ -93,17 +93,17 @@ var Autocomplete = React.createClass({
         switch (event.which) {
             case KeyboardUtils.KEY.UP:
                 event.preventDefault();
-                this._hoverUp();
+                this._highlightItemAbove();
                 break;
 
             case KeyboardUtils.KEY.DOWN:
                 event.preventDefault();
-                this._hoverDown();
+                this._highlightItemBelow();
                 break;
 
             case KeyboardUtils.KEY.ENTER:
                 event.preventDefault();
-                this._choseHoveredOption();
+                this._choseHighlightedOption();
                 break;
 
             case KeyboardUtils.KEY.TAB:
@@ -115,17 +115,17 @@ var Autocomplete = React.createClass({
         }
     },
 
-    _hoverUp: function() {
+    _highlightItemAbove: function() {
         var hovered = this.state.hovered;
         hovered > 0 && this.setState({hovered: --hovered});
     },
 
-    _hoverDown: function() {
+    _highlightItemBelow: function() {
         var hovered = this.state.hovered;
         (this._filteredOptions.length -1) > hovered && this.setState({hovered: ++hovered})
     },
 
-    _choseHoveredOption: function() {
+    _choseHighlightedOption: function() {
         if (this._filteredOptions.length == 0) return;
 
         var hoveredOption = this._filteredOptions[this.state.hovered];
@@ -135,6 +135,7 @@ var Autocomplete = React.createClass({
     },
 
     _blur: function(event) {
+        this._filteredOptions = [];
         this.setState({isUserKeypress: false});
     },
 
@@ -178,6 +179,11 @@ var Autocomplete = React.createClass({
         var uniqueOptions = {};
         var normalizedValue = StringUtils.createIndexable(this.props.value);
 
+        if (normalizedValue === '') {
+            this._filteredOptions = [];
+            return;
+        }
+
         var matchingOptions = this.props.options.filter(function(option) {
             var normalizedLabel = StringUtils.createIndexable(option[this.props.labelPropertyPath]);
             var matches = normalizedLabel.indexOf(normalizedValue) !== -1;
@@ -190,14 +196,14 @@ var Autocomplete = React.createClass({
 
         }.bind(this));
 
-        var compressedResult = [];
+        var filteredOptions = [];
 
         for (var i in uniqueOptions) {
             var option = uniqueOptions[i];
-            compressedResult.push(option);
+            filteredOptions.push(option);
         }
 
-        return compressedResult;
+        this._filteredOptions = filteredOptions;
     },
 
     _choose: function(value) {

@@ -111,7 +111,11 @@ var Create = React.createClass({
                                 error={fields.name.error} />
                         </div>
                         <div className="input-field col s6">
-                            <Text
+                            <Autocomplete
+                                options={this.state.medicines}
+                                valuePropertyPath="id"
+                                labelPropertyPath="generic"
+                                onChoseHandler={this._onGenericChose}
                                 noWrap={true}
                                 id="generic"
                                 label="Genérico"
@@ -245,21 +249,24 @@ var Create = React.createClass({
         this.setState({fields: fields});
     },
 
-    _onLaboratoryChose: function(medicineId) {
-        var medicine = MedicineStore.findOneById(medicineId);
-        if (!medicine) return;
+    _onGenericChose: function(medicineId) {
+        this._autocompleteForProperty(medicineId, 'generic');
+    },
 
-        var fields = this.state.fields;
-        fields.laboratory.value = medicine.laboratory;
-        this.setState({fields: fields});
+    _onLaboratoryChose: function(medicineId) {
+        this._autocompleteForProperty(medicineId, 'laboratory');
     },
 
     _onPresentationChose: function(medicineId) {
+        this._autocompleteForProperty(medicineId, 'presentation')
+    },
+
+    _autocompleteForProperty: function(medicineId, propertyPath) {
         var medicine = MedicineStore.findOneById(medicineId);
         if (!medicine) return;
 
         var fields = this.state.fields;
-        fields.presentation.value = medicine.presentation;
+        fields[propertyPath].value = medicine[propertyPath];
         this.setState({fields: fields});
     },
 
