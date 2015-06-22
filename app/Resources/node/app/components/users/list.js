@@ -5,7 +5,7 @@ var ModalActions = require('../../actions/modal-actions');
 var UserStore = require('../../stores/user-store');
 var cx = require('class-set');
 
-var CreateLink = require('../core/create-link');
+var CreateLink = require('../core/create-link.jsx');
 var Wrapper = require('../wrapper');
 
 function getState() {

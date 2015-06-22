@@ -16,6 +16,7 @@
     "superagent": "^1.2.0"
   },
   "devDependencies": {
+    "babelify": "^6.1.2",
     "browserify": "^10.2.3",
     "envify": "^3.4.0",
     "es6ify": "^1.6.0",
@@ -24,20 +25,12 @@
     "gulp-rename": "^1.2.2",
     "gulp-util": "^3.0.5",
     "jest-cli": "~0.1.17",
-    "reactify": "^1.1.0",
     "uglify-js": "~2.4.15",
     "vinyl-source-stream": "^1.1.0",
     "watchify": "^3.2.0"
   },
   "scripts": {
     "test": "jest"
-  },
-  "author": "Bill Fisher",
-  "browserify": {
-    "transform": [
-      "reactify",
-      "envify"
-    ]
   },
   "jest": {
     "rootDir": "./app"

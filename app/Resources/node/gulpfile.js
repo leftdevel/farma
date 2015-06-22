@@ -7,7 +7,8 @@ var browserify = require('browserify');
 var watchify = require('watchify');
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
-var reactify = require('reactify');
+var babelify = require('babelify');
+var es6ify = require('es6ify');
 
 function scripts(prod) {
     var outputFileName = prod ? 'bundle-prod.js' : 'bundle-dev.js';
@@ -25,7 +26,8 @@ function scripts(prod) {
         bundler = watchify(bundler)
     }
 
-    bundler.transform(reactify);
+    bundler.transform(babelify);
+    bundler.transform(es6ify.configure(/^(?!.*node_modules)+.+\.jsx.js$/));
 
     bundle = function() {
         var stream = bundler.bundle();

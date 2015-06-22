@@ -1,12 +1,13 @@
-var React = require('react');
+/*jshint esnext: true */
+import React, {PropTypes} from 'react';
 
-module.exports = React.createClass({
-    propTypes: {
-        title: React.PropTypes.string.isRequired,
-        clickHandler: React.PropTypes.func.isRequired
-    },
+class CreateLink extends React.Component {
+    constructor() {
+        super();
+        this._onClick = this._onClick.bind(this);
+    }
 
-    render: function () {
+    render() {
         return (
             <div className="float right">
                 <a href="#" onClick={this._onClick} className="waves-effect waves-light">{this.props.title}</a>
@@ -16,10 +17,17 @@ module.exports = React.createClass({
                 </a>
             </div>
         );
-    },
+    }
 
-    _onClick: function(event) {
+    _onClick(event) {
         event.preventDefault();
         this.props.clickHandler();
     }
-});
+}
+
+CreateLink.propTypes = {
+    title: PropTypes.string.isRequired,
+    clickHandler: PropTypes.func.isRequired
+};
+
+export default CreateLink;

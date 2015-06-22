@@ -1,5 +1,5 @@
 var React = require('react');
-var CreateLink = require('../../core/create-link');
+var CreateLink = require('../../core/create-link.jsx');
 var Wrapper = require('../../wrapper');
 var MedicineStore = require('../../../stores/medicine-store');
 var SmartTable = require('../../core/smart-table');
