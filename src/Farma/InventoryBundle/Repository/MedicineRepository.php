@@ -29,7 +29,29 @@ class MedicineRepository extends EntityRepository
             WHERE is_disabled != 1
             ORDER BY name_normalized ASC";
 
-        return $conn->fetchAll($query);
+        $medicines = $conn->fetchAll($query);
+        $normalizedMedicines = array();
+
+        foreach($medicines as $medicine) {
+            $normalizedMedicines[] = $this->castNumericColumns($medicine);
+        }
+
+        return $normalizedMedicines;
+    }
+
+    private function castNumericColumns(array $medicine) {
+        foreach (self::getNumericColumns() as $column) {
+            if (isset($medicine[$column])) {
+                $medicine[$column] = intval($medicine[$column]);
+            }
+        }
+
+        return $medicine;
+    }
+
+    private static function getNumericColumns()
+    {
+        return array('id', 'cost', 'price', 'quantity');
     }
 
     public function findBatchesByMedicineId($medicineId)
